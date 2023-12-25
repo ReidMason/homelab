@@ -1,8 +1,8 @@
 version: "3.8"
 
 networks:
-  skippynet:
-    name: skippynet-v2
+  monitoring:
+    name: monitoring
 
 services:
   uptime-kuma:
@@ -13,4 +13,4 @@ services:
     ports:
       - 3001:3001
     network:
-      - skippynet-v2
+      - monitoring
