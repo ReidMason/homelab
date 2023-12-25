@@ -51,7 +51,6 @@ services:
     container_name: node_exporter
     command:
       - "--path.rootfs=/host"
-    network_mode: host
     pid: host
     restart: unless-stopped
     volumes:
@@ -67,7 +66,5 @@ services:
       - "/var/run:/var/run:ro"
       - "/sys:/sys:ro"
       - "/var/lib/docker/:/var/lib/docker:ro"
-    devices:
-      - "/dev/kmsg"
     depends_on:
       - prometheus
