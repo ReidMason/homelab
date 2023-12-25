@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  telegraf:
+    image: docker pull telegraf
+    container_name: telegraf
+    volumes:
+      - /mnt/user/appdata/telegraf:/etc/telegraf/telegraf.conf:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
