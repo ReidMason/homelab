@@ -1,9 +1,5 @@
 version: "3.8"
 
-networks:
-  monitoring:
-    name: monitoring
-
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
@@ -12,5 +8,3 @@ services:
       - /mnt/user/appdata/uptime-kuma/:/app/data
     ports:
       - 3001:3001
-    network:
-      - monitoring
