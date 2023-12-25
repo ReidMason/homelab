@@ -7,7 +7,7 @@ networks:
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
-    container-name: uptime-kuma
+    container_name: uptime-kuma
     volumes:
       - /mnt/user/appdata/uptime-kuma/:/app/data
     ports:
