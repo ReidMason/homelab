@@ -37,6 +37,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=1y"
     volumes:
       - /mnt/user/appdata/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
