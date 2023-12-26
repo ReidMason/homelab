@@ -74,3 +74,17 @@ services:
       - "/dev/kmsg"
     depends_on:
       - prometheus
+
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    restart: unless-stopped
+    privileged: true
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    ports:
+      - 8083:8080
+    volumes:
+      - "/run/udev:/run/udev:ro"
+      - "/mnt/user/appdata/scrutiny:/opt/scrutiny/config"
