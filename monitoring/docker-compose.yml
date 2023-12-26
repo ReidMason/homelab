@@ -4,6 +4,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
+    restart: unless-stopped
     volumes:
       - /mnt/user/appdata/grafana:/var/lib/grafana
     ports:
@@ -14,6 +15,7 @@ services:
   telegraf:
     image: telegraf
     container_name: telegraf
+    restart: unless-stopped
     volumes:
       - /mnt/user/appdata/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /:/hostfs:ro
@@ -36,6 +38,7 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
+    restart: unless-stopped
     command:
       - "--storage.tsdb.retention.time=1y"
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -49,10 +52,10 @@ services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
+    restart: unless-stopped
     command:
       - "--path.rootfs=/host"
     pid: host
-    restart: unless-stopped
     volumes:
       - "/:/host:ro"
     depends_on:
@@ -61,6 +64,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
+    restart: unless-stopped
     volumes:
       - "/:/rootfs:ro"
       - "/var/run:/var/run:ro"
