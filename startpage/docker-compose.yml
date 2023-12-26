@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  startpage:
+    container_name: startpage
+    image: skippythesnake/startpage:dev
+    restart: unless-stopped
+    ports:
+      - 5003:3000
+    volumes:
+      - "/mnt/user/appdata/startpage:/data"
+    environment:
+      - HOST="${HOST}"
