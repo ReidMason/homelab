@@ -43,7 +43,6 @@ services:
       - "--storage.tsdb.retention.time=1y"
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
-      - "--web.enable-admin-api"
     volumes:
       - /mnt/user/appdata/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - /mnt/user/appdata/prometheus/data:/prometheus
