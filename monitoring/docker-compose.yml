@@ -4,7 +4,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    restart: unless-stopped
+    restart: always
     volumes:
       - /mnt/user/appdata/grafana:/var/lib/grafana
     ports:
@@ -15,7 +15,7 @@ services:
   telegraf:
     image: telegraf
     container_name: telegraf
-    restart: unless-stopped
+    restart: always
     volumes:
       - /mnt/user/appdata/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /:/hostfs:ro
@@ -38,7 +38,7 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    restart: unless-stopped
+    restart: always
     command:
       - "--storage.tsdb.retention.time=1y"
       - "--config.file=/etc/prometheus/prometheus.yml"
@@ -52,7 +52,7 @@ services:
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
-    restart: unless-stopped
+    restart: always
     command:
       - "--path.rootfs=/host"
     pid: host
@@ -64,7 +64,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
-    restart: unless-stopped
+    restart: always
     volumes:
       - "/:/rootfs:ro"
       - "/var/run:/var/run:ro"
@@ -78,7 +78,7 @@ services:
   scrutiny:
     container_name: scrutiny
     image: ghcr.io/analogj/scrutiny:master-omnibus
-    restart: unless-stopped
+    restart: always
     privileged: true
     cap_add:
       - SYS_RAWIO

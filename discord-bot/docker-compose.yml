@@ -4,6 +4,6 @@ services:
   discord-bot:
     container_name: discord-bot
     image: skippythesnake/discord-bot:latest
-    restart: unless-stopped
+    restart: always
     environment:
       - TOKEN=${DISCORD_TOKEN}
