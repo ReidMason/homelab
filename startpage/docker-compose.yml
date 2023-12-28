@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  nginx-proxy-manager:
+    name: nginx-proxy-manager
+
 services:
   startpage:
     container_name: startpage
@@ -11,3 +15,5 @@ services:
       - "/mnt/user/appdata/startpage:/data"
     environment:
       - HOST="${HOST}"
+    networks:
+      - nginx-proxy-manager
