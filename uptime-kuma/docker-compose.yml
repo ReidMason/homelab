@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  nginx-proxy-manager:
+    name: nginx-proxy-manager
+
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
@@ -7,5 +11,7 @@ services:
     restart: always
     volumes:
       - /mnt/user/appdata/uptime-kuma/:/app/data
-    ports:
-      - 3001:3001
+    # ports:
+    #   - 3001:3001
+    networks:
+      - nginx-proxy-manager

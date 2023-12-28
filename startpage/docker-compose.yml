@@ -9,8 +9,8 @@ services:
     container_name: startpage
     image: skippythesnake/startpage:dev
     restart: always
-    ports:
-      - 5003:3000
+    # ports:
+    #   - 5003:3000
     volumes:
       - "/mnt/user/appdata/startpage:/data"
     environment:
