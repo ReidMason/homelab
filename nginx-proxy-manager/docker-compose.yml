@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  nginx-proxy-manager:
+    name: nginx-proxy-manager
+
 services:
   nginx-proxy-manager:
     container_name: nginx-proxy-manager
@@ -14,3 +18,5 @@ services:
       - "USER_ID=99"
       - "GROUP_ID=100"
       - "UMASK=000"
+    networks:
+      - nginx-proxy-manager
