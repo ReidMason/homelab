@@ -1,12 +1,7 @@
 - name: Disable SSH password auth
-  anisble.builtin.lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/ssh_config
     regexp: "^#PasswordAuthentication yes"
     line: "PasswordAuthentication no"
-  register: sshd_config
-
-  handlers:
-    - name: Restart SSH daemon
-      anisble.builtin.service:
-        name: sshd
-        state: restarted
+  notify:
+    - Restart SSH daemon
