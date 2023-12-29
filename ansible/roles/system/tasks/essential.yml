@@ -1,0 +1,9 @@
+- name: Update packages
+  anisble.builtin.apt:
+    update_cache: true
+    upgrade: true
+
+- name: Install essential packages
+  anisble.builtin.package:
+    name: "{{ packages }}"
+    state: latest
