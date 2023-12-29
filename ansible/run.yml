@@ -2,5 +2,14 @@
 - hosts: all
   become: yes
 
+  pre_tasks:
+    # This is required to install Docker and pip packages
+    - name: Delete Python EXTERNALLY-MANAGED
+      ansible.builtin.file:
+        path: /usr/lib/python3.11/EXTERNALLY-MANAGED
+        state: absent
+
   roles:
     - role: system
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker

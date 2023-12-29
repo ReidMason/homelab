@@ -2,3 +2,6 @@ username: reid
 packages:
   - neofetch
   - speedtest-cli
+
+pip_install_packages:
+  - name: docker

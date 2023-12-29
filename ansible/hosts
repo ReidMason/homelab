@@ -1,0 +1,2 @@
+[rpi]
+10.128.0.10 ansible_user=reid
