@@ -1,0 +1,38 @@
+# Docker_compose on Ansible is really messed up so we need to downgrade
+# https://github.com/docker/docker-py/issues/3194
+- name: Downgrade python Docker
+  ansible.builtin.pip:
+    name: docker==6.1.3
+
+- name: Ensure Docker compose dir exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/compose-files/{{ item }}"
+    state: directory
+    mode: "0775"
+  loop: "{{ dockers }}"
+
+- name: Ensure appdata directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/appdata"
+    state: directory
+    mode: "0775"
+
+- name: Adding user user to docker group
+  ansible.builtin.user:
+    name: "{{ username }}"
+    group: "{{ username }}"
+    shell: /bin/bash
+    groups: docker
+    append: true
+
+- name: Copy compose files
+  ansible.builtin.template:
+    src: ../../uptime-kuma/docker-compose.yml
+    dest: "/home/{{ username }}/compose-files/{{ item }}/docker-compose.yml"
+    mode: "0775"
+  loop: "{{ dockers }}"
+
+- name: Create Docker containers
+  docker_compose:
+    project_src: "/home/{{ username }}/compose-files/{{ item }}"
+  loop: "{{ dockers }}"

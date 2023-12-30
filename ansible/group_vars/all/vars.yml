@@ -2,6 +2,10 @@ username: reid
 packages:
   - neofetch
   - speedtest-cli
+  - docker-compose
+
+dockers:
+  - uptime-kuma
 
 docker_install_compose: true
 pip_install_packages:

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: rpi
   become: yes
 
   pre_tasks:
