@@ -1,4 +1,4 @@
 ---
 - hosts: rpi
-  tasks:
-    - import_tasks: tasks/create-docker-containers.yml
+  roles:
+    - role: docker

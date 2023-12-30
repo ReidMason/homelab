@@ -6,14 +6,14 @@
 
 - name: Ensure Docker compose dir exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/compose-files/{{ item }}"
+    path: "{{ appdata_path }}/compose-files/{{ item }}"
     state: directory
     mode: "0775"
   loop: "{{ dockers }}"
 
 - name: Ensure appdata directory exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/appdata"
+    path: "{{ appdata_path }}"
     state: directory
     mode: "0775"
 
@@ -28,11 +28,11 @@
 - name: Copy compose files
   ansible.builtin.template:
     src: ../../uptime-kuma/docker-compose.yml
-    dest: "/home/{{ username }}/compose-files/{{ item }}/docker-compose.yml"
+    dest: "{{ appdata_path }}/compose-files/{{ item }}/docker-compose.yml"
     mode: "0775"
   loop: "{{ dockers }}"
 
 - name: Create Docker containers
-  docker_compose:
-    project_src: "/home/{{ username }}/compose-files/{{ item }}"
+  community.docker.docker_compose:
+    project_src: "{{ appdata_path }}/compose-files/{{ item }}"
   loop: "{{ dockers }}"
