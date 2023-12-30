@@ -8,6 +8,8 @@ packages:
 
 dockers:
   - uptime-kuma
+  - portainer-agent
+  - node-exporter
 
 docker_install_compose: true
 pip_install_packages:
