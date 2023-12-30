@@ -1,0 +1,11 @@
+node-exporter:
+  image: quay.io/prometheus/node-exporter:latest
+  container_name: node-exporter
+  restart: always
+  ports:
+    - 9100:9100
+  command:
+    - "--path.rootfs=/host"
+  pid: host
+  volumes:
+    - "/:/host:ro"
