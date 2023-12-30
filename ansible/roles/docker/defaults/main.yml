@@ -1,0 +1,2 @@
+compose_files_dest: "~/compose-files"
+compose_files_src: "../../../../"

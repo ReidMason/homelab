@@ -1,38 +1,28 @@
-# Docker_compose on Ansible is really messed up so we need to downgrade
-# https://github.com/docker/docker-py/issues/3194
-- name: Downgrade python Docker
-  ansible.builtin.pip:
-    name: docker==6.1.3
-
-- name: Ensure Docker compose dir exists
-  ansible.builtin.file:
-    path: "{{ appdata_path }}/compose-files/{{ item }}"
-    state: directory
-    mode: "0775"
-  loop: "{{ dockers }}"
-
 - name: Ensure appdata directory exists
   ansible.builtin.file:
     path: "{{ appdata_path }}"
     state: directory
     mode: "0775"
 
-- name: Adding user user to docker group
-  ansible.builtin.user:
-    name: "{{ username }}"
+- name: Ensure Docker compose dir exists
+  ansible.builtin.file:
+    path: "{{ (compose_files_dest, item) | path_join }}"
+    state: directory
+    owner: "{{ username }}"
     group: "{{ username }}"
-    shell: /bin/bash
-    groups: docker
-    append: true
+    mode: "0775"
+  loop: "{{ dockers }}"
 
 - name: Copy compose files
   ansible.builtin.template:
-    src: ../../uptime-kuma/docker-compose.yml
-    dest: "{{ appdata_path }}/compose-files/{{ item }}/docker-compose.yml"
+    src: "{{ (compose_files_src, item, 'docker-compose.yml') | path_join }}"
+    dest: "{{ (compose_files_dest, item, 'docker-compose.yml') | path_join }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
     mode: "0775"
   loop: "{{ dockers }}"
 
 - name: Create Docker containers
   community.docker.docker_compose:
-    project_src: "{{ appdata_path }}/compose-files/{{ item }}"
+    project_src: "{{ (compose_files_dest, item) | path_join }}"
   loop: "{{ dockers }}"
