@@ -1,0 +1,2 @@
+run-setup:
+  ansible-playbook setup.yml
