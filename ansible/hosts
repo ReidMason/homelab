@@ -1,2 +1,5 @@
 [rpi]
 10.128.0.10 ansible_user=reid
+
+[application_host]
+10.128.0.101 ansible_user=reid
