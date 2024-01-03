@@ -1,0 +1,9 @@
+- name: Mount network shares
+  ansible.posix.mount:
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    opts: defaults
+    state: mounted
+    fstype: nfs
+    boot: true
+  with_items: "{{ paths }}"

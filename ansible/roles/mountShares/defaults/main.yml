@@ -1,0 +1,10 @@
+tower_ip: "10.128.0.100"
+tower_mount_point: "/mnt/tower"
+
+paths:
+  - src: "{{ tower_ip }}:/mnt/user/appdata"
+    path: "{{ (tower_mount_point, 'appdata') | path_join }}"
+  - src: "{{ tower_ip }}:/mnt/user/Downloads"
+    path: "{{ (tower_mount_point, 'downloads') | path_join }}"
+  - src: "{{ tower_ip }}:/mnt/user/Plex"
+    path: "{{ (tower_mount_point, 'plex') | path_join }}"
