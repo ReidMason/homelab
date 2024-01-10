@@ -8,5 +8,5 @@ services:
     ports:
       - 9443:9443
     volumes:
-      - "/mnt/user/appdata/portainer/data:/data"
+      - "{{ (appdata_path, 'portainer') | path_join }}:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"

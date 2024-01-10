@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  startpage:
+    container_name: startpage
+    image: skippythesnake/startpage:dev
+    restart: always
+    ports:
+      - 5003:3000
+    volumes:
+      - "{{ (appdata_path, 'startpage') | path_join }}:/data"
+    environment:
+      - HOST="{{ host_ip }}"
