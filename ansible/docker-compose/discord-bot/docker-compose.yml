@@ -6,4 +6,4 @@ services:
     image: skippythesnake/discord-bot:latest
     restart: always
     environment:
-      - TOKEN=${DISCORD_TOKEN}
+      - "TOKEN={{ discord_token }}"
