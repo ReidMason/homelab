@@ -10,6 +10,7 @@ dockers:
   - uptime-kuma
   - portainer-agent
   - node-exporter
+  - pi-hole
 
 docker_install_compose: true
 pip_install_packages:
