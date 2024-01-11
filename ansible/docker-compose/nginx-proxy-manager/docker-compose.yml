@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  nginx-proxy-manager:
+    container_name: nginx-proxy-manager
+    image: jlesage/nginx-proxy-manager:latest
+    restart: always
+    ports:
+      - 7818:8181 # Webui
+      - 443:4443
+      - 80:8080
+    volumes:
+      - "{{ (appdata_path, 'NginxProxyManager') | path_join }}:/config"
+    environment:
+      - "USER_ID=99"
+      - "GROUP_ID=100"
+      - "UMASK=000"
