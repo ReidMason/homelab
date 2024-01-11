@@ -1,9 +1,5 @@
 version: "3.8"
 
-# networks:
-#   nginx-proxy-manager:
-#     name: nginx-proxy-manager
-
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:1
@@ -13,5 +9,3 @@ services:
       - "{{ (appdata_path, 'uptime-kuma') | path_join }}:/app/data"
     ports:
       - 3001:3001
-    # networks:
-    #   - nginx-proxy-manager
