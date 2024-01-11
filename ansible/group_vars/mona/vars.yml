@@ -1,5 +1,5 @@
-appdata_path: "~/appdata"
-username: reid
+home_path: "{{ lookup('env', 'HOME') }}"
+appdata_path: "{{ (home_path, 'appdata') | path_join }}"
 
 packages:
   - neofetch
