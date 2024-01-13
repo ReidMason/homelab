@@ -1,6 +1,7 @@
 nas_ip: "fern.lan"
 host_ip: "vera.lan"
 
+hostname: "Vera"
 home_path: "{{ ansible_env.HOME }}"
 nas_mount_point: "{{ (home_path, 'fern') | path_join  }}"
 
