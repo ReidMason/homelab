@@ -1,7 +1,7 @@
 nas_ip: "fern.lan"
 host_ip: "vera.lan"
 
-home_path: "{{ lookup('env', 'HOME') }}"
+home_path: "{{ ansible_env.HOME }}"
 nas_mount_point: "{{ (home_path, 'fern') | path_join  }}"
 
 appdata_path: "{{ (home_path, 'appdata') | path_join  }}"
@@ -27,6 +27,8 @@ dockers:
   - downloads
   - portainer
   - discord-bot
+  - nginx-proxy-manager
+  - plex
 
 docker_install_compose: true
 pip_install_packages:
