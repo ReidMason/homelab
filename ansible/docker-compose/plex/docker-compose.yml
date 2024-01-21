@@ -25,4 +25,4 @@ services:
       - "USER_ID=99"
       - "GROUP_ID=100"
       - "UMASK=000"
-    hostname: "{{ hostname }} Plex"
+    hostname: "{{ hostname }}"
