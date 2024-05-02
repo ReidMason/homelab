@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  plex-autoscan:
+    container_name: plex-autoscan
+    image: ghcr.io/reidmason/plex-autoscan:latest
+    restart: always
+    ports:
+      - 3030:3030
+    volumes:
+      - "{{ (appdata_path, 'plex-autoscan') | path_join }}:/data"
