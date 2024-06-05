@@ -12,3 +12,4 @@
     - docker-deploy/portainer-agent
     - docker-deploy/portainer
     - docker-deploy/nginx-proxy-manager
+    - docker-deploy/plex-media-server

@@ -1,0 +1,12 @@
+home_path: "{{ ansible_env.HOME }}"
+nas_mount_point: "{{ (home_path, 'fern') | path_join  }}"
+
+plex_path: "{{ (nas_mount_point, 'plex') | path_join }}"
+
+paths:
+  - src: "{{ nas_ip }}:/mnt/user/Downloads"
+    path: "{{ (nas_mount_point, 'downloads') | path_join }}"
+    opts: "rw"
+  - src: "{{ nas_ip }}:/mnt/user/Plex"
+    path: "{{ (nas_mount_point, 'plex') | path_join }}"
+    opts: "rw"
