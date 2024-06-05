@@ -1,4 +1,0 @@
----
-- hosts: rpi
-  roles:
-    - role: docker

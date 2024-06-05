@@ -1,9 +1,0 @@
-- name: Mount network shares
-  ansible.posix.mount:
-    src: "{{ item.src }}"
-    path: "{{ item.path }}"
-    opts: "credentials=/home/{{ username }}/.smb,uid=99,gid=users,iocharset=utf8"
-    state: mounted
-    fstype: cifs
-    boot: true
-  with_items: "{{ paths }}"

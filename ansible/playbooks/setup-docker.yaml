@@ -1,0 +1,41 @@
+- name: Setup docker
+  hosts: testhost
+
+  pre_tasks:
+    # # This is required to install Docker and pip packages
+    # - name: Delete Python EXTERNALLY-MANAGED
+    #   become: true
+    #   ansible.builtin.file:
+    #     path: /usr/lib/python3.11/EXTERNALLY-MANAGED
+    #     state: absent
+
+  roles:
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+
+  tasks:
+    - name: Install docker compose
+      become: true
+      ansible.builtin.package:
+        name: "docker-compose"
+
+    # # Docker_compose on Ansible is really messed up so we need to downgrade
+    # # https://github.com/docker/docker-py/issues/3194
+    # - name: Downgrade python Docker
+    #   ansible.builtin.pip:
+    #     name: docker==6.1.3
+
+    - name: Add user to docker group {{ ansible_user_id }}
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/bash
+        groups: docker
+        append: true
+
+    - name: Add user to 100 group {{ ansible_user_id }}
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/bash
+        groups: 100
+        append: true

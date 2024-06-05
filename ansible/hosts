@@ -1,5 +1,0 @@
-[mona]
-mona.lan ansible_user=reid
-
-[vera]
-vera.lan ansible_user=reid

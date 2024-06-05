@@ -1,5 +1,0 @@
-setup:
-  ansible-playbook setup.yml
-
-deploy-dockers:
-  ansible-playbook --ask-vault-pass deploy-dockers.yml
