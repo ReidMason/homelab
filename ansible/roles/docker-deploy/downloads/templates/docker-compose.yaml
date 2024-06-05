@@ -1,0 +1,84 @@
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: binhex/arch-qbittorrentvpn
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8118:8118
+      - 9117:9117 # Jackett port
+      # - 8989:8989 # Sonarr port
+      - 7878:7878 # Radarr port
+      - 8080:8080 # Webui
+    volumes:
+      - "{{ (appdata_path, 'qbittorrent') | path_join }}:/config"
+      - "{{ qbittorrent_downloads_path }}:/downloads"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - VPN_ENABLED=yes
+      - "VPN_USER={{ vpn_user }}"
+      - "VPN_PASS={{ vpn_pass }}"
+      - VPN_PROV=pia
+      - VPN_CLIENT=openvpn
+      - STRICT_PORT_FORWARD=no
+      - ENABLE_PRIVOXY=yes
+      - WEBUI_PORT=8080
+      - "LAN_NETWORK={{ subnet }}"
+      - NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1
+      - VPN_INPUT_PORTS=9117,8989,7878
+      - VPN_OUTPUT_PORTS=9117,8989,7878
+      - UMASK=000
+      - "PUID={{ uid }}"
+      - "PGID={{ gid }}"
+    cap_add:
+      - NET_ADMIN
+    restart: always
+
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:latest
+    restart: always
+    volumes:
+      - "{{ (appdata_path, 'jackett') | path_join }}:/config"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - "PUID={{ uid }}"
+      - "PGID={{ gid }}"
+    depends_on:
+      - qbittorrent
+    network_mode: service:qbittorrent
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    volumes:
+      - "{{ (appdata_path, 'sonarr') | path_join }}:/config"
+      - "{{ (qbittorrent_downloads_path, 'Completed') | path_join }}:/downloads"
+      - "{{ plex_mount_point }}:/tv"
+      - "/dev/rtc:/dev/rtc"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - 8989:8989 # Sonarr port
+    environment:
+      - "PUID={{ uid }}"
+      - "PGID={{ gid }}"
+    restart: always
+    # depends_on:
+    #   - qbittorrent
+    # network_mode: service:qbittorrent
+
+  radarr:
+    container_name: radarr
+    image: binhex/arch-radarr
+    restart: always
+    volumes:
+      - "{{ (appdata_path, 'radarr') | path_join }}:/config"
+      - "{{ qbittorrent_downloads_path }}:/data"
+      - "{{ plex_mount_point }}:/media"
+    environment:
+      - "PUID={{ uid }}"
+      - "PGID={{ gid }}"
+      - UMASK=000
+    depends_on:
+      - qbittorrent
+    network_mode: service:qbittorrent
