@@ -4,7 +4,4 @@ nas_mount_point: "{{ (home_path, 'fern') | path_join  }}"
 paths:
   - src: "{{ nas_ip }}:/mnt/user/Downloads"
     path: "{{ (nas_mount_point, 'downloads') | path_join }}"
-  # - src: "//{{ nas_ip }}/Plex"
-  #   path: "{{ (nas_mount_point, 'plex') | path_join }}"
-
-host_ip: "10.128.100.125"
+    opts: "ro"
