@@ -7,7 +7,7 @@ services:
       - 6881:6881/udp
       - 8118:8118
       - 9117:9117 # Jackett port
-      # - 8989:8989 # Sonarr port
+      - 8989:8989 # Sonarr port
       - 7878:7878 # Radarr port
       - 8080:8080 # Webui
     volumes:
@@ -57,15 +57,13 @@ services:
       - "{{ plex_mount_point }}:/tv"
       - "/dev/rtc:/dev/rtc"
       - "/etc/localtime:/etc/localtime:ro"
-    ports:
-      - 8989:8989 # Sonarr port
     environment:
       - "PUID={{ uid }}"
       - "PGID={{ gid }}"
     restart: always
-    # depends_on:
-    #   - qbittorrent
-    # network_mode: service:qbittorrent
+    depends_on:
+      - qbittorrent
+    network_mode: service:qbittorrent
 
   radarr:
     container_name: radarr
