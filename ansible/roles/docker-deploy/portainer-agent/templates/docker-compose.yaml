@@ -1,6 +1,6 @@
 services:
-  portainer-agent:
-    container_name: portainer-agent
+  "{{ service_name }}":
+    container_name: "{{ service_name }}"
     image: portainer/agent:latest
     restart: always
     ports:

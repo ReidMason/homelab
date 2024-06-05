@@ -1,6 +1,6 @@
 services:
-  startpage:
-    container_name: startpage
+  "{{ service_name }}":
+    container_name: "{{ service_name }}"
     image: ghcr.io/reidmason/startpage:dev
     restart: always
     ports:
