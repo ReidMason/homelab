@@ -15,9 +15,10 @@ services:
     volumes:
       - "{{ (appdata_path, service_name) | path_join }}:/config"
       - /tmp/:/transcode
-      - "{{ plex_path }}:/data"
+      - "{{ plex_mount_point }}:/data"
     environment:
       - "TZ=Europe/London"
       - "PLEX_UID={{ uid }}"
       - "PLEX_GID={{ gid }}"
       - "UMASK=000"
+    hostname: "{{ hostname }}"
