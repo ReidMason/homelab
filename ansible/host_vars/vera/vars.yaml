@@ -1,0 +1,17 @@
+hostname: "Vera"
+subnet: "10.128.100.0/24"
+home_path: "{{ ansible_env.HOME }}"
+
+nas_mount_point: "{{ (home_path, 'fern') | path_join  }}"
+downloads_mount_point: "{{ (nas_mount_point, 'downloads') | path_join }}"
+plex_mount_point: "{{ (nas_mount_point, 'plex') | path_join }}"
+
+qbittorrent_downloads_path: "{{ (downloads_mount_point, 'qBittorrent') | path_join }}"
+
+paths:
+  - src: "{{ nas_ip }}:/mnt/user/Downloads"
+    path: "{{ plex_mount_point }}"
+    opts: "rw"
+  - src: "{{ nas_ip }}:/mnt/user/Plex"
+    path: "{{ downloads_mount_point }}"
+    opts: "rw"
