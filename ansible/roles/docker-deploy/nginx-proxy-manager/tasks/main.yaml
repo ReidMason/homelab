@@ -3,8 +3,8 @@
     service_name: "nginx-proxy-manager"
     data_directories:
       - "{{ service_name }}"
-      - "{ (service_name, 'data') | path_join }"
-      - "{ (service_name, 'letsencrypt') | path_join }"
+      - "{{ (service_name, 'data') | path_join }}"
+      - "{{ (service_name, 'letsencrypt') | path_join }}"
   ansible.builtin.import_role:
     name: docker-deploy
     tasks_from: create-container
