@@ -14,3 +14,4 @@
     - docker-deploy/nginx-proxy-manager
     - docker-deploy/plex-media-server
     - docker-deploy/downloads
+    - docker-deploy/discord-bot
