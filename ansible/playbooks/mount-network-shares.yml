@@ -1,6 +1,6 @@
 ---
 - name: Mount network shares
-  hosts: testhost
+  hosts: vera
 
   tasks:
     - name: Install nfs common
@@ -20,7 +20,7 @@
       ansible.posix.mount:
         src: "{{ item.src }}"
         path: "{{ item.path }}"
-        opts: "ro"
+        opts: "{{ item.opts }}"
         state: mounted
         fstype: nfs
         boot: true
