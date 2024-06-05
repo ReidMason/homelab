@@ -8,6 +8,13 @@
       ansible.builtin.package:
         name: nfs-common
 
+    - name: Create mount points
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "0775"
+      with_items: "{{ paths }}"
+
     - name: Mount network shares
       become: true
       ansible.posix.mount:
