@@ -1,9 +1,0 @@
-version: "3.8"
-
-services:
-  discord-bot:
-    container_name: discord-bot
-    image: skippythesnake/discord-bot:latest
-    restart: always
-    environment:
-      - "TOKEN={{ discord_token }}"
