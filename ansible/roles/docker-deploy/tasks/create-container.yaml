@@ -6,7 +6,7 @@
     group: "{{ gid }}"
     state: directory
     mode: "0775"
-  loop: "{{ data_directories }}"
+  loop: "{{ data_directories | default([]) }}"
 
 - name: "{{ service_name }} | Create Docker compose directory"
   ansible.builtin.file:
