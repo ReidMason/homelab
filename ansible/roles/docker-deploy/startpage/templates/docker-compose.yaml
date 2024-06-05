@@ -4,7 +4,7 @@ services:
     image: ghcr.io/reidmason/startpage:dev
     restart: always
     ports:
-      - 3000:3000
+      - 5003:3000
     volumes:
       - "{{ (appdata_path, 'startpage') | path_join }}:/app/data"
       - "{{ (appdata_path, 'startpage/static') | path_join }}:/app/public/static"
