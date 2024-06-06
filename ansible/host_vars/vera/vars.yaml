@@ -10,8 +10,8 @@ qbittorrent_downloads_path: "{{ (downloads_mount_point, 'qBittorrent') | path_jo
 
 paths:
   - src: "{{ nas_ip }}:/mnt/user/Downloads"
-    path: "{{ plex_mount_point }}"
+    path: "{{ downloads_mount_point }}"
     opts: "rw"
   - src: "{{ nas_ip }}:/mnt/user/Plex"
-    path: "{{ downloads_mount_point }}"
+    path: "{{ plex_mount_point }}"
     opts: "rw"
