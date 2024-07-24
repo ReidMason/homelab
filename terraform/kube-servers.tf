@@ -1,29 +1,3 @@
-variable "kube_servers" {
-  description = "Kubernetes servers to create"
-  type = map(object({
-    name = string
-    desc = string
-    macaddr = string
-  }))
-  default = {
-    "130" = {
-      name = "kube-controlplane-1"
-      desc = "Kubetnetes server 1"
-      macaddr = "6e:c8:77:4f:70:1a"
-    },
-    "131" = {
-      name = "kube-worker-1"
-      desc = "Kubetnetes server 1"
-      macaddr = "82:39:c3:cf:7b:d9"
-    },
-    "132" = {
-      name = "kube-worker-2"
-      desc = "Kubetnetes server 2"
-      macaddr = "82:5b:dc:cb:e6:34"
-    }
-  }
-}
-
 resource "proxmox_vm_qemu" "kube-server" {
   for_each = var.kube_servers
 
@@ -32,6 +6,7 @@ resource "proxmox_vm_qemu" "kube-server" {
   desc = each.value.desc
 
   target_node = "ivy"
+  skip_ipv6 = true
 
   memory = 4096
   cpu = "x86-64-v2-AES"
@@ -53,7 +28,7 @@ resource "proxmox_vm_qemu" "kube-server" {
     ide {
       ide2 {
         cdrom {
-          iso = "local:iso/talos-amd64.iso"
+          iso = "local:iso/talos-nocloud-amd64.iso"
         }
       }
     }
