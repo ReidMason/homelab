@@ -1,16 +1,14 @@
-resource "proxmox_vm_qemu" "kube-server" {
-  for_each = var.kube_servers
-
-  name = each.value.name
-  vmid = each.key
-  desc = each.value.desc
+resource "proxmox_vm_qemu" "vera" {
+  name = "vera-v2"
+  vmid = "101"
+  desc = "Vera - main server"
 
   target_node = "ivy"
   skip_ipv6 = true
 
-  memory = 4096
+  memory = 16384
   cpu = "x86-64-v2-AES"
-  cores = 4
+  cores = 12
   sockets = 1
 
   onboot = false
@@ -19,7 +17,7 @@ resource "proxmox_vm_qemu" "kube-server" {
   network {
     bridge = "vmbr0"
     model = "virtio"
-    macaddr = each.value.macaddr
+    macaddr = "ba:e3:88:14:95:b4"
   }
   
   scsihw = "virtio-scsi-single"
@@ -28,14 +26,14 @@ resource "proxmox_vm_qemu" "kube-server" {
     ide {
       ide2 {
         cdrom {
-          iso = "local:iso/talos-nocloud-amd64.iso"
+          iso = "local:iso/nixos-gnome-24.05.1695.dd457de7e08c-x86_64-linux.iso"
         }
       }
     }
     scsi {
       scsi0 {
         disk {
-          size = "20G"
+          size = "100G"
           storage = "vm-storage"
           iothread = true
           emulatessd = true

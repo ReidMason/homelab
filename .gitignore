@@ -1,3 +1,5 @@
 secrets.yaml
 secrets.yml
 .DS_Store
+credentials.auto.tfvars
+.terraform
