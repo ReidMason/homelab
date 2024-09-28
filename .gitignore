@@ -3,3 +3,5 @@ secrets.yml
 .DS_Store
 credentials.auto.tfvars
 .terraform
+
+cloudflare-secret.yaml

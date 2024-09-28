@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: habit-tracker-ui-deployment
+  labels:
+    app: habit-tracker-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: habit-tracker-ui
+  template:
+    metadata:
+      labels:
+        app: habit-tracker-ui
+    spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          effect: "NoExecute"
+          tolerationSeconds: 0
+      containers:
+        - name: habit-tracker-ui
+          image: ghcr.io/reidmason/habit-tracker-ui:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: API_URL
+              value: "https://habit.skippythesnake.com/api"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: habit-tracker-ui-service-internal
+spec:
+  selector:
+    app: habit-tracker-ui
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 3000
