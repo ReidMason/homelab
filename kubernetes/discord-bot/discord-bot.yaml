@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discord-bot
+  labels:
+    app: discord-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discord-bot
+  template:
+    metadata:
+      labels:
+        app: discord-bot
+    spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          effect: "NoExecute"
+          tolerationSeconds: 0
+      containers:
+        - name: discord-bot
+          image: skippythesnake/discord-bot:latest
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: discord-bot-secret
+                  key: token
