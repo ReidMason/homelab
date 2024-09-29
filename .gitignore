@@ -1,8 +1,11 @@
 secrets.yaml
 secrets.yml
 .DS_Store
+
 credentials.auto.tfvars
 .terraform
+.terraform.lock.hcl
+terraform.tfstate
 
 *-secret.yaml
 *-secret.yml
