@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: habit-tracker
   name: habit-tracker-ui-deployment
   labels:
     app: habit-tracker-ui
@@ -20,7 +21,7 @@ spec:
           tolerationSeconds: 0
       containers:
         - name: habit-tracker-ui
-          image: ghcr.io/reidmason/habit-tracker-ui:latest
+          image: ghcr.io/reidmason/habit-tracker-ui:0.1.3
           ports:
             - containerPort: 3000
           env:
@@ -30,6 +31,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: habit-tracker
   name: habit-tracker-ui-service-internal
 spec:
   selector:
