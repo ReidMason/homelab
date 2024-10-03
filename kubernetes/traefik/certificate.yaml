@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  namespace: habit-tracker
+  name: skippythesnake-wildcard-certificate
+spec:
+  secretName: skippythesnake-wildcard-certificate
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer
+  commonName: "*.skippythesnake.com"
+  dnsNames:
+    - "skippythesnake.com"
+    - "*.skippythesnake.com"
