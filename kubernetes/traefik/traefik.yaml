@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: traefik
-  name: traefik-deployment
+  name: traefik
   labels:
     app: traefik
 
@@ -23,8 +23,10 @@ spec:
           args:
             - --api.insecure
             - --providers.kubernetesingress
+            - --entrypoints.websecure.address=:443
+            - --entryPoints.websecure.http.tls
           ports:
-            - name: web
-              containerPort: 80
+            - name: websecure
+              containerPort: 443
             - name: dashboard
               containerPort: 8080

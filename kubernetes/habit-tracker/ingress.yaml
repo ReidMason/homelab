@@ -3,7 +3,14 @@ kind: Ingress
 metadata:
   namespace: habit-tracker
   name: habit-tracker-api-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
 spec:
+  tls:
+    - hosts:
+        - "*.skippythesnake.com"
+      secretName: skippythesnake-wildcard-certificate
   rules:
     - http:
         paths:
