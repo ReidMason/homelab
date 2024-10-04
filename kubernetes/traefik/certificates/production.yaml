@@ -1,14 +1,15 @@
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  namespace: habit-tracker
-  name: skippythesnake-wildcard-certificate
+  name: skippythesnake
+  namespace: traefik
 spec:
-  secretName: skippythesnake-wildcard-certificate
+  secretName: skippythesnake-tls
   issuerRef:
-    name: acme-issuer
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "*.skippythesnake.com"
   dnsNames:
-    - "skippythesnake.com"
     - "*.skippythesnake.com"
+    - skippythesnake.com
