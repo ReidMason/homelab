@@ -42,9 +42,10 @@ spec:
             - name: TZ
               value: "Europe/London"
             - name: WEBPASSWORD
-              value: "password"
-            - name: VIRTUAL_HOST
-              value: "kube.pihole.lan"
+              valueFrom:
+                secretKeyRef:
+                  name: pihole-secret
+                  key: webui-password
           volumeMounts:
             - name: pihole-storage
               mountPath: /etc/pihole
