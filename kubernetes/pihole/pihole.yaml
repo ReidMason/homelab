@@ -15,6 +15,7 @@ spec:
       labels:
         app: pihole
     spec:
+      hostname: pihole
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           effect: "NoExecute"
