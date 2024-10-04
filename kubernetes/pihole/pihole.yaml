@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pihole-deployment
+  name: pihole
+  namespace: pihole
   labels:
     app: pihole
 spec:
@@ -33,6 +34,10 @@ spec:
             - containerPort: 67
             - containerPort: 80
           env:
+            - name: PIHOLE_UID
+              value: "65534"
+            - name: PIHOLE_GID
+              value: "65534"
             - name: TZ
               value: "Europe/London"
             - name: WEBPASSWORD
@@ -55,7 +60,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pihole-service
+  namespace: pihole
+  name: pihole-dns
 spec:
   selector:
     app: pihole
@@ -79,7 +85,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pihole-service-internal
+  namespace: pihole
+  name: pihole-dashboard
 spec:
   selector:
     app: pihole
@@ -93,6 +100,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  namespace: pihole
   name: pihole-pv
   labels:
     type: pihole-storage
@@ -108,6 +116,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  namespace: pihole
   name: pihole-dnsmasq-pv
   labels:
     type: pihole-dnsmasq-storage
@@ -123,6 +132,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: pihole
   name: pihole-pvc
 spec:
   accessModes:
@@ -137,6 +147,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: pihole
   name: pihole-dnsmasq-pvc
 spec:
   accessModes:
