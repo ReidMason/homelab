@@ -49,15 +49,14 @@ spec:
           volumeMounts:
             - name: pihole-storage
               mountPath: /etc/pihole
-            - name: dnsmasq-storage
+              subPath: data
+            - name: pihole-storage
               mountPath: /etc/dnsmasq.d
+              subPath: dnsmasq.d
       volumes:
         - name: pihole-storage
           persistentVolumeClaim:
             claimName: pihole-pvc
-        - name: dnsmasq-storage
-          persistentVolumeClaim:
-            claimName: pihole-dnsmasq-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -112,23 +111,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/user/Temp/pihole/data
-    server: fern.lan
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  namespace: pihole
-  name: pihole-dnsmasq-pv
-  labels:
-    type: pihole-dnsmasq-storage
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    path: /mnt/user/Temp/pihole/dnsmasq.d
+    path: /mnt/user/Temp/pihole
     server: fern.lan
 ---
 apiVersion: v1
@@ -145,18 +128,3 @@ spec:
   selector:
     matchLabels:
       type: pihole-storage
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: pihole
-  name: pihole-dnsmasq-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-  selector:
-    matchLabels:
-      type: pihole-dnsmasq-storage
