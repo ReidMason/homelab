@@ -1,0 +1,57 @@
+globalArguments:
+  - "--global.sendAnonymousUsage=false"
+  - "--global.checkNewVersion=false"
+
+additionalArguments:
+  - "--providers.kubernetescrd.allowCrossNamespace=true"
+  - "--serversTransport.insecureSkipVerify=true"
+  - "--log.level=INFO"
+
+deployment:
+  enabled: true
+  replicas: 1
+  annotations: {}
+  podAnnotations: {}
+  additionalContainers: []
+  initContainers: []
+
+# nodeSelector:
+#   worker: "true"
+
+ports:
+  web:
+    redirectTo:
+      port: websecure
+      priority: 10
+  websecure:
+    tls:
+      enabled: true
+
+ingressRoute:
+  dashboard:
+    enabled: false
+
+providers:
+  kubernetesCRD:
+    enabled: true
+    ingressClass: traefik-external
+    allowExternalNameServices: true
+    allowCrossNamespace: true
+  kubernetesIngress:
+    enabled: true
+    allowExternalNameServices: true
+    publishedService:
+      enabled: false
+
+rbac:
+  enabled: true
+
+service:
+  enabled: true
+  type: LoadBalancer
+  annotations: {}
+  spec:
+    loadBalancerIP: "10.128.100.212"
+    externalTrafficPolicy: Local
+  loadBalancerSourceRanges: []
+  externalIPs: []
