@@ -1,30 +1,29 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
+  name: habit-tracker
   namespace: habit-tracker
-  name: habit-tracker-api-ingress
   annotations:
-    traefik.ingress.kubernetes.io/router.tls: "true"
-
+    kubernetes.io/ingress.class: traefik-external
 spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`habit.dev.skippythesnake.com`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: default-headers
+          namespace: traefik
+      services:
+        - name: habit-tracker-ui
+          port: 80
+    - match: Host(`habit.dev.skippythesnake.com`) && PathPrefix(`/api`)
+      kind: Rule
+      middlewares:
+        - name: default-headers
+          namespace: traefik
+      services:
+        - name: habit-tracker-api
+          port: 80
   tls:
-    - hosts:
-        - "*.skippythesnake.com"
-      secretName: skippythesnake-wildcard-certificate
-  rules:
-    - http:
-        paths:
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: habit-tracker-api-service-internal
-                port:
-                  name: api
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: habit-tracker-ui-service-internal
-                port:
-                  name: api
+    secretName: skippythesnake-dev-tls

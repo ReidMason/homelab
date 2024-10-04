@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: habit-tracker
-  name: habit-tracker-ui-deployment
+  name: habit-tracker-ui
   labels:
     app: habit-tracker-ui
 spec:
@@ -26,13 +26,13 @@ spec:
             - containerPort: 3000
           env:
             - name: API_URL
-              value: "https://habit.skippythesnake.com/api"
+              value: "https://habit.dev.skippythesnake.com/api"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: habit-tracker
-  name: habit-tracker-ui-service-internal
+  name: habit-tracker-ui
 spec:
   selector:
     app: habit-tracker-ui
