@@ -1,18 +1,11 @@
 productionhosts:
   hosts:
+    vera-v2:
+      ansible_host: vera.lan.skippythesnake.com
+      ansible_user: vera
     vera:
       ansible_host: vera.lan
     mona:
       ansible_host: mona.lan
-  vars:
-    ansible_user: reid
-
-testhosts:
-  hosts:
-    testhost:
-      ansible_host: 10.128.100.125
-    testhostdocker:
-      ansible_host: ansible-test
-      ansible_connection: docker
   vars:
     ansible_user: reid
