@@ -1,4 +1,4 @@
-- name: "{{ service_name }} | Create data directories"
+- name: "Create data directories | {{ service_name }}"
   become: true
   ansible.builtin.file:
     path: "{{ (appdata_path, item) | path_join }}"
@@ -8,18 +8,18 @@
     mode: "0775"
   loop: "{{ data_directories | default([]) }}"
 
-- name: "{{ service_name }} | Create Docker compose directory"
+- name: "Create Docker compose directory | {{ service_name }}"
   ansible.builtin.file:
     path: "{{ (compose_files_dest, service_name) | path_join }}"
     state: directory
     mode: "0775"
 
-- name: "{{ service_name }} | Copy compose files"
+- name: "Copy compose files | {{ service_name }}"
   ansible.builtin.template:
     src: "templates/docker-compose.yaml"
     dest: "{{ (compose_files_dest, service_name, 'docker-compose.yaml') | path_join }}"
     mode: "0775"
 
-- name: "{{ service_name }} | Create Docker container"
+- name: "Create Docker container | {{ service_name }}"
   community.docker.docker_compose_v2:
     project_src: "{{ (compose_files_dest, service_name) | path_join }}"
