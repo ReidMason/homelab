@@ -5,6 +5,7 @@ services:
     restart: always
     ports:
       - 32400:32400/tcp # Webui
+      - 3005:3005/tcp
       - 8324:8324/tcp
       - 32469:32469/tcp
       - 1900:1900/udp
@@ -21,4 +22,5 @@ services:
       - "PLEX_UID={{ uid }}"
       - "PLEX_GID={{ gid }}"
       - "UMASK=000"
+      - "ALLOWED_NETWORKS={{ subnet }}"
     hostname: "{{ hostname }}"
