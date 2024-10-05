@@ -1,0 +1,6 @@
+hostname: "Vera-v2"
+subnet: "10.128.100.0/24"
+home_path: "{{ ansible_env.HOME }}"
+
+nas_mount_point: "/mnt/fern"
+plex_mount_point: "{{ (nas_mount_point, 'plex') | path_join }}"
