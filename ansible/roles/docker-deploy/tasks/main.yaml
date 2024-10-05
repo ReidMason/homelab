@@ -1,10 +1,7 @@
 - name: Create appdata directory
-  become: true
   ansible.builtin.file:
     path: "{{ appdata_path }}"
     state: directory
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
     mode: "0775"
 
 - name: Create Docker compose directory
