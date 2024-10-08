@@ -33,7 +33,7 @@ resource "proxmox_vm_qemu" "vera" {
     scsi {
       scsi0 {
         disk {
-          size = "100G"
+          size = "200G"
           storage = "vm-storage"
           iothread = true
           emulatessd = true
