@@ -1,7 +1,7 @@
 services:
   "{{ service_name }}":
     container_name: "{{ service_name }}"
-    image: plexinc/pms-docker:latest
+    image: lscr.io/linuxserver/plex:latest
     restart: always
     ports:
       - 32400:32400/tcp # Webui
@@ -18,6 +18,7 @@ services:
       - /tmp/:/transcode
       - "{{ plex_mount_point }}:/data"
     environment:
+      - "VERSION=docker"
       - "TZ=Europe/London"
       - "PLEX_UID={{ uid }}"
       - "PLEX_GID={{ gid }}"
