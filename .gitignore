@@ -5,7 +5,8 @@ secrets.yml
 credentials.auto.tfvars
 .terraform
 .terraform.lock.hcl
-terraform.tfstate
+*.tfstate
+*.tfstate.backup
 
 *-secret.yaml
 *-secret.yml
