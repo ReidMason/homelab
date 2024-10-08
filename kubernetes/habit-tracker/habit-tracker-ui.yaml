@@ -21,7 +21,7 @@ spec:
           tolerationSeconds: 0
       containers:
         - name: habit-tracker-ui
-          image: ghcr.io/reidmason/habit-tracker-ui:0.1.3
+          image: ghcr.io/reidmason/habit-tracker-ui:0.1.7
           ports:
             - containerPort: 3000
           env:
