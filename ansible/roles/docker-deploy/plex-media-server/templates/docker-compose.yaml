@@ -1,7 +1,7 @@
 services:
   "{{ service_name }}":
     container_name: "{{ service_name }}"
-    image: lscr.io/linuxserver/plex:latest
+    image: plexinc/pms-docker:latest
     restart: always
     ports:
       - 32400:32400/tcp # Webui
