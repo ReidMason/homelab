@@ -13,3 +13,4 @@
     - docker-deploy/startpage
     - docker-deploy/media
     - habit-tracker
+    - tailscale
