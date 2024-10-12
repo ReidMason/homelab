@@ -1,5 +1,5 @@
-hostname: "Vera-v2"
-subnet: "10.128.100.0/24"
+hostname: "Vera"
+subnet: "10.128.0.0/24"
 home_path: "{{ ansible_env.HOME }}"
 
 nas_mount_point: "/mnt/fern"
