@@ -8,3 +8,9 @@ services:
     volumes:
       - "{{ (appdata_path, 'startpage') | path_join }}:/app/data"
       - "{{ (appdata_path, 'startpage/static') | path_join }}:/app/public/static"
+    networks:
+      - skippynet
+
+networks:
+  skippynet:
+    external: true

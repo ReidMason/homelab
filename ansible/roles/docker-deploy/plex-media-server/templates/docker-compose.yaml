@@ -20,8 +20,8 @@ services:
     environment:
       - "VERSION=docker"
       - "TZ=Europe/London"
-      - "PLEX_UID={{ uid }}"
-      - "PLEX_GID={{ gid }}"
+      - "PLEX_UID=1000"
+      - "PLEX_GID=1000"
       - "UMASK=000"
       - "ALLOWED_NETWORKS={{ subnet }}"
     hostname: "{{ hostname }}"

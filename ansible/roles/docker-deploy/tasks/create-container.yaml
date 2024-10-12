@@ -2,8 +2,8 @@
   become: true
   ansible.builtin.file:
     path: "{{ (appdata_path, item) | path_join }}"
-    owner: "{{ uid }}"
-    group: "{{ gid }}"
+    # owner: "{{ uid }}"
+    # group: "{{ gid }}"
     state: directory
     mode: "0775"
   loop: "{{ data_directories | default([]) }}"
