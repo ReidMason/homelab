@@ -1,10 +1,8 @@
 productionhosts:
   hosts:
-    vera-v2:
-      ansible_host: vera.lan.skippythesnake.com
-      ansible_user: vera
     vera:
       ansible_host: vera.lan
+      ansible_user: vera
     mona:
       ansible_host: mona.lan
   vars:

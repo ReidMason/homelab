@@ -1,7 +1,0 @@
-hostname: "Vera"
-subnet: "10.128.0.0/24"
-home_path: "{{ ansible_env.HOME }}"
-
-nas_mount_point: "/mnt/fern"
-plex_mount_point: "{{ (nas_mount_point, 'plex') | path_join }}"
-qbittorrent_downloads_path: "{{ (nas_mount_point, 'downloads/qBittorrent') | path_join }}"
