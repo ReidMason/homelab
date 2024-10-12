@@ -11,3 +11,4 @@
     - docker-deploy/plex-media-server
     - docker-deploy/portainer
     - docker-deploy/startpage
+    - docker-deploy/media
