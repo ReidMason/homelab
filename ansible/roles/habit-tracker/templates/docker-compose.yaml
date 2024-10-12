@@ -1,0 +1,21 @@
+services:
+  habit-tracker-api:
+    container_name: "habit-tracker-api"
+    image: ghcr.io/reidmason/habit-tracker-api:0.1.7
+    restart: always
+    volumes:
+      - "{{ (appdata_path, service_name) | path_join }}:/app/data"
+    networks:
+      - skippynet
+  habit-tracker-ui:
+    container_name: "habit-tracker-ui"
+    image: ghcr.io/reidmason/habit-tracker-ui:0.1.7
+    environment:
+      - "API_URL=http://habit-tracker-api:8000/api"
+    restart: always
+    networks:
+      - skippynet
+
+networks:
+  skippynet:
+    external: true

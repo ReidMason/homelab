@@ -12,3 +12,4 @@
     - docker-deploy/portainer
     - docker-deploy/startpage
     - docker-deploy/media
+    - habit-tracker
