@@ -6,11 +6,11 @@
     compose_files_dest: "{{ ( home_path, 'compose-files') | path_join }}"
   roles:
     - docker-deploy
-    - docker-deploy/nginx-proxy-manager
-    - docker-deploy/portainer-agent
-    - docker-deploy/plex-media-server
-    - docker-deploy/portainer
-    - docker-deploy/startpage
-    - docker-deploy/media
+    - nginx-proxy-manager
+    - portainer-agent
+    - plex-media-server
+    - portainer
+    - startpage
+    - media
     - habit-tracker
     - tailscale
