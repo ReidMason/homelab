@@ -2,7 +2,7 @@ services:
   "{{ service_name }}":
     image: tailscale/tailscale:latest
     container_name: "{{service_name}}"
-    hostname: vera
+    hostname: "{{hostname}}"
     network_mode: host
     environment:
       # - TS_AUTHKEY=
