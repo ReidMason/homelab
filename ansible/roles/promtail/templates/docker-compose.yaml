@@ -5,7 +5,7 @@ services:
     restart: always
     volumes:
       - "{{ (appdata_path, service_name) | path_join }}:/mnt/config"
-      - "/var/log:/var/log"
+      - "/var/log:/mnt/log:ro"
     command: -config.file=/mnt/config/config.yaml
     networks:
       - skippynet
