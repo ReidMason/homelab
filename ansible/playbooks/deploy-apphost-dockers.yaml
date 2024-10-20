@@ -14,3 +14,6 @@
     - media
     - habit-tracker
     - tailscale
+    - loki
+    - promtail
+    - grafana
