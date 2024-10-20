@@ -1,0 +1,3 @@
+hostname: "Mona"
+subnet: "10.128.0.0/24"
+home_path: "{{ ansible_env.HOME }}"

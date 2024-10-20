@@ -1,0 +1,8 @@
+- name: Setup Docker containers for secondary
+  hosts: mona
+  vars:
+    appdata_path: "{{ (home_path, 'appdata') | path_join  }}"
+    compose_files_dest: "{{ ( home_path, 'compose-files') | path_join }}"
+  roles:
+    - docker-deploy
+    - tailscale
