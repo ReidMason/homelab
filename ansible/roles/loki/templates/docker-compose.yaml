@@ -8,6 +8,7 @@ services:
       - "{{ (appdata_path, service_name, 'config') | path_join }}:/etc/loki"
     ports:
       - 3100:3100
+    user: "1000:1000"
     networks:
       - skippynet
 
