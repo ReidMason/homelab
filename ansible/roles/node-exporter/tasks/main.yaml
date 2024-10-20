@@ -1,0 +1,9 @@
+- name: Create data directories
+  vars:
+    service_name: "node-exporter"
+    # data_directories:
+    #   - "{{ service_name }}"
+    #   - "{{ (service_name, 'data') | path_join }}"
+  ansible.builtin.import_role:
+    name: docker-deploy
+    tasks_from: create-container
