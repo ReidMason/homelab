@@ -1,0 +1,8 @@
+- name: Create data directories
+  vars:
+    service_name: "grafana"
+    data_directories:
+      - "{{ service_name }}"
+  ansible.builtin.import_role:
+    name: docker-deploy
+    tasks_from: create-container
