@@ -8,6 +8,9 @@ services:
     volumes:
       - "{{ (appdata_path, service_name, 'prometheus.yml') | path_join }}:/etc/prometheus/prometheus.yml"
       - "{{ (appdata_path, service_name, 'data') | path_join }}:/prometheus"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-lifecycle
     networks:
       - skippynet
 
