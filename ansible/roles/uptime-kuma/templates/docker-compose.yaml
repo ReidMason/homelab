@@ -1,0 +1,14 @@
+services:
+  "{{ service_name}}":
+    container_name: "{{ service_name }}"
+    image: louislam/uptime-kuma:1
+    restart: always
+    ports:
+      - 3001:3001
+    volumes:
+      - "{{ (appdata_path, service_name) | path_join }}:/app/data"
+
+networks:
+  default:
+    name: skippynet
+    external: true
