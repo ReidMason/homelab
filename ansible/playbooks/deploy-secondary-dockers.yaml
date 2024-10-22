@@ -5,4 +5,7 @@
     compose_files_dest: "{{ ( home_path, 'compose-files') | path_join }}"
   roles:
     - docker-deploy
-    - tailscale
+    # - tailscale
+    - portainer-agent
+    - pi-hole
+    - uptime-kuma
