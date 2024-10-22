@@ -4,6 +4,5 @@ productionhosts:
       ansible_host: vera.lan
       ansible_user: vera
     mona:
-      ansible_host: 10.128.0.10
-  vars:
-    ansible_user: reid
+      ansible_host: mona.lan
+      ansible_user: mona
