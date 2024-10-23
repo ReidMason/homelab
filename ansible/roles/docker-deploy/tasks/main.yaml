@@ -1,3 +1,7 @@
+- name: Create docker network
+  community.docker.docker_network:
+    name: skippynet
+
 - name: Create appdata directory
   ansible.builtin.file:
     path: "{{ appdata_path }}"
