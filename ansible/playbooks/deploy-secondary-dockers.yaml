@@ -9,3 +9,4 @@
     - portainer-agent
     - pi-hole
     - uptime-kuma
+    - node-exporter
