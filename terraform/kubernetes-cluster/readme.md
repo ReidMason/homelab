@@ -1,14 +1,27 @@
-When you are using talos in proxmox you have to use a specific iso with the quemu agent installed.
-You also have to pass an image that talos will use to install the os
+# Kubernetes Cluster
 
-## Commands to get the config files after setup
+My kubernetes cluster setup using terraform. Currently this just runs using talos VMs on proxmox.
+
+## Setup
+
+Setup is super simple just apply the terraform config files
+
+```bash
+terraform apply
+```
+
+### Configuration files
+
+You can access the generated configuration files using the following commands
 
 ```bash
 terraform output -raw kubeconfig
 terraform output -raw talosconfig
 ```
 
-## Adding the kubeconfig to your local machine
+### Adding the kubeconfig to your local machine
+
+This command will add the kubeconfig to your local machine so you can access the cluster using kubectl
 
 ```bash
 terraform output -raw kubeconfig > ~/.kube/config
