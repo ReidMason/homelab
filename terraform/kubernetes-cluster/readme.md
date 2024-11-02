@@ -7,3 +7,9 @@ You also have to pass an image that talos will use to install the os
 terraform output -raw kubeconfig
 terraform output -raw talosconfig
 ```
+
+## Adding the kubeconfig to your local machine
+
+```bash
+terraform output -raw kubeconfig > ~/.kube/config
+```
