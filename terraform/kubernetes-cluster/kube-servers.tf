@@ -36,7 +36,7 @@ resource "proxmox_vm_qemu" "kube-server" {
       scsi0 {
         disk {
           size = "20G"
-          storage = "vm-storage"
+          storage = "nvme-storage"
           iothread = true
           emulatessd = true
         }
