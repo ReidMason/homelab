@@ -24,25 +24,25 @@ variable "kube_servers" {
     error_message = "Server type must be controlplane or worker"
   }
   default = {
-    "130" = {
+    "160" = {
       name = "kube-controlplane-1"
       desc = "Kubetnetes server 1"
       macaddr = "6e:c8:77:4f:70:1a"
-      ip = "10.128.100.130"
+      ip = "10.128.0.60"
       type = "controlplane"
     },
-    "131" = {
+    "161" = {
       name = "kube-worker-1"
       desc = "Kubetnetes worker 1"
       macaddr = "82:39:c3:cf:7b:d9"
-      ip = "10.128.100.131"
+      ip = "10.128.0.61"
       type = "worker"
     },
-    "132" = {
+    "162" = {
       name = "kube-worker-2"
       desc = "Kubetnetes worker 2"
       macaddr = "82:5b:dc:cb:e6:34"
-      ip = "10.128.100.132"
+      ip = "10.128.0.62"
       type = "worker"
     }
   }
