@@ -4,9 +4,11 @@ services:
     image: vault:1.13.3
     restart: always
     volumes:
-      - "{{ (appdata_path, service_name, 'data') | path_join }}:/vault/file"
+      - "{{ (appdata_path, service_name, 'data') | path_join }}:/vault/data"
+      - "{{ (appdata_path, service_name, 'config.hcl') | path_join }}:/vault/config.hcl"
     cap_add:
       - IPC_LOCK
+    entrypoint: vault server -config=/vault/config.hcl
     networks:
       - skippynet
 
