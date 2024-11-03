@@ -1,6 +1,5 @@
 resources:
   - namespace.yaml
-  - discord-bot-secret.yaml
   - discord-bot.yaml
 
 namespace: discord-bot
