@@ -1,4 +1,5 @@
 namespace: external-secrets
 
 resources:
+  - namespace.yaml
   - external-secrets-operator.yaml
