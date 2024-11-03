@@ -7,47 +7,49 @@
 docker logs hashicorp-vault
 ```
 
-You should then see the root token in the logs
+You should then see the root token in the logs. You can use this auth token to log in and set yourself up with a user.
 
-### Auth to vault
+### Set up the vault cli
 
 ```bash
 EXPORT VAULT_ADDR=https://vault.skippythesnake.com/
-vault login
+vault login --method=userpass username=USERNAME
 ```
 
-### Enable the kubernetes auth method
+### Adding the kubernetes access method
 
-```bash
-vault auth enable kubernetes
-```
+This can also be done on the cli but using the web interface might be easier.
 
-### Ideal world
+1. Go to the web interface and click on the `Access` tab.
+2. Then click on the `Enable new auth method` button.
+3. Select `Kubernetes` from the options.
+4. Get the kubernetes host from the `.kube/config` file and use that as the host.
+5. Get the CA certificate from the `.kube/config` file and use that as the cert. (you will need to base64 decode it)
 
-So ideally we want to use the kubernetes service account to authenticate with vault but this is broken so instead we just ended up using the token as a secret then use token authentication
+### Create a role
 
-```bash
-kubectl create secret generic vault-token --from-literal=token=<TOKEN>
-```
-
-I think you need to get the CA cert from the kubernetes cluster by copying it from the `.kube/config` file, then base 64 decode it and use that. But even by doing this I still can't get it to authenticate with kubernetes.
-
-### Configure the kubernetes auth method
-
-```bash
-vault write auth/kubernetes/role/kubernetes-dev \
-    bound_service_account_names=external-secrets-service-account \
-    bound_service_account_namespaces=external-secrets \
-    policies=external-secrets-policy \
-    ttl=24h
-```
+Navigate to the `Roles` tab and click on the `Create role` button.
+You can then set the name to whever you want.
+For `Bound service account names` and `Bound service account namespaces` I use a wildcard `*` but you can be specific here if you want.
 
 ### Create a policy
 
-```bash
-vault policy write kubernetes-dev-policy - <<EOF
-path "secret/kubernetes-dev/*" {
+Navigate to the `Policies` tab and click on the `Create policy` button.
+You can then set the name to whever you want and then add the policy rules.
+You probably want to keep it simple with basic read access.
+
+```hcl
+path "secrets-dev/*"
+{
   capabilities = ["read"]
 }
-EOF
 ```
+
+### Assign the policy to the role
+
+1. Navigate to the `Access` tab and click on the `Entities` section.
+2. Locate your kubernetes role in the list and click on it.
+3. Then click on the `Attach policy` button and select the policy you just created.
+4. You can rename this policy to something more meaningful if you want.
+5. Select `Edit entry`
+6. Under `Policies` you can attach the policy you just created.
