@@ -3,7 +3,3 @@ resources:
   - discord-bot.yaml
 
 namespace: discord-bot
-# tolerations:
-#   - key: "node.kubernetes.io/unreachable"
-#     effect: "NoExecute"
-#     tolerationSeconds: 0
