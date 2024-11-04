@@ -51,7 +51,7 @@ service:
   type: LoadBalancer
   annotations: {}
   spec:
-    loadBalancerIP: "10.128.100.212"
+    loadBalancerIP: "10.128.0.70"
     externalTrafficPolicy: Local
   loadBalancerSourceRanges: []
   externalIPs: []

@@ -124,7 +124,7 @@ metadata:
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
-  loadBalancerIP: 10.128.100.212
+  loadBalancerIP: 10.128.0.70
   selector:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: traefik-cert-manager
