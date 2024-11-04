@@ -3,4 +3,5 @@ namespace: cert-manager
 resources:
   # - namespace.yaml
   - cert-manager.yaml
+  - role-binding.yaml
   - issuers/letsencrypt.yaml
