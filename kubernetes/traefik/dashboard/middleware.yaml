@@ -12,7 +12,7 @@ spec:
     name: traefik-dashboard-auth
     creationPolicy: Owner
   data:
-    - secretKey: "users"
+    - secretKey: "auth"
       remoteRef:
         key: "secrets-dev/traefik"
         property: "auth"
@@ -25,3 +25,4 @@ metadata:
 spec:
   basicAuth:
     secret: traefik-dashboard-auth
+    users: auth
