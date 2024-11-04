@@ -1,6 +1,5 @@
 resources:
   - namespace.yaml
   - traefik.yaml
-  - dashboard/dashboard-secret.yaml
   - dashboard/ingress.yaml
   - dashboard/middleware.yaml

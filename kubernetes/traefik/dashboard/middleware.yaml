@@ -1,3 +1,22 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: traefik-secret
+  namespace: traefik
+spec:
+  refreshInterval: "15s"
+  secretStoreRef:
+    name: vault-backend
+    kind: ClusterSecretStore
+  target:
+    name: cloudflare-token-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: "traefik-dashboard-auth"
+      remoteRef:
+        key: "secrets-dev/traefik"
+        property: "auth"
+---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
