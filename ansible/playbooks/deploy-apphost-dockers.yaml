@@ -14,6 +14,9 @@
     - media
     - habit-tracker
     - tailscale
+    - node-exporter
+    - prometheus
     - loki
     - promtail
     - grafana
+    - hashicorp-vault
