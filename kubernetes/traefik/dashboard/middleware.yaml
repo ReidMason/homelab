@@ -9,10 +9,10 @@ spec:
     name: vault-backend
     kind: ClusterSecretStore
   target:
-    name: cloudflare-token-secret
+    name: traefik-dashboard-auth
     creationPolicy: Owner
   data:
-    - secretKey: "traefik-dashboard-auth"
+    - secretKey: "users"
       remoteRef:
         key: "secrets-dev/traefik"
         property: "auth"
