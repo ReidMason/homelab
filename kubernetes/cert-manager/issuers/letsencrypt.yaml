@@ -13,7 +13,7 @@ spec:
   data:
     - secretKey: "cloudflare-token"
       remoteRef:
-        key: "secrets-dev/discord-bot"
+        key: "secrets-dev/cloudflare"
         property: "letsencrypt-token"
 ---
 # apiVersion: cert-manager.io/v1
