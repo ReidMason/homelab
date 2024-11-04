@@ -4,3 +4,4 @@ resources:
   - default-headers.yaml
   - dashboard/ingress.yaml
   - dashboard/middleware.yaml
+  - certificates/production.yaml
