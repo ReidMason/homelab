@@ -24,4 +24,4 @@ metadata:
   namespace: traefik
 spec:
   basicAuth:
-    usersSecret: traefik-dashboard-auth
+    secret: traefik-dashboard-auth
