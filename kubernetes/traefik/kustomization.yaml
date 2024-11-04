@@ -3,5 +3,5 @@ resources:
   - traefik.yaml
   - default-headers.yaml
   - dashboard/ingress.yaml
-  - dashboard/middleware.yaml
+  # - dashboard/middleware.yaml
   - certificates/production.yaml
