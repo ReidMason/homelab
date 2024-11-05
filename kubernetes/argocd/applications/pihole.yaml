@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ReidMason/server-compose.git
+    targetRevision: HEAD
+    path: kubernetes/pihole
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

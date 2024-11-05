@@ -6,3 +6,4 @@ resources:
   - discord-bot.yaml
   - argocd.yaml
   - traefik.yaml
+  - pihole.yaml
