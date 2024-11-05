@@ -9,3 +9,4 @@ resources:
   - pihole.yaml
   - metallb.yaml
   - cert-manager.yaml
+  - portainer-agent.yaml
