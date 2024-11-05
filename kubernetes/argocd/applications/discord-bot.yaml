@@ -11,3 +11,7 @@ spec:
     path: kubernetes/discord-bot
   destination:
     server: https://kubernetes.default.svc
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
