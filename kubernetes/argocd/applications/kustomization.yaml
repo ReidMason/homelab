@@ -7,3 +7,4 @@ resources:
   - argocd.yaml
   - traefik.yaml
   - pihole.yaml
+  - metallb.yaml
