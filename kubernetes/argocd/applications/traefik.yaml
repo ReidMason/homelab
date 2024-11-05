@@ -1,14 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
-  namespace: argocd
+  name: traefik
 spec:
   project: default
   source:
     repoURL: https://github.com/ReidMason/server-compose.git
     targetRevision: HEAD
-    path: kubernetes/argocd
+    path: kubernetes/traefik
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
