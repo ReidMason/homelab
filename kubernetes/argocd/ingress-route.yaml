@@ -12,7 +12,7 @@ spec:
       priority: 10
       services:
         - name: argocd-server
-          port: 80
+          port: 443
     - kind: Rule
       match: Host(`argocd.skippythesnake.com`) && Header(`Content-Type`, `application/grpc`)
       priority: 11
