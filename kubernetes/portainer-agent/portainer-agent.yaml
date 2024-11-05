@@ -24,7 +24,7 @@ metadata:
   name: portainer-agent
   namespace: portainer-agent
   annotations:
-    metallb.universe.tf/loadBalancerIP: 10.128.0.70
+    metallb.universe.tf/loadBalancerIP: 10.128.0.71
 spec:
   type: LoadBalancer
   selector:
