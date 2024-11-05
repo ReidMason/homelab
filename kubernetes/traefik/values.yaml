@@ -15,9 +15,6 @@ deployment:
   additionalContainers: []
   initContainers: []
 
-# nodeSelector:
-#   worker: "true"
-
 ports:
   web:
     redirectTo:
@@ -34,7 +31,6 @@ ingressRoute:
 providers:
   kubernetesCRD:
     enabled: true
-    ingressClass: traefik-external
     allowExternalNameServices: true
     allowCrossNamespace: true
   kubernetesIngress:
