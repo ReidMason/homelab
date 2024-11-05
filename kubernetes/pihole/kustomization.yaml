@@ -1,0 +1,5 @@
+resources:
+  - namespace.yaml
+  - secret-pihole.yaml
+  - pihole.yaml
+  - ingress.yaml
