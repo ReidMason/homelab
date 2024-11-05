@@ -1,0 +1,5 @@
+namsepace: portainer-agent
+
+resources:
+  - namespace.yaml
+  - portainer-agent.yaml
