@@ -5,7 +5,9 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 10.128.0.70-10.128.0.79
+    - 10.128.0.70 # Traefik
+    - 10.128.0.71 # Portainer agent
+    - 10.128.0.72 # Pihole
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
