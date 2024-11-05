@@ -2,6 +2,6 @@ namespace: argocd
 
 resources:
   - namespace.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - argocd.yaml
   - ingress-route.yaml
   - ./applications
