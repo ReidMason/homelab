@@ -1,17 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: discord-bot
+  name: argocd
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ReidMason/server-compose.git
     targetRevision: HEAD
-    path: kubernetes/discord-bot
+    path: kubernetes/argocd
   destination:
     server: https://kubernetes.default.svc
-# syncPolicy:
-#   automated:
-#     prune: true
-#     selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
