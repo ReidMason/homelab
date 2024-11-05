@@ -80,7 +80,7 @@ spec:
   externalTrafficPolicy: Local
 
   type: LoadBalancer
-  loadBalancerIP: 10.128.100.211
+  loadBalancerIP: 10.128.0.71
 
 ---
 apiVersion: v1
