@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: discord-bot
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ReidMason/server-compose.git
+    targetRevision: HEAD
+    path: kubernetes/discord-bot
+  destination:
+    server: https://kubernetes.default.svc
