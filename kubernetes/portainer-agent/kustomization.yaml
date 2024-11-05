@@ -1,4 +1,4 @@
-namsepace: portainer-agent
+namespace: portainer-agent
 
 resources:
   - namespace.yaml
