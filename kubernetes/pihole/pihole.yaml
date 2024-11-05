@@ -63,6 +63,8 @@ kind: Service
 metadata:
   namespace: pihole
   name: pihole-dns
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.128.0.71
 spec:
   selector:
     app: pihole
