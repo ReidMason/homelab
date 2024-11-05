@@ -5,7 +5,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ReidMason/server-compose.git
+    repoURL: https://github.com/ReidMason/homelab.git
     targetRevision: HEAD
     path: kubernetes/pihole
   destination:
