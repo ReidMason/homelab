@@ -64,7 +64,7 @@ metadata:
   namespace: pihole
   name: pihole-dns
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.128.0.71
+    metallb.universe.tf/loadBalancerIPs: 10.128.0.72
 spec:
   type: LoadBalancer
   selector:
