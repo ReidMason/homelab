@@ -5,4 +5,3 @@ resources:
   - external-secrets-operator.yaml
   - service-account.yaml
   - secret-store.yaml
-  - secret-test.yaml
