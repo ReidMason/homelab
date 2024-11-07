@@ -112,7 +112,7 @@ spec:
     - ReadWriteMany
   nfs:
     path: /mnt/user/kubernetes/pihole
-    server: 10.128.0.50
+    server: fern.lan
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
