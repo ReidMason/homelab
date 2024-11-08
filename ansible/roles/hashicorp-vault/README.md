@@ -47,6 +47,8 @@ path "secrets/*"
 
 ### Assign the policy to the role
 
+This part is strange. I think each entity is a client and you then assign policies to this client. So first you need to make the connection then assign the policy. I'm sure there's a way to automate this but I haven't found a way yet.
+
 1. Navigate to the `Access` tab and click on the `Entities` section.
 2. Locate your kubernetes role in the list and click on it.
 3. Then click on the `Attach policy` button and select the policy you just created.
