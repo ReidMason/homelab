@@ -55,3 +55,7 @@ This part is strange. I think each entity is a client and you then assign polici
 4. You can rename this policy to something more meaningful if you want.
 5. Select `Edit entry`
 6. Under `Policies` you can attach the policy you just created.
+
+### Troubleshooting
+
+If your `clustersecretstore` is not connecting then there's a problem with authentication between vault and the kubernetes cluster. If the `clustersecretstore` is connecting then auth is working and it's likely a policy issue.
