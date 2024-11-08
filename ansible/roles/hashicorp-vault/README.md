@@ -39,7 +39,7 @@ You can then set the name to whever you want and then add the policy rules.
 You probably want to keep it simple with basic read access.
 
 ```hcl
-path "secrets-dev/*"
+path "secrets/*"
 {
   capabilities = ["read"]
 }

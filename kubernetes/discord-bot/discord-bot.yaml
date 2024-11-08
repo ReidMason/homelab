@@ -13,7 +13,7 @@ spec:
   data:
     - secretKey: "token"
       remoteRef:
-        key: "secrets-dev/discord-bot"
+        key: "secrets/discord-bot"
         property: "token"
 ---
 apiVersion: apps/v1

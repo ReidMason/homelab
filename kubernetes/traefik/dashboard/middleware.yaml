@@ -14,7 +14,7 @@ spec:
   data:
     - secretKey: "auth"
       remoteRef:
-        key: "secrets-dev/traefik"
+        key: "secrets/traefik"
         property: "auth"
 ---
 apiVersion: traefik.io/v1alpha1

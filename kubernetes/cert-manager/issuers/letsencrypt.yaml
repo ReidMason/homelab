@@ -14,7 +14,7 @@ spec:
   data:
     - secretKey: "cloudflare-token"
       remoteRef:
-        key: "secrets-dev/cloudflare"
+        key: "secrets/cloudflare"
         property: "letsencrypt-token"
 ---
 apiVersion: cert-manager.io/v1
