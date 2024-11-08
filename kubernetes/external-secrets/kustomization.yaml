@@ -1,7 +1,4 @@
-namespace: external-secrets
-
 resources:
   - namespace.yaml
   - external-secrets-operator.yaml
-  - service-account.yaml
   - secret-store.yaml
