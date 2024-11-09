@@ -15,5 +15,6 @@ spec:
       services:
         - name: portainer-agent
           port: 9001
+          scheme: https
   tls:
     secretName: skippythesnake-tls
