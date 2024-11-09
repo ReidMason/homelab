@@ -4,5 +4,5 @@ metadata:
   name: default
   namespace: traefik
 spec:
-  certificates:
-    - secretName: skippythesnake-tls
+  defaultCertificate:
+    secretName: skippythesnake-tls
