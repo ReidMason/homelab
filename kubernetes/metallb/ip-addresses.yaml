@@ -10,15 +10,6 @@ spec:
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: portainer-agent
-  namespace: metallb-system
-spec:
-  addresses:
-    - 10.128.0.71/32
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
   name: pihole
   namespace: metallb-system
 spec:
