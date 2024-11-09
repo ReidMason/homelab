@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portainer-agent
+  namespace: portainer-agent
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`portainer-agent.skippythesnake.com`)
+      kind: Rule
+      middlewares:
+        - name: default-headers
+          namespace: traefik
+      services:
+        - name: portainer-agent
+          port: 9001
+          scheme: https
+  tls:
+    secretName: skippythesnake-tls

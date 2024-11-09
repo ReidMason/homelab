@@ -21,17 +21,14 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: portainer-agent
   namespace: portainer-agent
-  annotations:
-    metallb.universe.tf/address-pool: portainer-agent
+  name: portainer-agent
 spec:
-  type: LoadBalancer
   selector:
     app: portainer-agent
   ports:
-    - name: http
-      protocol: TCP
+    - protocol: TCP
+      name: api
       port: 9001
       targetPort: 9001
 ---

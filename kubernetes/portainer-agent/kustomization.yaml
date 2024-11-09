@@ -3,3 +3,4 @@ namespace: portainer-agent
 resources:
   - namespace.yaml
   - portainer-agent.yaml
+  - ingress.yaml
