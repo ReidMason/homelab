@@ -5,3 +5,4 @@ resources:
   - dashboard/ingress.yaml
   # - dashboard/middleware.yaml
   - certificates/production.yaml
+  - tlsstore.yaml
