@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`portainer-kube.skippythesnake.com`)
+    - match: Host(`portainer.skippythesnake.com`)
       kind: Rule
       middlewares:
         - name: default-headers
