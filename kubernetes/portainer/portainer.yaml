@@ -27,7 +27,6 @@ spec:
           volumeMounts:
             - name: portainer-storage
               mountPath: /data
-              subPath: data
       volumes:
         - name: portainer-storage
           persistentVolumeClaim:
