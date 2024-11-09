@@ -11,3 +11,4 @@ resources:
   - cert-manager.yaml
   - portainer-agent.yaml
   - external-secrets.yaml
+  - portainer.yaml
