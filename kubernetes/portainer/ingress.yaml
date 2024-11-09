@@ -15,5 +15,6 @@ spec:
       services:
         - name: portainer-webui
           port: 9443
+          scheme: https
   tls:
     secretName: skippythesnake-tls
