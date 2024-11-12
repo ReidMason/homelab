@@ -14,6 +14,8 @@ spec:
           namespace: traefik
       services:
         - name: fern-server
+          port: 80
+          scheme: http
 
 ---
 apiVersion: v1
