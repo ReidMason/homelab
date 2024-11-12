@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: fern-server
+  name: fern
   namespace: traefik
 spec:
   ports:
