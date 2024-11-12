@@ -31,25 +31,3 @@ spec:
       targetPort: 80
       type: ExternalName
       externalName: fern.lan
-# ---
-# apiVersion: traefik.io/v1alpha1
-# kind: TraefikService
-# metadata:
-#   name: fern-service
-#   namespace: traefik
-# spec:
-#   weighted:
-#     services:
-#       - name: external-server
-#         weight: 1
-#
-# ---
-# apiVersion: traefik.io/v1alpha1
-# kind: Service
-# metadata:
-#   name: external-server
-#   namespace: traefik
-# spec:
-#   loadBalancer:
-#     servers:
-#       - url: "http://<external-server-ip-or-url>:<port>"
