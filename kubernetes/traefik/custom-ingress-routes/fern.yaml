@@ -21,13 +21,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: fern
+  name: fern-server
   namespace: traefik
 spec:
-  ports:
-    - protocol: TCP
-      name: webui
-      port: 80
-      targetPort: 80
-      type: ExternalName
-      externalName: fern.lan
+  type: ExternalName
+  externalName: fern.lan
