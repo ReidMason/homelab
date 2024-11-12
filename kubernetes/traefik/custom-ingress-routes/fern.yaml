@@ -13,9 +13,7 @@ spec:
         - name: default-headers
           namespace: traefik
       services:
-        - name: portainer-webui
-          port: 9443
-          scheme: https
+        - name: fern-server
 
 ---
 apiVersion: v1
