@@ -18,15 +18,19 @@ spec:
           scheme: https
 
 ---
-apiVersion: traefik.io/v1alpha1
+apiVersion: v1
 kind: Service
 metadata:
   name: fern-server
   namespace: traefik
 spec:
-  loadBalancer:
-    servers:
-      - url: "http://fern.lan"
+  ports:
+    - protocol: TCP
+      name: webui
+      port: 80
+      targetPort: 80
+    type: ExternalName
+    externalName: fern.lan
 # ---
 # apiVersion: traefik.io/v1alpha1
 # kind: TraefikService
