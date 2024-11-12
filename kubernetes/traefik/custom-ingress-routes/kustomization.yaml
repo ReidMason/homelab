@@ -1,2 +1,3 @@
 resources:
   - fern.yaml
+  - nas.yaml
