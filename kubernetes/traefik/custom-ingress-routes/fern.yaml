@@ -12,6 +12,11 @@ spec:
       services:
         - name: fern-server
           port: 80
+    - match: Host(`scrutiny.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: fern-server
+          port: 8083
 
 ---
 apiVersion: v1
