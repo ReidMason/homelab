@@ -1,0 +1,51 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: fern
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`fern.skippythesnake.com`)
+      kind: Rule
+      middlewares:
+        - name: default-headers
+          namespace: traefik
+      services:
+        - name: portainer-webui
+          port: 9443
+          scheme: https
+
+---
+apiVersion: traefik.io/v1alpha1
+kind: Service
+metadata:
+  name: fern-server
+  namespace: traefik
+spec:
+  loadBalancer:
+    servers:
+      - url: "http://fern.lan"
+# ---
+# apiVersion: traefik.io/v1alpha1
+# kind: TraefikService
+# metadata:
+#   name: fern-service
+#   namespace: traefik
+# spec:
+#   weighted:
+#     services:
+#       - name: external-server
+#         weight: 1
+#
+# ---
+# apiVersion: traefik.io/v1alpha1
+# kind: Service
+# metadata:
+#   name: external-server
+#   namespace: traefik
+# spec:
+#   loadBalancer:
+#     servers:
+#       - url: "http://<external-server-ip-or-url>:<port>"
