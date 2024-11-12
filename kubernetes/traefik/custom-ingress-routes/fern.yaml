@@ -9,9 +9,6 @@ spec:
   routes:
     - match: Host(`fern.skippythesnake.com`)
       kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
       services:
         - name: fern-server
           port: 80
