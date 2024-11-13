@@ -11,3 +11,4 @@ resources:
   - external-secrets.yaml
   - portainer.yaml
   - grafana.yaml
+  - prometheus.yaml

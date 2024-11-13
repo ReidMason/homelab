@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prometheus
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.54.1
+          command:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --web.enable-lifecycle
+          volumeMounts:
+            - name: prometheus-storage
+              mountPath: /prometheus
+              subPath: data
+
+            - name: prometheus-storage
+              mountPath: /etc/prometheus
+              subPath: prometheus.yml
+      volumes:
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: prometheus
+  name: prometheus-webui
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - protocol: TCP
+      name: webui
+      port: 9090
+      targetPort: 9090
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: prometheus
+  name: prometheus-pv
+  labels:
+    type: prometheus-storage
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/user/kubernetes/prometheus
+    server: fern.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: prometheus
+  name: prometheus-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      type: prometheus-storage
