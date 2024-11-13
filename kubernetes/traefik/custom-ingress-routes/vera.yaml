@@ -1,0 +1,24 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vera
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`habit.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vera-service
+  namespace: traefik
+spec:
+  type: ExternalName
+  externalName: vera.lan
