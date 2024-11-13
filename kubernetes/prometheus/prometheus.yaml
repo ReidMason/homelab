@@ -23,6 +23,7 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:v2.54.1
+          user: 99:100
           volumeMounts:
             - name: prometheus-storage
               mountPath: /prometheus
