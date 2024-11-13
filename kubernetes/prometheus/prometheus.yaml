@@ -20,10 +20,12 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        runAsUser: 99
+        runAsGroup: 100
       containers:
         - name: prometheus
           image: prom/prometheus:v2.54.1
-          user: 99:100
           volumeMounts:
             - name: prometheus-storage
               mountPath: /prometheus
