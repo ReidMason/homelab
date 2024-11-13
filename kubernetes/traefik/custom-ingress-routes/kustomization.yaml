@@ -2,3 +2,4 @@ resources:
   - fern.yaml
   - nas.yaml
   - ivy.yaml
+  - mona.yaml

@@ -1,0 +1,24 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mona
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`uptime-kuma.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: mona-service
+          port: 3001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mona-service
+  namespace: traefik
+spec:
+  type: ExternalName
+  externalName: mona.lan
