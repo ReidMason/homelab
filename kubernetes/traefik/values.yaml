@@ -56,6 +56,6 @@ service:
 
 experimental:
   plugins:
-    theme-park:
+    themepark:
       moduleName: "github.com/packruler/traefik-themepark"
       version: "v1.2.0"
