@@ -2,6 +2,8 @@ globalArguments:
   - "--global.sendAnonymousUsage=false"
   - "--global.checkNewVersion=false"
 
+volumes: []
+
 additionalArguments:
   - "--providers.kubernetescrd.allowCrossNamespace=true"
   - "--serversTransport.insecureSkipVerify=true"
@@ -51,3 +53,9 @@ service:
     externalTrafficPolicy: Local
   loadBalancerSourceRanges: []
   externalIPs: []
+
+experimental:
+  plugins:
+    theme-park:
+      moduleName: "github.com/packruler/traefik-themepark"
+      version: "v1.2.0"
