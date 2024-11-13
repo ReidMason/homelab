@@ -32,8 +32,8 @@ spec:
               subPath: data
 
             - name: prometheus-storage
-              mountPath: /etc/prometheus
-              subPath: config
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
       volumes:
         - name: prometheus-storage
           persistentVolumeClaim:
