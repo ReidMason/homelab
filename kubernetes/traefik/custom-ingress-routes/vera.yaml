@@ -13,6 +13,24 @@ spec:
         - name: vera-service
           port: 8080
 
+    - match: Host(`jackett.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 9117
+
+    - match: Host(`sonarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8989
+
+    - match: Host(`radarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 7878
+
     - match: Host(`habit.skippythesnake.com`)
       kind: Rule
       services:
