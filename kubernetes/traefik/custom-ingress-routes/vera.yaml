@@ -7,6 +7,12 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`qbittorrent.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8080
+
     - match: Host(`habit.skippythesnake.com`)
       kind: Rule
       services:
