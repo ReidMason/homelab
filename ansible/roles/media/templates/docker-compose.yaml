@@ -6,9 +6,9 @@ services:
       - 6881:6881
       - 6881:6881/udp
       - 8118:8118
-      # - 9117:9117 # Jackett port
-      # - 8989:8989 # Sonarr port
-      # - 7878:7878 # Radarr port
+      - 9117:9117 # Jackett port
+      - 8989:8989 # Sonarr port
+      - 7878:7878 # Radarr port
       - 8080:8080 # Webui
     volumes:
       - "{{ (appdata_path, 'qbittorrent') | path_join }}:/config"
