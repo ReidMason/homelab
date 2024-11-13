@@ -7,5 +7,4 @@ spec:
   plugin:
     themepark:
       app: sonarr
-      baseUrl: https://theme-park.dev
-      theme: nord
+      theme: dark
