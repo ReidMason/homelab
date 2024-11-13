@@ -52,7 +52,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr:4.0.10
     volumes:
       - "{{ (appdata_path, 'sonarr') | path_join }}:/config"
       - "{{ (qbittorrent_downloads_path, 'Completed') | path_join }}:/downloads"
