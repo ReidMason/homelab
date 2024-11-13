@@ -1,5 +1,3 @@
-# finalizers:
-#   - resources-finalizer.argocd.argoproj.io
 namespace: argocd
 
 resources:
@@ -12,3 +10,4 @@ resources:
   - portainer-agent.yaml
   - external-secrets.yaml
   - portainer.yaml
+  - grafana.yaml
