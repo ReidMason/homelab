@@ -3,6 +3,8 @@ services:
     container_name: "{{ service_name }}"
     image: vault:1.13.3
     restart: always
+    ports:
+      - "8200:8200"
     volumes:
       - "{{ (appdata_path, service_name, 'data') | path_join }}:/vault/data"
       - "{{ (appdata_path, service_name, 'config.hcl') | path_join }}:/vault/config.hcl"
