@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: theme-park-middleware
+  namespace: traefik
+spec:
+  sonarr-dark:
+    plugin:
+      theme-park:
+        theme: nord

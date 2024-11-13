@@ -7,3 +7,4 @@ resources:
   - certificates/production.yaml
   - tlsstore.yaml
   - custom-ingress-routes/
+  - middleware.yaml
