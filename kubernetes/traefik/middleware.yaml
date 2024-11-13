@@ -8,3 +8,14 @@ spec:
     themepark:
       app: sonarr
       theme: hotline
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: qbittorrent-theme
+  namespace: traefik
+spec:
+  plugin:
+    themepark:
+      app: qbittorrent
+      theme: nord

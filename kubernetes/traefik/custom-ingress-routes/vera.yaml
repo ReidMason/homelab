@@ -12,6 +12,9 @@ spec:
       services:
         - name: vera-service
           port: 8080
+      middlewares:
+        - name: qbittorrent-theme
+          namespace: traefik
 
     - match: Host(`jackett.skippythesnake.com`)
       kind: Rule
