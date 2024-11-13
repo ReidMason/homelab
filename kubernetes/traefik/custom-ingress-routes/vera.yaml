@@ -19,6 +19,11 @@ spec:
         - name: vera-service
           port: 81
 
+    - match: Host(`vault.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8200
 ---
 apiVersion: v1
 kind: Service
