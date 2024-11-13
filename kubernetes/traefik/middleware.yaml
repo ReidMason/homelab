@@ -7,4 +7,4 @@ spec:
   plugin:
     themepark:
       app: sonarr
-      theme: dark
+      theme: hotline
