@@ -21,6 +21,9 @@ spec:
       services:
         - name: vera-service
           port: 9117
+      middlewares:
+        - name: jackett-theme
+          namespace: traefik
 
     - match: Host(`sonarr.skippythesnake.com`)
       kind: Rule
