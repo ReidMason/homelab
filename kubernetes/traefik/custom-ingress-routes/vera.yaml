@@ -24,6 +24,9 @@ spec:
       services:
         - name: vera-service
           port: 8989
+      middlewares:
+        - name: sonarr-theme
+          namespace: traefik
 
     - match: Host(`radarr.skippythesnake.com`)
       kind: Rule
