@@ -3,6 +3,8 @@ services:
     container_name: "{{ service_name }}"
     image: ghcr.io/reidmason/habit-tracker:0.3.0
     restart: always
+    ports:
+      - "8000:8000"
     volumes:
       - "{{ (appdata_path, service_name) | path_join }}:/app/data"
     networks:
