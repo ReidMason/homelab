@@ -13,6 +13,12 @@ spec:
         - name: vera-service
           port: 8000
 
+    - match: Host(`nginx.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 81
+
 ---
 apiVersion: v1
 kind: Service
