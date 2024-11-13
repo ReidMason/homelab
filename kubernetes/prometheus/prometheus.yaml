@@ -32,7 +32,7 @@ spec:
               subPath: data
 
             - name: prometheus-storage
-              mountPath: /etc/prometheus
+              mountPath: /etc/prometheus/prometheus.yml
               subPath: prometheus.yml
       volumes:
         - name: prometheus-storage
