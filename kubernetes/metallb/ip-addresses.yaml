@@ -24,5 +24,4 @@ metadata:
 spec:
   ipAddressPools:
     - traefik
-    - portainer-agent
     - pihole
