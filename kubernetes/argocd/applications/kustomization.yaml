@@ -12,3 +12,4 @@ resources:
   - portainer.yaml
   - grafana.yaml
   - prometheus.yaml
+  - habit-tracker.yaml
