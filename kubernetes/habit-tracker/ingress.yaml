@@ -3,27 +3,12 @@ kind: IngressRoute
 metadata:
   name: habit-tracker
   namespace: habit-tracker
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`habit.skippythesnake.com`) && PathPrefix(`/`)
+    - match: Host(`habit-kube.skippythesnake.com`)
       kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
       services:
-        - name: habit-tracker-ui
+        - name: habit-tracker
           port: 80
-    - match: Host(`habit.skippythesnake.com`) && PathPrefix(`/api`)
-      kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
-      services:
-        - name: habit-tracker-api
-          port: 80
-  tls:
-    secretName: skippythesnake-tls

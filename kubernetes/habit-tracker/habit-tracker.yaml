@@ -2,26 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: habit-tracker
-  name: habit-tracker-api
+  name: habit-tracker
   labels:
-    app: habit-tracker-api
+    app: habit-tracker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: habit-tracker-api
+      app: habit-tracker
   template:
     metadata:
       labels:
-        app: habit-tracker-api
+        app: habit-tracker
     spec:
-      tolerations:
-        - key: "node.kubernetes.io/unreachable"
-          effect: "NoExecute"
-          tolerationSeconds: 0
       containers:
-        - name: habit-tracker-api
-          image: ghcr.io/reidmason/habit-tracker-api:0.1.7
+        - name: habit-tracker
+          image: ghcr.io/reidmason/habit-tracker:0.3.0
           ports:
             - containerPort: 8000
           volumeMounts:
@@ -37,10 +33,10 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: habit-tracker
-  name: habit-tracker-api
+  name: habit-tracker
 spec:
   selector:
-    app: habit-tracker-api
+    app: habit-tracker
   ports:
     - protocol: TCP
       name: api
@@ -61,7 +57,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/user/Temp/habit-tracker
+    path: /mnt/user/kubernetes/habit-tracker
     server: fern.lan
 ---
 apiVersion: v1
