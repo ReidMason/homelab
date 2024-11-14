@@ -4,4 +4,4 @@ resources:
   - namespace.yaml
   - argocd.yaml
   - ingress-route.yaml
-  - ./applications
+  - applications/*.yaml
