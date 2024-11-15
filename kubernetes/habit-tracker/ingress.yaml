@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`habit-kube.skippythesnake.com`)
+    - match: Host(`habit.skippythesnake.com`)
       kind: Rule
       services:
         - name: habit-tracker
