@@ -1,5 +1,5 @@
 additionalArguments:
-  - "--serversTransport.insecureSkipVerify=true"
+  - "--serversTransport.insecureSkipVerify=true" # This allows us to proxy to https services like portainer or argocd
 
 ports:
   web:
