@@ -1,3 +1,6 @@
+additionalArguments:
+  - "--serversTransport.insecureSkipVerify=true"
+
 ports:
   web:
     redirectTo:
