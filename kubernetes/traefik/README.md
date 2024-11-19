@@ -6,5 +6,5 @@ helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
 # Create the traefik.yaml file
-helm template traefik traefik/traefik --include-crds -f values.yaml > traefik.yaml
+helm template traefik traefik/traefik --namespace traefik --include-crds -f values.yaml > traefik.yaml
 ```

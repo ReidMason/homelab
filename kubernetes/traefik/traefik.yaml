@@ -14930,10 +14930,10 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: traefik
-  namespace: argocd
+  namespace: traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -14943,10 +14943,10 @@ automountServiceAccountToken: false
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-argocd
+  name: traefik-traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
 rules:
@@ -15020,30 +15020,30 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-argocd
+  name: traefik-traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-argocd
+  name: traefik-traefik
 subjects:
   - kind: ServiceAccount
     name: traefik
-    namespace: argocd
+    namespace: traefik
 ---
 # Source: traefik/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: traefik
-  namespace: argocd
+  namespace: traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -15053,7 +15053,7 @@ spec:
   loadBalancerIP: 10.128.0.70
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
   ports:
   - port: 80
     name: "web"
@@ -15069,10 +15069,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik
-  namespace: argocd
+  namespace: traefik
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -15081,7 +15081,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
-      app.kubernetes.io/instance: traefik-argocd
+      app.kubernetes.io/instance: traefik-traefik
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15096,7 +15096,7 @@ spec:
         prometheus.io/port: "9100"
       labels:
         app.kubernetes.io/name: traefik
-        app.kubernetes.io/instance: traefik-argocd
+        app.kubernetes.io/instance: traefik-traefik
         helm.sh/chart: traefik-33.0.0
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -15211,7 +15211,7 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: "true"
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   name: traefik
@@ -15223,11 +15223,11 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
-  namespace: argocd
+  namespace: traefik
   annotations:
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-argocd
+    app.kubernetes.io/instance: traefik-traefik
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
 spec:
