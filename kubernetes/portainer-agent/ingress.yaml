@@ -9,9 +9,6 @@ spec:
   routes:
     - match: Host(`portainer-agent.skippythesnake.com`)
       kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
       services:
         - name: portainer-agent
           port: 9001

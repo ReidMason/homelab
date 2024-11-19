@@ -1,7 +1,6 @@
 resources:
   - namespace.yaml
   - traefik.yaml
-  - default-headers.yaml
   - certificates/production.yaml
   - tlsstore.yaml
   - custom-ingress-routes/

@@ -9,9 +9,6 @@ spec:
   routes:
     - match: Host(`pihole-kube.skippythesnake.com`)
       kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
       services:
         - name: pihole-dashboard
           port: 80

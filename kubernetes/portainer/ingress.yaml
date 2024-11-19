@@ -9,9 +9,6 @@ spec:
   routes:
     - match: Host(`portainer.skippythesnake.com`)
       kind: Rule
-      middlewares:
-        - name: default-headers
-          namespace: traefik
       services:
         - name: portainer-webui
           port: 9443
