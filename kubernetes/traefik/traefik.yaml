@@ -14930,10 +14930,10 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: traefik
-  namespace: external-secrets
+  namespace: argocd
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -14943,10 +14943,10 @@ automountServiceAccountToken: false
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-external-secrets
+  name: traefik-argocd
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
 rules:
@@ -15020,30 +15020,30 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: traefik-external-secrets
+  name: traefik-argocd
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: traefik-external-secrets
+  name: traefik-argocd
 subjects:
   - kind: ServiceAccount
     name: traefik
-    namespace: external-secrets
+    namespace: argocd
 ---
 # Source: traefik/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: traefik
-  namespace: external-secrets
+  namespace: argocd
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -15053,7 +15053,7 @@ spec:
   loadBalancerIP: 10.128.0.70
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
   ports:
   - port: 80
     name: "web"
@@ -15069,10 +15069,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik
-  namespace: external-secrets
+  namespace: argocd
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -15081,7 +15081,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
-      app.kubernetes.io/instance: traefik-external-secrets
+      app.kubernetes.io/instance: traefik-argocd
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15096,7 +15096,7 @@ spec:
         prometheus.io/port: "9100"
       labels:
         app.kubernetes.io/name: traefik
-        app.kubernetes.io/instance: traefik-external-secrets
+        app.kubernetes.io/instance: traefik-argocd
         helm.sh/chart: traefik-33.0.0
         app.kubernetes.io/managed-by: Helm
     spec:
@@ -15157,8 +15157,8 @@ spec:
           - name: plugins
             mountPath: "/plugins-storage"
         args:
-          - "--global.sendAnonymousUsage=false"
-          - "--global.checkNewVersion=false"
+          - "--global.checknewversion"
+          - "--global.sendanonymoususage"
           - "--entryPoints.metrics.address=:9100/tcp"
           - "--entryPoints.traefik.address=:8080/tcp"
           - "--entryPoints.web.address=:8000/tcp"
@@ -15170,21 +15170,16 @@ spec:
           - "--experimental.plugins.themepark.moduleName=github.com/packruler/traefik-themepark"
           - "--experimental.plugins.themepark.version=v1.4.2"
           - "--providers.kubernetescrd"
-          - "--providers.kubernetescrd.allowCrossNamespace=true"
-          - "--providers.kubernetescrd.allowExternalNameServices=true"
           - "--providers.kubernetescrd.allowEmptyServices=true"
           - "--providers.kubernetesingress"
-          - "--providers.kubernetesingress.allowExternalNameServices=true"
           - "--providers.kubernetesingress.allowEmptyServices=true"
+          - "--providers.kubernetesingress.ingressendpoint.publishedservice=argocd/traefik"
           - "--entryPoints.web.http.redirections.entryPoint.to=:443"
           - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
           - "--entryPoints.web.http.redirections.entryPoint.priority=10"
           - "--entryPoints.websecure.http.tls=true"
           - "--log.level=INFO"
           
-          - "--providers.kubernetescrd.allowCrossNamespace=true"
-          - "--serversTransport.insecureSkipVerify=true"
-          - "--log.level=INFO"
         env:
           - name: POD_NAME
             valueFrom:
@@ -15214,9 +15209,31 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: "true"
   labels:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-external-secrets
+    app.kubernetes.io/instance: traefik-argocd
     helm.sh/chart: traefik-33.0.0
     app.kubernetes.io/managed-by: Helm
   name: traefik
 spec:
   controller: traefik.io/ingress-controller
+---
+# Source: traefik/templates/ingressroute.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard
+  namespace: argocd
+  annotations:
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/instance: traefik-argocd
+    helm.sh/chart: traefik-33.0.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`traefik.skippythesnake.com`)
+    kind: Rule
+    services:
+      - kind: TraefikService
+        name: api@internal

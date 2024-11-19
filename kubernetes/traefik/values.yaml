@@ -1,22 +1,3 @@
-globalArguments:
-  - "--global.sendAnonymousUsage=false"
-  - "--global.checkNewVersion=false"
-
-volumes: []
-
-additionalArguments:
-  - "--providers.kubernetescrd.allowCrossNamespace=true"
-  - "--serversTransport.insecureSkipVerify=true"
-  - "--log.level=INFO"
-
-deployment:
-  enabled: true
-  replicas: 1
-  annotations: {}
-  podAnnotations: {}
-  additionalContainers: []
-  initContainers: []
-
 ports:
   web:
     redirectTo:
@@ -28,31 +9,17 @@ ports:
 
 ingressRoute:
   dashboard:
-    enabled: false
-
-providers:
-  kubernetesCRD:
     enabled: true
-    allowExternalNameServices: true
-    allowCrossNamespace: true
-  kubernetesIngress:
-    enabled: true
-    allowExternalNameServices: true
-    publishedService:
-      enabled: false
-
-rbac:
-  enabled: true
+    entryPoints:
+      - websecure
+    matchRule: Host(`traefik.skippythesnake.com`)
 
 service:
   enabled: true
   type: LoadBalancer
-  annotations: {}
   spec:
     loadBalancerIP: "10.128.0.70"
     externalTrafficPolicy: Local
-  loadBalancerSourceRanges: []
-  externalIPs: []
 
 experimental:
   plugins:

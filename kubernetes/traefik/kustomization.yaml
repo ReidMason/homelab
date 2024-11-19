@@ -2,7 +2,7 @@ resources:
   - namespace.yaml
   - traefik.yaml
   - default-headers.yaml
-  - dashboard/ingress.yaml
+  # - dashboard/ingress.yaml
   # - dashboard/middleware.yaml
   - certificates/production.yaml
   - tlsstore.yaml
