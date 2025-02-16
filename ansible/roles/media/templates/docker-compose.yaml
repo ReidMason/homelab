@@ -38,7 +38,7 @@ services:
 
   jackett:
     container_name: jackett
-    image: linuxserver/jackett:latest
+    image: linuxserver/jackett:0.22.1433
     restart: always
     volumes:
       - "{{ (appdata_path, 'jackett') | path_join }}:/config"
