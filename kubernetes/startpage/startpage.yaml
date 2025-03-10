@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: startpage
+  name: startpage
+  labels:
+    app: startpage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: startpage
+  template:
+    metadata:
+      labels:
+        app: startpage
+    spec:
+      containers:
+        - name: startpage
+          image: ghcr.io/reidmason/startpage:v3.0.0
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: startpage-storage
+              mountPath: /app/data
+      volumes:
+        - name: startpage-storage
+          persistentVolumeClaim:
+            claimName: startpage-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: startpage
+  name: startpage
+spec:
+  selector:
+    app: startpage
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: startpage
+  name: startpage-pv
+  labels:
+    type: startpage-storage
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/user/kubernetes/startpage
+    server: fern.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: startpage
+  name: startpage-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      type: startpage-storage
