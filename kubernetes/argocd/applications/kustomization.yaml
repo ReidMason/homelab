@@ -13,3 +13,4 @@ resources:
   - grafana.yaml
   - prometheus.yaml
   - habit-tracker.yaml
+  - startpage.yaml
