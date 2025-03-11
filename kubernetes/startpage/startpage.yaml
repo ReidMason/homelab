@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: startpage
-          image: ghcr.io/reidmason/startpage:v3.0.0
+          image: ghcr.io/reidmason/startpage:3.0.0
           ports:
             - containerPort: 3000
           volumeMounts:
