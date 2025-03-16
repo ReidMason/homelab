@@ -1,8 +1,4 @@
-module "kube_servers" {
-  source = "../modules/kube-servers"
-
-  target_node = "nia"
-
+locals {
   kube_servers = {
     "160" = {
       name    = "nia-kube-controlplane-1"
@@ -25,6 +21,13 @@ module "kube_servers" {
       type    = "worker"
     }
   }
+}
+
+module "kube_servers" {
+  source = "../modules/kube-servers"
+
+  target_node  = "nia"
+  kube_servers = local.kube_servers
 
   proxmox_api_url          = var.proxmox_api_url
   proxmox_api_token_id     = var.proxmox_api_token_id
