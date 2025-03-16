@@ -24,7 +24,7 @@ locals {
 }
 
 module "kube_servers" {
-  source = "../modules/kube-servers"
+  source = "../modules/proxmox-vms"
 
   target_node  = "nia"
   kube_servers = local.kube_servers
