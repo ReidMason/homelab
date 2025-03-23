@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: habit-tracker
+  namespace: habit-tracker
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`habit.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: habit-tracker
+          port: 80
