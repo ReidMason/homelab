@@ -17,6 +17,9 @@ spec:
       containers:
         - name: postgresql
           image: postgres:17
+          volumeMounts:
+            - name: postgresql-storage
+              mountPath: /var/lib/postgresql/data
           ports:
             - containerPort: 5432
           env:
@@ -30,14 +33,10 @@ spec:
                 secretKeyRef:
                   name: postgresql-secret
                   key: admin-username
-          volumeMounts:
-            - name: postgresql-storage
-              mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgresql-storage
           persistentVolumeClaim:
-          claimName: postgresql-pvc
-
+            claimName: postgresql-pvc
 ---
 apiVersion: v1
 kind: Service
