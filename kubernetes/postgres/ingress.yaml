@@ -1,14 +1,13 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: habit-tracker
-  namespace: habit-tracker
+  name: postgres
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`habit.skippythesnake.com`)
+    - match: Host(`postgres.skippythesnake.com`)
       kind: Rule
       services:
-        - name: habit-tracker
+        - name: postgres
           port: 80
