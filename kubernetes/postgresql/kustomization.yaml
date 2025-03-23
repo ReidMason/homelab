@@ -2,6 +2,6 @@ namespace: postgresql
 
 resources:
   - namespace.yaml
-  - postgresql-secret.yaml
+  - secret-postgresql.yaml
   - postgresql.yaml
   - ingress.yaml
