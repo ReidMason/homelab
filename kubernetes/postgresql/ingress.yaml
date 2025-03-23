@@ -6,8 +6,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: HostSNI(`postgresql.skippythesnake.com`)
-      kind: Rule
+    - kind: Rule
+      match: HostSNI(`postgresql.skippythesnake.com`)
       services:
         - name: postgresql
           port: 5432
