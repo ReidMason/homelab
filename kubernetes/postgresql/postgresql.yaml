@@ -60,7 +60,7 @@ metadata:
     type: postgresql-storage
 spec:
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteMany
   nfs:
