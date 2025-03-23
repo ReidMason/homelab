@@ -1,0 +1,7 @@
+namespace: postgresql
+
+resources:
+  - namespace.yaml
+  - postgresql-secret.yaml
+  - postgresql.yaml
+  - ingress.yaml

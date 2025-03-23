@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres
+  name: postgresql
 spec:
   project: default
   source:
     repoURL: https://github.com/ReidMason/homelab.git
     targetRevision: HEAD
-    path: kubernetes/postgres
+    path: kubernetes/postgresql
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

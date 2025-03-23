@@ -1,13 +1,13 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: postgres
+  name: postgresql
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`postgres.skippythesnake.com`)
+    - match: Host(`postgresql.skippythesnake.com`)
       kind: Rule
       services:
-        - name: postgres
+        - name: postgresql
           port: 80

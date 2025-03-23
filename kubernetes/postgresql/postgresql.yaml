@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgresql
   labels:
-    app: postgres
+    app: postgresql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: postgresql
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgresql
     spec:
       containers:
-        - name: postgres
+        - name: postgresql
           image: postgres:17
           ports:
             - containerPort: 8080
@@ -27,24 +27,24 @@ spec:
                   key: admin-password
             - name: POSTGRES_USER
               secretKeyRef:
-                  name: postgres-secret
+                  name: postgresql-secret
                   key: admin-username
           volumeMounts:
-            - name: postgres-storage
+            - name: postgresql-storage
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: postgres-storage
+        - name: postgresql-storage
           persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: postgresql-pvc
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: postgresql
 spec:
   selector:
-    app: postgres
+    app: postgresql
   ports:
     - protocol: TCP
       name: api
@@ -55,22 +55,22 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
+  name: postgresql-pv
   labels:
-    type: postgres-storage
+    type: postgresql-storage
 spec:
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/user/kubernetes/postgres
+    path: /mnt/user/kubernetes/postgresql
     server: fern.lan
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: postgresql-pvc
 spec:
   accessModes:
     - ReadWriteMany
@@ -79,4 +79,4 @@ spec:
       storage: 10Gi
   selector:
     matchLabels:
-      type: postgres-storage
+      type: postgresql-storage
