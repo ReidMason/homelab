@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`postgresql.skippythesnake.com`)
+    - match: HostSNI(`*`)
       kind: Rule
       services:
         - name: postgresql
