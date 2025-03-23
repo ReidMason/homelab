@@ -26,7 +26,8 @@ spec:
                   name: postgres-secret
                   key: admin-password
             - name: POSTGRES_USER
-              secretKeyRef:
+              valueFrom:
+                secretKeyRef:
                   name: postgresql-secret
                   key: admin-username
           volumeMounts:
