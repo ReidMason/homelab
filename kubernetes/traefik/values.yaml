@@ -9,11 +9,6 @@ additionalArguments:
 #   websecure:
 #     tls:
 #       enabled: true
-ports:
-  postgresql:
-    port: 5432
-    exposedPort: 5432
-    protocol: TCP
 
 ingressRoute:
   dashboard:
