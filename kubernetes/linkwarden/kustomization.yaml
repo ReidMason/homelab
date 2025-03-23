@@ -1,0 +1,7 @@
+namespace: linkwarden
+
+resources:
+  - namespace.yaml
+  - secret-linkwarden.yaml
+  - linkwarden.yaml
+  - ingress.yaml

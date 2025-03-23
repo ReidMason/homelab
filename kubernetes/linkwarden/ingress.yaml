@@ -1,0 +1,13 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: linkwarden
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`linkwarden.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: linkwarden
+          port: 80

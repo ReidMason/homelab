@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkwarden
+  labels:
+    app: linkwarden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linkwarden
+  template:
+    metadata:
+      labels:
+        app: linkwarden
+    spec:
+      containers:
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.9.3
+          env:
+            - name: NEXTAUTH_URL
+              value: https://linkwarden.skippythesnake.com/api/v1/auth
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: linkwarden-secret
+                  key: nextauth-secret
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: linkwarden-secret
+                  key: database-url
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: linkwarden-storage
+              mountPath: /data/data
+      volumes:
+        - name: linkwarden-storage
+          persistentVolumeClaim:
+            claimName: linkwarden-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkwarden
+spec:
+  selector:
+    app: linkwarden
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: linkwarden-pv
+  labels:
+    type: linkwarden-storage
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/user/kubernetes/linkwarden
+    server: fern.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: linkwarden-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      type: linkwarden-storage
