@@ -18,7 +18,7 @@ spec:
         - name: postgresql
           image: postgres:17
           ports:
-            - containerPort: 8080
+            - containerPort: 5432
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -48,8 +48,8 @@ spec:
   ports:
     - protocol: TCP
       name: api
-      port: 80
-      targetPort: 8080
+      port: 5432
+      targetPort: 5432
 
 ---
 apiVersion: v1
