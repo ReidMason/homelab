@@ -15874,6 +15874,9 @@ spec:
         - name: "metrics"
           containerPort: 9100
           protocol: "TCP"
+        - name: "postgresql"
+          containerPort: 5432
+          protocol: "TCP"
         - name: "traefik"
           containerPort: 8080
           protocol: "TCP"
@@ -15900,6 +15903,7 @@ spec:
           - "--global.checknewversion"
           - "--global.sendanonymoususage"
           - "--entryPoints.metrics.address=:9100/tcp"
+          - "--entryPoints.postgresql.address=:5432/tcp"
           - "--entryPoints.traefik.address=:8080/tcp"
           - "--entryPoints.web.address=:8000/tcp"
           - "--entryPoints.websecure.address=:8443/tcp"
