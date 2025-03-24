@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backrest
+  labels:
+    app: backrest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backrest
+  template:
+    metadata:
+      labels:
+        app: backrest
+    spec:
+      containers:
+        - name: backrest
+          image: garethgeorge/backrest:v1.7.3
+          ports:
+            - containerPort: 9898
+          volumeMounts:
+            - name: backrest-storage
+              mountPath: /data
+              subPath: data
+            - name: backrest-storage
+              mountPath: /config
+              subPath: config
+            - name: backrest-storage
+              mountPath: /cache
+              subPath: cache
+            - name: backrest-storage
+              mountPath: /tmp
+              subPath: tmp
+          env:
+            - name: BACKREST_DATA
+              value: "/data"
+            - name: BACKREST_CONFIG
+              value: "/config/config.json"
+            - name: XDG_CACHE_HOME
+              value: "/cache"
+            - name: TMPDIR
+              value: "/tmp"
+            - name: TZ
+              value: "Europe/London"
+
+      volumes:
+        - name: backrest-storage
+          persistentVolumeClaim:
+            claimName: backrest-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backrest
+spec:
+  selector:
+    app: backrest
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 9898
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: backrest-pv
+  labels:
+    type: backrest-storage
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/user/kubernetes/backrest
+    server: fern.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backrest-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      type: backrest-storage
