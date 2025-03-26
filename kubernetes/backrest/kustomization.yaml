@@ -1,6 +1,0 @@
-namespace: backrest
-
-resources:
-  - namespace.yaml
-  - backrest.yaml
-  # - ingress.yaml

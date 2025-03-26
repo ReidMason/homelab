@@ -16,4 +16,3 @@ resources:
   - startpage.yaml
   - postgresql.yaml
   - linkwarden.yaml
-  - backrest.yaml
