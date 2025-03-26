@@ -17,6 +17,11 @@ spec:
       services:
         - name: fern-server
           port: 8083
+    - match: Host(`backrest.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: fern-server
+          port: 9898
 
 ---
 apiVersion: v1
