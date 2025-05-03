@@ -1,0 +1,6 @@
+namespace: paperless
+
+resources:
+  - namespace.yaml
+  - paperless.yaml
+  - ingress.yaml

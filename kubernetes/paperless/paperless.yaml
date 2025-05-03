@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless
+  labels:
+    app: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless
+  template:
+    metadata:
+      labels:
+        app: paperless
+    spec:
+      containers:
+        - name: paperless
+          image: ghcr.io/paperless-ngx/paperless-ngx:v2.15.3
+          env:
+            - name: PAPERLESS_REDIS
+              value: rediss://valkey.skippythesnake.com:443?sni=valkey.skippythesnake.com
+            - name: PAPERLESS_DBHOST
+              value: https://postgresql.skippythesnake.com
+            - name: PAPERLESS_URL
+              value: https://paperless.skippythesnake.com
+            - name: PAPERLESS_TIME_ZONE
+              value: Europe/London
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: paperless-storage
+              mountPath: /usr/src/paperless/data
+              subPath: data
+
+            - name: paperless-storage
+              mountPath: /usr/src/paperless/media
+              subPath: media
+
+            - name: paperless-storage
+              mountPath: /usr/src/paperless/export
+              subPath: export
+
+            - name: paperless-storage
+              mountPath: /usr/src/paperless/consume
+              subPath: consume
+
+      volumes:
+        - name: paperless-storage
+          persistentVolumeClaim:
+            claimName: paperless-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless
+spec:
+  selector:
+    app: paperless
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 8000
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: paperless-pv
+  labels:
+    type: paperless-storage
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/user/kubernetes/paperless
+    server: fern.lan
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  selector:
+    matchLabels:
+      type: paperless-storage

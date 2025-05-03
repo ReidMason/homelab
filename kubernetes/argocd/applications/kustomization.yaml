@@ -17,3 +17,4 @@ resources:
   - postgresql.yaml
   - linkwarden.yaml
   - valkey.yaml
+  - paperless.yaml
