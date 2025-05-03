@@ -4,4 +4,4 @@ resources:
   - namespace.yaml
   - paperless.yaml
   - ingress.yaml
-  - paperless-secret.yaml
+  - secret-paperless.yaml
