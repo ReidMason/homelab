@@ -8,7 +8,7 @@ spec:
   routes:
     - match: HostSNI(`valkey.skippythesnake.com`)
       services:
-        - name: postgresql
+        - name: valkey
           port: 80
   tls:
     secretName: skippythesnake-tls
