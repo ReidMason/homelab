@@ -4,9 +4,11 @@ metadata:
   name: valkey
 spec:
   entryPoints:
-    - redis
+    - websecure
   routes:
-    - match: HostSNI(`*`)
+    - match: HostSNI(`valkey.skippythesnake.com`)
       services:
         - name: valkey
           port: 80
+  tls:
+    secretName: skippythesnake-tls
