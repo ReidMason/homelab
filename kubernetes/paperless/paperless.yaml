@@ -21,7 +21,10 @@ spec:
             - name: PAPERLESS_REDIS
               value: rediss://valkey.skippythesnake.com:443
             - name: PAPERLESS_DBHOST
-              value: https://postgresql.skippythesnake.com
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secret
+                  key: database-url
             - name: PAPERLESS_URL
               value: https://paperless.skippythesnake.com
             - name: PAPERLESS_TIME_ZONE
