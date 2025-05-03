@@ -19,7 +19,7 @@ spec:
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           env:
             - name: PAPERLESS_REDIS
-              value: rediss://valkey.skippythesnake.com:443?sni=valkey.skippythesnake.com
+              value: rediss://valkey.skippythesnake.com:443
             - name: PAPERLESS_DBHOST
               value: https://postgresql.skippythesnake.com
             - name: PAPERLESS_URL
