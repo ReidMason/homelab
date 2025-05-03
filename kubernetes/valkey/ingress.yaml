@@ -1,0 +1,13 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: valkey
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`valkey.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: valkey
+          port: 80

@@ -1,0 +1,6 @@
+namespace: valkey
+
+resources:
+  - namespace.yaml
+  - valkey.yaml
+  - ingress.yaml
