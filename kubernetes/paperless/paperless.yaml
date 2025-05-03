@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: paperless
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:v2.15.1
           env:
             - name: PAPERLESS_REDIS
               value: rediss://valkey.skippythesnake.com:443
