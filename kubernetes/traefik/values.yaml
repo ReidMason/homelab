@@ -1,6 +1,13 @@
 additionalArguments:
   - "--serversTransport.insecureSkipVerify=true" # This allows us to proxy to https services like portainer or argocd
 
+ports:
+  redis:
+    port: 6379
+    expose: true
+    exposedPort: 6379
+    protocol: TCP
+
 # ports:
 #   web:
 #     redirectTo:
