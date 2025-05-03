@@ -16,3 +16,4 @@ resources:
   - startpage.yaml
   - postgresql.yaml
   - linkwarden.yaml
+  - valkey.yaml
