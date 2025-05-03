@@ -20,11 +20,23 @@ spec:
           env:
             - name: PAPERLESS_REDIS
               value: rediss://valkey.skippythesnake.com:443
+
             - name: PAPERLESS_DBHOST
+              value: postgresql.skippythesnake.com
+            - name: PAPERLESS_DBPORT
+              value: "443"
+            - name: PAPERLESS_DBNAME
+              value: paperless
+            - name: PAPERLESS_DBENGINE
+              value: postgresql
+            - name: PAPERLESS_DBUSER
+              value: paperless
+            - name: PAPERLESS_DBPASS
               valueFrom:
                 secretKeyRef:
                   name: paperless-secret
-                  key: database-url
+                  key: database-password
+
             - name: PAPERLESS_URL
               value: https://paperless.skippythesnake.com
             - name: PAPERLESS_TIME_ZONE
