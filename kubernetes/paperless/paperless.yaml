@@ -40,6 +40,8 @@ spec:
               value: https://paperless.skippythesnake.com
             - name: PAPERLESS_TIME_ZONE
               value: Europe/London
+            - name: PAPERLESS_PORT
+              value: "8000"
           ports:
             - containerPort: 8000
           volumeMounts:
