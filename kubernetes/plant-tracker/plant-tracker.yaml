@@ -17,6 +17,7 @@ spec:
       containers:
         - name: plant-tracker-frontend
           image: ghcr.io/reidmason/plant-tracker-frontend:edge
+          imagePullPolicy: Always
           env:
             - name: API_BASE_URL
               value: http://localhost:8080
@@ -24,6 +25,7 @@ spec:
             - containerPort: 3000
         - name: plant-tracker-backend
           image: ghcr.io/reidmason/plant-tracker-backend:edge
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
