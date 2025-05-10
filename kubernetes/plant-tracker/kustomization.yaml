@@ -1,0 +1,7 @@
+namespace: linkwarden
+
+resources:
+  - namespace.yaml
+  - secret-plant-tracker.yaml
+  - plant-tracker.yaml
+  - ingress.yaml

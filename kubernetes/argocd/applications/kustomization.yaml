@@ -18,3 +18,4 @@ resources:
   - linkwarden.yaml
   - valkey.yaml
   - paperless.yaml
+  - plant-tracker.yaml

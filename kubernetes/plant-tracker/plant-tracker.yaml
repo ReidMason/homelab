@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plant-tracker
+  labels:
+    app: plant-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plant-tracker
+  template:
+    metadata:
+      labels:
+        app: plant-tracker
+    spec:
+      containers:
+        - name: plant-tracker-frontend
+          image: ghcr.io/reidmason/plant-tracker-frontend:edge
+          env:
+            - name: API_BASE_URL
+              value: http://localhost:8080
+          ports:
+            - containerPort: 3000
+        - name: plant-tracker-backend
+          image: ghcr.io/reidmason/plant-tracker-backend:edge
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: plant-tracker-secret
+                  key: database-connection-string
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plant-tracker
+spec:
+  selector:
+    app: plant-tracker
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 3000
