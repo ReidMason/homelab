@@ -38,7 +38,7 @@ services:
 
   jackett:
     container_name: jackett
-    image: linuxserver/jackett:0.22.1433
+    image: linuxserver/jackett:0.22.1974
     restart: always
     volumes:
       - "{{ (appdata_path, 'jackett') | path_join }}:/config"
@@ -69,7 +69,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: binhex/arch-radarr
+    image: binhex/arch-radarr:5.25
     restart: always
     volumes:
       - "{{ (appdata_path, 'radarr') | path_join }}:/config"
