@@ -1,4 +1,4 @@
-namespace: linkwarden
+namespace: plant-tracker
 
 resources:
   - namespace.yaml
