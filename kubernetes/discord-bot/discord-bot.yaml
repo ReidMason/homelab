@@ -38,7 +38,7 @@ spec:
           tolerationSeconds: 0
       containers:
         - name: discord-bot
-          image: skippythesnake/discord-bot:latest
+          image: reidmason/discord-bot:1.0.0
           env:
             - name: TOKEN
               valueFrom:
