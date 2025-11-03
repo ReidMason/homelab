@@ -1,8 +1,0 @@
-- name: Create data directories
-  vars:
-    service_name: "tailscale"
-    data_directories:
-      - "tailscale"
-  ansible.builtin.import_role:
-    name: docker-deploy
-    tasks_from: create-container

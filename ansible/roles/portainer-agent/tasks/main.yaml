@@ -1,6 +1,0 @@
-- name: Create data directories
-  vars:
-    service_name: "portainer-agent"
-  ansible.builtin.import_role:
-    name: docker-deploy
-    tasks_from: create-container

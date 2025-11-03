@@ -1,8 +1,0 @@
-productionhosts:
-  hosts:
-    vera:
-      ansible_host: vera.lan
-      ansible_user: vera
-    mona:
-      ansible_host: mona.lan
-      ansible_user: mona
