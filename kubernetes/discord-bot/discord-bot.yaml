@@ -38,7 +38,7 @@ spec:
           tolerationSeconds: 0
       containers:
         - name: discord-bot
-          image: reidmason/discord-bot:1.0.0
+          image: ghcr.io/reidmason/discord-bot:1.0.0
           env:
             - name: TOKEN
               valueFrom:
