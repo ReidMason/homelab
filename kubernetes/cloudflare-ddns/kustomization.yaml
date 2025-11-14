@@ -1,0 +1,6 @@
+namespace: cloudflare-ddns
+
+resources:
+  - namespace.yaml
+  - secret-cloudflare-ddns.yaml
+  - cloudflare-ddns.yaml

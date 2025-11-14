@@ -19,3 +19,4 @@ resources:
   - valkey.yaml
   - paperless.yaml
   - plant-tracker.yaml
+  - cloudflare-ddns.yaml
