@@ -1,21 +1,3 @@
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: discord-bot-secret
-spec:
-  refreshInterval: "15s"
-  secretStoreRef:
-    name: vault-backend
-    kind: ClusterSecretStore
-  target:
-    name: discord-bot-secret
-    creationPolicy: Owner
-  data:
-    - secretKey: "token"
-      remoteRef:
-        key: "secrets/discord-bot"
-        property: "token"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
