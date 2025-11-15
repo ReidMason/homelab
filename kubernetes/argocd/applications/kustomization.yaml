@@ -13,7 +13,6 @@ resources:
   - grafana.yaml
   - prometheus.yaml
   - habit-tracker.yaml
-  - startpage.yaml
   - postgresql.yaml
   - linkwarden.yaml
   - valkey.yaml
