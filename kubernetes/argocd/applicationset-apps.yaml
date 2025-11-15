@@ -9,7 +9,8 @@ spec:
         repoURL: https://github.com/ReidMason/homelab.git
         revision: HEAD
         directories:
-          - path: kubernetes/apps/*
+          - path: kubernetes/*
+            exclude: kubernetes/argocd
   template:
     metadata:
       name: "{{path.basename}}"
