@@ -1,0 +1,15 @@
+# Copy this file to terraform.tfvars and adjust as needed.
+
+proxmox_node = "pve"
+
+vm_name      = "my-vm"
+vm_id        = 100
+vm_cores     = 2
+vm_memory_mb = 2048
+vm_disk_size = "20G"
+vm_datastore = "local-lvm"
+
+# Set this to boot from an ISO for initial OS install, then remove it after.
+# vm_iso = "local:iso/ubuntu-24.04.1-live-server-amd64.iso"
+
+vm_tags = ["terraform"]
