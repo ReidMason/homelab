@@ -1,13 +1,15 @@
 services:
   garage:
     image: dxflrs/garage:v2.2.0
+    restart: unless-stopped
     ports:
       - 3900:3900
       - 3901:3901
       - 3902:3902
       - 3903:3903
-
     volumes:
       - /mnt/user/appdata/garage/garage.toml:/etc/garage.toml
       - /mnt/user/appdata/garage/meta:/var/lib/garage/meta
       - /mnt/user/appdata/garage/data:/var/lib/garage/data
+      - /mnt/user/appdata/garage/init.sh:/init.sh:ro
+      - /mnt/user/appdata/garage/init:/init
