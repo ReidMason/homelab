@@ -1,0 +1,13 @@
+env := "dev"
+
+init:
+    terraform init -backend-config=proxmox.s3.tfbackend
+    terraform workspace select --or-create {{env}}
+
+plan:
+    terraform workspace select {{env}}
+    terraform plan -var-file=credentials.{{env}}.tfvars
+
+apply:
+    terraform workspace select {{env}}
+    terraform apply -var-file=credentials.{{env}}.tfvars

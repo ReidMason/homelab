@@ -1,3 +1,9 @@
+data "proxmox_virtual_environment_nodes" "nodes" {}
+
+output "proxmox_nodes" {
+  value = data.proxmox_virtual_environment_nodes.nodes.names
+}
+
 resource "proxmox_virtual_environment_vm" "vm" {
   name      = var.vm_name
   node_name = var.proxmox_node
