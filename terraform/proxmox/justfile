@@ -1,12 +1,11 @@
 env := "dev"
-proxmox_host := "nia.lan"
 
 # Build the NixOS cloud image and upload it to Proxmox (run once, or on NixOS version bumps)
 # Requires: nix, ssh access to Proxmox host
 upload-image proxmox_host:
     nix run github:nix-community/nixos-generators -- \
         --format qcow \
-        --configuration ./image/configuration.nix \
+        --configuration {{justfile_directory()}}/nix-image/configuration.nix \
         --system x86_64-linux \
         -o /tmp/nixos-cloud.qcow2
     scp /tmp/nixos-cloud.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.qcow2
