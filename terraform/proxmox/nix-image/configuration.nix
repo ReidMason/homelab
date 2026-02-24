@@ -8,4 +8,9 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "prohibit-password";
+
+  # Temporary: allow console login for debugging
+  users.users.root.initialPassword = "nixos";
+
+  system.stateVersion = "25.11";
 }

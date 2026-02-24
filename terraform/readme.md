@@ -46,9 +46,22 @@ just init
 1. Click on the **permissions** tab
 2. Click the **add** dropdown and select **User Permission**
 3. Set the path to `/` and user to your terraform user
-4. For roles select:
-   1. PVEDatastoreAdmin
+4. For roles select `Administrator`
+   1. You can be more specific with roles but who has time for that
 5. Click **add**
+
+### Generate the cloud-init image
+
+1. On a linux host clone this repo
+2. Run the just command using the proxmox host as your target `just upload-image PROXMOX_HOST`
+
+### Copy SSH key to proxmox
+
+`ssh-copy-id root@PROXMOX_HOST`
+
+### Enable snippets
+
+1.
 
 ### CI/CD
 

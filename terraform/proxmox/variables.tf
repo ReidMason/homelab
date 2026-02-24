@@ -27,6 +27,11 @@ variable "proxmox_node" {
   type        = string
 }
 
+variable "proxmox_ssh_host" {
+  description = "Hostname or IP the provider uses to SSH into the Proxmox node (e.g. nia.lan or 192.168.1.10)"
+  type        = string
+}
+
 variable "proxmox_datastore" {
   description = "Proxmox datastore for VM disks (e.g. local-lvm)"
   type        = string
