@@ -43,7 +43,7 @@ variable "runner_vm_id" {
 variable "nixos_image_id" {
   description = "Proxmox file ID of the pre-uploaded NixOS cloud image (run 'just upload-image' first)"
   type        = string
-  default     = "local:iso/nixos-cloud.qcow2"
+  default     = "local:iso/nixos-cloud.img"
 }
 
 variable "github_username" {
