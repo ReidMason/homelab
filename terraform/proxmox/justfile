@@ -3,8 +3,12 @@ env := "dev"
 # Build the NixOS cloud image and upload it to Proxmox (run once, or on NixOS version bumps)
 # Requires: nix, ssh access to Proxmox host
 upload-image proxmox_host:
-    cd {{justfile_directory()}}/nix-image && nix build .#nixosConfigurations.cloud-image.config.system.build.qcow2
-    scp {{justfile_directory()}}/nix-image/result/nixos.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.qcow2
+    nix run github:nix-community/nixos-generators -- \
+        --format qcow \
+        --configuration {{justfile_directory()}}/nix-image/configuration.nix \
+        --system x86_64-linux \
+        -o /tmp/nixos-image
+    scp /tmp/nixos-image/nixos.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.qcow2
 
 init:
     terraform init -backend-config=proxmox.s3.tfbackend
