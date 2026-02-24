@@ -17,7 +17,7 @@ variable "proxmox_insecure" {
 }
 
 variable "proxmox_ssh_username" {
-  description = "SSH username for Proxmox host (used for operations the API cannot perform)"
+  description = "SSH username for Proxmox host"
   type        = string
   default     = "root"
 }
@@ -27,51 +27,26 @@ variable "proxmox_node" {
   type        = string
 }
 
-# VM settings
-variable "vm_name" {
-  description = "Name of the virtual machine"
-  type        = string
-  default     = "terraform-vm"
-}
-
-variable "vm_id" {
-  description = "VM ID (must be unique in the cluster)"
-  type        = number
-  default     = 100
-}
-
-variable "vm_cores" {
-  description = "Number of CPU cores"
-  type        = number
-  default     = 2
-}
-
-variable "vm_memory_mb" {
-  description = "Memory in megabytes"
-  type        = number
-  default     = 2048
-}
-
-variable "vm_disk_size" {
-  description = "Disk size in gigabytes"
-  type        = number
-  default     = 20
-}
-
-variable "vm_datastore" {
-  description = "Proxmox datastore to place the disk on (e.g. local-lvm)"
+variable "proxmox_datastore" {
+  description = "Proxmox datastore for VM disks (e.g. local-lvm)"
   type        = string
   default     = "local-lvm"
 }
 
-variable "vm_iso" {
-  description = "ISO image to boot from, in datastore:iso/filename format (e.g. local:iso/ubuntu-24.04.iso)"
-  type        = string
-  default     = null
+# VM
+variable "runner_vm_id" {
+  description = "VM ID in Proxmox (must be unique)"
+  type        = number
+  default     = 200
 }
 
-variable "vm_tags" {
-  description = "List of tags to apply to the VM"
-  type        = list(string)
-  default     = ["terraform"]
+variable "nixos_image_id" {
+  description = "Proxmox file ID of the pre-uploaded NixOS cloud image (run 'just upload-image' first)"
+  type        = string
+  default     = "local:iso/nixos-cloud.qcow2"
+}
+
+variable "github_username" {
+  description = "GitHub username — SSH public keys fetched from github.com/username.keys"
+  type        = string
 }

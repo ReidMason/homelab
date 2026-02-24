@@ -21,6 +21,10 @@ terraform {
       source  = "bpg/proxmox"
       version = "~> 0.96"
     }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.0"
+    }
   }
 }
 

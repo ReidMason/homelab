@@ -1,0 +1,6 @@
+#cloud-config
+# Minimal bootstrap config — nixos-anywhere replaces this with NixOS
+users:
+  - name: root
+    ssh_authorized_keys:
+      - ${ssh_public_key}

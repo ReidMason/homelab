@@ -21,7 +21,7 @@ Then initialize:
 just init
 ```
 
-### Get Proxmox API key
+### Create the terraform user
 
 1. Create a user by going to **datacenter** > **permissions** > **users**
 2. Click \*add\*\*
@@ -29,14 +29,26 @@ just init
 4. Set the **realm** to **Proxmox VE authentication**
 5. Set up the password
 6. Click **add**
-7. Next create the API token
-8. Go to `datacenter > permissons > API Tokens`
-9. Click **add**
-10. Set the user as the **terraform@pve** user you just created
-11. Set the **token ID** to **terraform**
-12. Uncheck **Privilege Separation**
-13. Click **Add**
-14. Note down the secret
+
+### Get Proxmox API key
+
+1. Next create the API token
+2. Go to `datacenter > permissons > API Tokens`
+3. Click **add**
+4. Set the user as the **terraform@pve** user you just created
+5. Set the **token ID** to **terraform**
+6. Uncheck **Privilege Separation**
+7. Click **Add**
+8. Note down the secret
+
+### Add permissons
+
+1. Click on the **permissions** tab
+2. Click the **add** dropdown and select **User Permission**
+3. Set the path to `/` and user to your terraform user
+4. For roles select:
+   1. PVEDatastoreAdmin
+5. Click **add**
 
 ### CI/CD
 

@@ -1,49 +1,48 @@
-data "proxmox_virtual_environment_nodes" "nodes" {}
-
-output "proxmox_nodes" {
-  value = data.proxmox_virtual_environment_nodes.nodes.names
+data "http" "github_keys" {
+  url = "https://github.com/${var.github_username}.keys"
 }
 
-resource "proxmox_virtual_environment_vm" "vm" {
-  name      = var.vm_name
-  node_name = var.proxmox_node
-  vm_id     = var.vm_id
+resource "proxmox_virtual_environment_file" "cloud_init" {
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = var.proxmox_node
 
-  tags = var.vm_tags
+  source_raw {
+    data      = templatefile("${path.module}/cloud-init.yaml.tftpl", {
+      ssh_public_key = data.http.github_keys.response_body
+    })
+    file_name = "runner-cloud-init.yaml"
+  }
+}
+
+resource "proxmox_virtual_environment_vm" "runner" {
+  name      = "github-runner"
+  node_name = var.proxmox_node
+  vm_id     = var.runner_vm_id
+  tags      = ["terraform", "runner"]
 
   cpu {
-    cores = var.vm_cores
+    cores = 2
     type  = "x86-64-v2-AES"
   }
 
   memory {
-    dedicated = var.vm_memory_mb
+    dedicated = 2048
   }
 
   disk {
-    datastore_id = var.vm_datastore
-    size         = var.vm_disk_size
+    datastore_id = var.proxmox_datastore
+    file_id      = var.nixos_image_id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
+    size         = 20
   }
 
   network_device {
     bridge = "vmbr0"
     model  = "virtio"
   }
-
-  # Boot from ISO if provided, otherwise leave boot order to defaults
-  dynamic "cdrom" {
-    for_each = var.vm_iso != null ? [var.vm_iso] : []
-    content {
-      enabled   = true
-      file_id   = cdrom.value
-      interface = "ide2"
-    }
-  }
-
-  boot_order = var.vm_iso != null ? ["ide2", "virtio0"] : ["virtio0"]
 
   operating_system {
     type = "l26"
@@ -53,20 +52,16 @@ resource "proxmox_virtual_environment_vm" "vm" {
     enabled = true
   }
 
-  lifecycle {
-    ignore_changes = [
-      # Ignore changes to cdrom after initial creation so you can eject the ISO manually
-      cdrom,
-    ]
+  initialization {
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
+    }
+    user_data_file_id = proxmox_virtual_environment_file.cloud_init.id
   }
 }
 
-output "vm_id" {
-  description = "The VM ID assigned in Proxmox"
-  value       = proxmox_virtual_environment_vm.vm.vm_id
-}
-
-output "vm_ipv4_addresses" {
-  description = "IPv4 addresses reported by the QEMU guest agent (requires agent to be running)"
-  value       = proxmox_virtual_environment_vm.vm.ipv4_addresses
+output "runner_ip" {
+  value = proxmox_virtual_environment_vm.runner.ipv4_addresses[0][0]
 }
