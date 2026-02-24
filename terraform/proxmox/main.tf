@@ -63,5 +63,8 @@ resource "proxmox_virtual_environment_vm" "runner" {
 }
 
 output "runner_ip" {
-  value = proxmox_virtual_environment_vm.runner.ipv4_addresses[0][0]
+  value = [
+    for addr in flatten(proxmox_virtual_environment_vm.runner.ipv4_addresses) :
+    addr if addr != "127.0.0.1"
+  ][0]
 }
