@@ -1,4 +1,14 @@
 env := "dev"
+unraid_host := "fern.lan"
+github_username := "reidmason"
+
+# Write proxmox.s3.tfbackend using Garage credentials from Unraid (run once, or on new machine)
+setup-backend host=unraid_host:
+    bash {{justfile_directory()}}/setup-backend.sh {{host}}
+
+# Create the Terraform user, API token, permissions, and storage config on a fresh Proxmox host
+bootstrap proxmox_host env=env:
+    bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}} {{github_username}}
 
 # Build the NixOS cloud image and upload it to Proxmox (run once, or on NixOS version bumps)
 # Requires: nix, ssh access to Proxmox host
