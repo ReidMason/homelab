@@ -1,6 +1,7 @@
 env := "dev"
 unraid_host := "fern.lan"
 github_username := "reidmason"
+nixos_flake := "github:reidmason/dotfiles#github-runner"
 
 # Write proxmox.s3.tfbackend using Garage credentials from Unraid (run once, or on new machine)
 setup-backend host=unraid_host:
@@ -10,16 +11,30 @@ setup-backend host=unraid_host:
 bootstrap proxmox_host env=env:
     bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}} {{github_username}}
 
-# Build the NixOS cloud image and upload it to Proxmox (run once, or on NixOS version bumps)
-# Requires: nix, ssh access to Proxmox host
+# Build the NixOS cloud image from the runner config and upload it to Proxmox
+# Requires: nix, ssh access to Proxmox host. Re-run on NixOS version bumps or config changes.
 upload-image proxmox_host:
     nix run github:nix-community/nixos-generators -- \
         --format qcow \
-        --configuration {{justfile_directory()}}/nix-image/configuration.nix \
-        --system x86_64-linux \
+        --flake {{nixos_flake}} \
+        --no-write-lock-file \
         -o /tmp/nixos-image
     scp /tmp/nixos-image/nixos.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.img
     ssh root@{{proxmox_host}} "chmod 644 /var/lib/vz/template/iso/nixos-cloud.img"
+
+# Deploy the NixOS configuration from dotfiles to the runner VM
+deploy-runner:
+    #!/usr/bin/env bash
+    IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
+    ssh root@$IP "nixos-rebuild switch --flake {{nixos_flake}} --no-write-lock-file"
+
+# Place a GitHub runner registration token on the VM and restart the runner service
+# Generate a token at: https://github.com/reidmason/homelab/settings/actions/runners/new
+register-runner token:
+    #!/usr/bin/env bash
+    IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
+    ssh root@$IP "echo '{{token}}' > /var/lib/secrets/github-runner-token && systemctl restart github-runner-prod.service"
+    echo "Runner registered at $IP"
 
 init:
     terraform init -backend-config=proxmox.s3.tfbackend

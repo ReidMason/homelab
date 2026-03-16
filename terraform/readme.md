@@ -4,16 +4,19 @@ Manages Proxmox VMs via the [bpg/proxmox](https://registry.terraform.io/provider
 
 ## Recovery (full Proxmox reset)
 
-After a full Proxmox reset, run these four commands in order:
+After a full Proxmox reset, run these commands in order:
 
 ```sh
 just setup-backend                    # write proxmox.s3.tfbackend from Garage credentials
 just bootstrap PROXMOX_HOST           # create user/token/permissions, write credentials.dev.tfvars
-just upload-image PROXMOX_HOST        # build and upload the NixOS cloud image
-just init && just env=dev apply       # initialise Terraform and apply
+just upload-image PROXMOX_HOST        # build and upload the NixOS image from runner config
+just init && just env=dev apply       # initialise Terraform and provision the VM
+just register-runner TOKEN            # place runner token and start the runner service
 ```
 
-`bootstrap` will prompt once for your GitHub username on first run. Everything else is automatic.
+Generate a runner registration token at: https://github.com/reidmason/homelab/settings/actions/runners/new
+
+Everything is fully automatic. No prompts.
 
 ---
 
@@ -29,7 +32,7 @@ See `compose/garage` for the setup. Once Garage is running and initialized, cred
 just setup-backend
 ```
 
-This reads the Garage credentials over SSH and writes `terraform/proxmox/proxmox.s3.tfbackend` (gitignored).
+Reads the Garage credentials over SSH and writes `terraform/proxmox/proxmox.s3.tfbackend` (gitignored).
 
 ### 3. Bootstrap Proxmox
 
@@ -39,19 +42,21 @@ just bootstrap PROXMOX_HOST [env]   # env defaults to dev
 
 This will:
 - Copy your SSH key to the Proxmox host
-- Create the `terraform@pve` user
+- Create the `terraform@pve` user (random password — Terraform uses the API token)
 - Create the `terraform` API token
 - Assign the `Administrator` role at `/`
 - Enable snippets and disk images on `local` storage
 - Detect the node name and write `credentials.<env>.tfvars`
 
-### 4. Build and upload the NixOS cloud image
+### 4. Build and upload the NixOS image
 
 ```sh
 just upload-image PROXMOX_HOST
 ```
 
-Requires `nix`. Re-run this when bumping the NixOS version.
+Requires `nix`. Builds the image directly from the runner config in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) (`hosts/runner/`). The provisioned VM boots fully configured — no post-provision config deploy needed.
+
+Re-run when the NixOS version bumps or after significant config changes.
 
 ### 5. Apply
 
@@ -59,6 +64,29 @@ Requires `nix`. Re-run this when bumping the NixOS version.
 just init
 just env=dev apply
 ```
+
+### 6. Register the runner
+
+```sh
+just register-runner TOKEN
+```
+
+Generate a registration token at: https://github.com/reidmason/homelab/settings/actions/runners/new
+
+The token only needs to be placed once — it persists across config updates and reboots.
+
+---
+
+## Updating the runner config
+
+The VM's NixOS configuration lives in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) under `hosts/runner/`. After pushing changes to dotfiles, SSH into the VM and run:
+
+```sh
+just deploy-runner             # update dev runner
+just env=prod deploy-runner    # update prod runner
+```
+
+This SSHes into the VM and runs `nixos-rebuild switch` there — the VM fetches and builds its own updated config directly from GitHub. No image rebuild or VM recreation needed.
 
 ---
 
