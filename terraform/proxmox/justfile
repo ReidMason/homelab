@@ -1,7 +1,7 @@
 env := "dev"
 unraid_host := "fern.lan"
 github_username := "reidmason"
-nixos_flake := "github:reidmason/dotfiles#github-runner"
+nixos_flake := "github:reidmason/dotfiles#github-runner-" + env
 
 # Write proxmox.s3.tfbackend using Garage credentials from Unraid (run once, or on new machine)
 setup-backend host=unraid_host:
@@ -27,7 +27,7 @@ upload-image proxmox_host:
 register-runner token:
     #!/usr/bin/env bash
     IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
-    ssh root@$IP "echo '{{token}}' > /var/lib/secrets/github-runner-token && systemctl restart github-runner-prod.service"
+    ssh root@$IP "mkdir -p /var/lib/secrets && chmod 700 /var/lib/secrets && echo '{{token}}' > /var/lib/secrets/github-runner-token && chmod 600 /var/lib/secrets/github-runner-token && systemctl restart github-runner-{{env}}.service"
     echo "Runner registered at $IP"
 
 init:
