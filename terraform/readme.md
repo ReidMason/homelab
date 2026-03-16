@@ -11,7 +11,6 @@ just setup-backend                    # write proxmox.s3.tfbackend from Garage c
 just bootstrap PROXMOX_HOST           # create user/token/permissions, write credentials.dev.tfvars
 just upload-image PROXMOX_HOST        # build and upload the NixOS image from runner config
 just init && just env=dev apply       # initialise Terraform and provision the VM
-just deploy-runner                    # apply NixOS system + home-manager config to the runner
 just register-runner TOKEN            # place runner token and start the runner service
 ```
 
@@ -66,10 +65,9 @@ just init
 just env=dev apply
 ```
 
-### 6. Deploy config and register the runner
+### 6. Register the runner
 
 ```sh
-just deploy-runner
 just register-runner TOKEN
 ```
 
