@@ -14,7 +14,7 @@ bootstrap proxmox_host env=env:
 # Build the NixOS cloud image from the runner config and upload it to Proxmox
 # Requires: nix, ssh access to Proxmox host. Re-run on NixOS version bumps or config changes.
 upload-image proxmox_host:
-    nix flake metadata {{nixos_flake}} --refresh > /dev/null
+    nix flake metadata github:reidmason/dotfiles --refresh > /dev/null
     nix run github:nix-community/nixos-generators -- \
         --format qcow \
         --flake {{nixos_flake}} \
