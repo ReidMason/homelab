@@ -17,7 +17,6 @@ upload-image proxmox_host:
     nix run github:nix-community/nixos-generators -- \
         --format qcow \
         --flake {{nixos_flake}} \
-        --no-write-lock-file \
         -o /tmp/nixos-image
     scp /tmp/nixos-image/nixos.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.img
     ssh root@{{proxmox_host}} "chmod 644 /var/lib/vz/template/iso/nixos-cloud.img"
@@ -26,7 +25,7 @@ upload-image proxmox_host:
 deploy-runner:
     #!/usr/bin/env bash
     IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
-    ssh root@$IP "nixos-rebuild switch --flake {{nixos_flake}} --no-write-lock-file"
+    ssh root@$IP "nixos-rebuild switch --flake {{nixos_flake}}"
 
 # Place a GitHub runner registration token on the VM and restart the runner service
 # Generate a token at: https://github.com/reidmason/homelab/settings/actions/runners/new
