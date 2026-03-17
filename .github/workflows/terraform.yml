@@ -1,0 +1,46 @@
+# name: Terraform
+
+# on:
+#   push:
+#     branches: [main]
+#     paths: ["terraform/**"]
+#   workflow_dispatch:
+
+# jobs:
+#   terraform:
+#     name: Apply
+#     runs-on: [self-hosted, prod]
+#     defaults:
+#       run:
+#         working-directory: terraform/proxmox
+#     env:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       TF_VAR_proxmox_endpoint: ${{ secrets.PROXMOX_ENDPOINT }}
+#       TF_VAR_proxmox_api_token: ${{ secrets.PROXMOX_API_TOKEN }}
+#       TF_VAR_proxmox_node: ${{ secrets.PROXMOX_NODE }}
+#       TF_VAR_proxmox_ssh_host: ${{ secrets.PROXMOX_SSH_HOST }}
+#       TF_VAR_github_username: reidmason
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Setup SSH agent
+#         uses: webfactory/ssh-agent@v0.9.0
+#         with:
+#           ssh-private-key: ${{ secrets.PROXMOX_SSH_KEY }}
+
+#       - name: Add Proxmox to known hosts
+#         run: ssh-keyscan -H ${{ secrets.PROXMOX_SSH_HOST }} >> ~/.ssh/known_hosts
+
+#       - name: Terraform init
+#         run: terraform init
+
+#       - name: Terraform workspace
+#         run: terraform workspace select prod
+
+#       - name: Terraform plan
+#         run: terraform plan
+
+#       - name: Terraform apply
+#         run: terraform apply -auto-approve

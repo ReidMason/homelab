@@ -1,0 +1,43 @@
+env := "dev"
+unraid_host := "fern.lan"
+github_username := "reidmason"
+nixos_flake := "github:reidmason/dotfiles#github-runner-" + env
+
+# Write proxmox.s3.tfbackend using Garage credentials from Unraid (run once, or on new machine)
+setup-backend host=unraid_host:
+    bash {{justfile_directory()}}/setup-backend.sh {{host}}
+
+# Create the Terraform user, API token, permissions, and storage config on a fresh Proxmox host
+bootstrap proxmox_host env=env:
+    bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}} {{github_username}}
+
+# Build the NixOS cloud image from the runner config and upload it to Proxmox
+# Requires: nix, ssh access to Proxmox host. Re-run on NixOS version bumps or config changes.
+upload-image proxmox_host:
+    nix flake metadata github:reidmason/dotfiles --refresh > /dev/null
+    nix run github:nix-community/nixos-generators -- \
+        --format qcow \
+        --flake {{nixos_flake}} \
+        -o /tmp/nixos-image
+    scp /tmp/nixos-image/nixos.qcow2 root@{{proxmox_host}}:/var/lib/vz/template/iso/nixos-cloud.img
+    ssh root@{{proxmox_host}} "chmod 644 /var/lib/vz/template/iso/nixos-cloud.img"
+
+# Place a GitHub runner registration token on the VM and restart the runner service
+# Generate a token at: https://github.com/reidmason/homelab/settings/actions/runners/new
+register-runner token:
+    #!/usr/bin/env bash
+    IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
+    ssh root@$IP "mkdir -p /var/lib/secrets && chmod 700 /var/lib/secrets && echo '{{token}}' > /var/lib/secrets/github-runner-token && chmod 600 /var/lib/secrets/github-runner-token && systemctl restart github-runner-{{env}}.service"
+    echo "Runner registered at $IP"
+
+init:
+    terraform init -backend-config=proxmox.s3.tfbackend
+    terraform workspace select --or-create {{env}}
+
+plan:
+    terraform workspace select {{env}}
+    terraform plan -var-file=credentials.{{env}}.tfvars
+
+apply:
+    terraform workspace select {{env}}
+    terraform apply -var-file=credentials.{{env}}.tfvars
