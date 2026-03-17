@@ -1,0 +1,22 @@
+name: Deploy Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Runner environment to deploy
+        required: true
+        default: dev
+        type: choice
+        options: [dev, prod]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: [self-hosted, "${{ inputs.env }}"]
+    steps:
+      - name: Update system config
+        run: sudo nixos-rebuild switch --flake "github:reidmason/dotfiles#$(hostname)"
+
+      - name: Update home config
+        run: nix run github:nix-community/home-manager -- switch --flake "github:reidmason/dotfiles#$(hostname)"
