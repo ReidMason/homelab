@@ -1,6 +1,5 @@
 env := "dev"
 unraid_host := "fern.lan"
-github_username := "reidmason"
 nixos_flake := "github:reidmason/dotfiles#github-runner-" + env
 
 # Write proxmox.s3.tfbackend using Garage credentials from Unraid (run once, or on new machine)
@@ -9,7 +8,7 @@ setup-backend host=unraid_host:
 
 # Create the Terraform user, API token, permissions, and storage config on a fresh Proxmox host
 bootstrap proxmox_host env=env:
-    bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}} {{github_username}}
+    bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}}
 
 # Build the NixOS cloud image from the runner config and upload it to Proxmox
 # Requires: nix, ssh access to Proxmox host. Re-run on NixOS version bumps or config changes.
@@ -29,6 +28,14 @@ register-runner token:
     IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
     ssh root@$IP "mkdir -p /var/lib/secrets && chmod 700 /var/lib/secrets && echo '{{token}}' > /var/lib/secrets/github-runner-token && chmod 600 /var/lib/secrets/github-runner-token && systemctl restart github-runner-{{env}}.service"
     echo "Runner registered at $IP"
+
+# Apply latest dotfiles flake on the runner (nixos-rebuild + home-manager), same as autoUpgrade's switch path
+deploy-runner env=env:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    FLAKE="github:reidmason/dotfiles#github-runner-{{env}}"
+    IP=$(terraform workspace select -or-create {{env}} > /dev/null && terraform output -raw runner_ip)
+    ssh root@$IP "nixos-rebuild switch --flake $FLAKE && nix run github:nix-community/home-manager -- switch --flake $FLAKE"
 
 init:
     terraform init -backend-config=proxmox.s3.tfbackend

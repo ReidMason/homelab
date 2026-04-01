@@ -50,8 +50,3 @@ variable "nixos_image_id" {
   type        = string
   default     = "local:iso/nixos-cloud.img"
 }
-
-variable "github_username" {
-  description = "GitHub username — SSH public keys fetched from github.com/username.keys"
-  type        = string
-}

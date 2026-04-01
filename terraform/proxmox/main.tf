@@ -1,20 +1,3 @@
-data "http" "github_keys" {
-  url = "https://github.com/${var.github_username}.keys"
-}
-
-resource "proxmox_virtual_environment_file" "cloud_init" {
-  content_type = "snippets"
-  datastore_id = "local"
-  node_name    = var.proxmox_node
-
-  source_raw {
-    data      = templatefile("${path.module}/cloud-init.yaml.tftpl", {
-      ssh_public_key = data.http.github_keys.response_body
-    })
-    file_name = "runner-cloud-init.yaml"
-  }
-}
-
 resource "proxmox_virtual_environment_vm" "runner" {
   name      = "github-runner"
   node_name = var.proxmox_node
@@ -58,7 +41,6 @@ resource "proxmox_virtual_environment_vm" "runner" {
         address = "dhcp"
       }
     }
-    user_data_file_id = proxmox_virtual_environment_file.cloud_init.id
   }
 }
 

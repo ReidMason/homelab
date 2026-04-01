@@ -6,9 +6,8 @@
 #   e.g. ./bootstrap-proxmox.sh nia.lan dev
 set -euo pipefail
 
-PROXMOX_HOST="${1:?Usage: bootstrap-proxmox.sh <proxmox-host> [env] [github-username]}"
+PROXMOX_HOST="${1:?Usage: bootstrap-proxmox.sh <proxmox-host> [env]}"
 ENV="${2:-dev}"
-GITHUB_USERNAME="${3:-}"
 SSH="ssh -o StrictHostKeyChecking=accept-new root@${PROXMOX_HOST}"
 SCRIPT_DIR="${BASH_SOURCE%/*}"
 CREDS_FILE="${SCRIPT_DIR}/credentials.${ENV}.tfvars"
@@ -68,17 +67,12 @@ if [ -n "${TOKEN_SECRET:-}" ]; then
   echo "→ Writing ${CREDS_FILE}..."
 
   if [ ! -f "$CREDS_FILE" ]; then
-    if [ -z "$GITHUB_USERNAME" ]; then
-      read -rp "  GitHub username (for SSH key fetching): " GITHUB_USERNAME
-    fi
     cat > "$CREDS_FILE" <<EOF
 proxmox_endpoint     = "https://${PROXMOX_HOST}:8006/"
 proxmox_api_token    = "terraform@pve!terraform=${TOKEN_SECRET}"
 proxmox_ssh_username = "root"
 proxmox_node         = "${NODE_NAME}"
 proxmox_ssh_host     = "${PROXMOX_HOST}"
-
-github_username = "${GITHUB_USERNAME}"
 EOF
     echo "  Done. Created ${CREDS_FILE}"
   else

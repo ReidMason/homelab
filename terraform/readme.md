@@ -2,6 +2,8 @@
 
 Manages Proxmox VMs via the [bpg/proxmox](https://registry.terraform.io/providers/bpg/proxmox/latest) provider. Remote state is stored in a [Garage](https://garagehq.deuxfleurs.fr/) S3 bucket running on Unraid (`compose/garage`).
 
+Run `just` recipes from `terraform/proxmox` (this directory’s justfile).
+
 ## Recovery (full Proxmox reset)
 
 After a full Proxmox reset, run these commands in order:
@@ -41,6 +43,7 @@ just bootstrap PROXMOX_HOST [env]   # env defaults to dev
 ```
 
 This will:
+
 - Copy your SSH key to the Proxmox host
 - Create the `terraform@pve` user (random password — Terraform uses the API token)
 - Create the `terraform` API token
@@ -54,9 +57,7 @@ This will:
 just upload-image PROXMOX_HOST
 ```
 
-Requires `nix`. Builds the image directly from the runner config in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) (`hosts/runner/`). The provisioned VM boots fully configured — no post-provision config deploy needed.
-
-Re-run when the NixOS version bumps or after significant config changes.
+Requires `nix`. Builds the image directly from the runner config in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) (`hosts/github-runner/`). The provisioned VM boots fully configured — root SSH keys come from that flake (not Terraform). Re-run `upload-image` when the NixOS version bumps, after significant config changes, or when you rotate GitHub keys (update the `fetchurl` hash in the flake first).
 
 ### 5. Apply
 
@@ -79,14 +80,14 @@ The token only needs to be placed once — it persists across config updates and
 
 ## Updating the runner config
 
-The VM's NixOS configuration lives in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) under `hosts/runner/`. After pushing changes to dotfiles, SSH into the VM and run:
+The VM’s NixOS configuration lives in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) under `hosts/github-runner/`. After pushing changes to dotfiles, from `terraform/proxmox` run:
 
 ```sh
-just deploy-runner             # update dev runner
+just deploy-runner             # update dev runner (default workspace)
 just env=prod deploy-runner    # update prod runner
 ```
 
-This SSHes into the VM and runs `nixos-rebuild switch` there — the VM fetches and builds its own updated config directly from GitHub. No image rebuild or VM recreation needed.
+This resolves `runner_ip` from Terraform state, SSHs as root, and runs `nixos-rebuild switch` plus `home-manager switch` against `github:reidmason/dotfiles#github-runner-<env>` — the same pair as `system.autoUpgrade` on the runner. No image rebuild or VM recreation needed.
 
 ---
 
