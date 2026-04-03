@@ -16,19 +16,8 @@ variable "proxmox_insecure" {
   default     = true
 }
 
-variable "proxmox_ssh_username" {
-  description = "SSH username for Proxmox host"
-  type        = string
-  default     = "root"
-}
-
 variable "proxmox_node" {
   description = "Proxmox node name to create resources on"
-  type        = string
-}
-
-variable "proxmox_ssh_host" {
-  description = "Hostname or IP the provider uses to SSH into the Proxmox node (e.g. nia.lan or 192.168.1.10)"
   type        = string
 }
 

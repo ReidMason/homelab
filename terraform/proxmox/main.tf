@@ -10,7 +10,7 @@ resource "proxmox_virtual_environment_vm" "runner" {
   }
 
   memory {
-    dedicated = 2048
+    dedicated = 4096
   }
 
   disk {
@@ -19,7 +19,7 @@ resource "proxmox_virtual_environment_vm" "runner" {
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
-    size         = 20
+    size         = 50
   }
 
   network_device {
@@ -33,6 +33,8 @@ resource "proxmox_virtual_environment_vm" "runner" {
 
   agent {
     enabled = true
+    # Cap wait when guest agent is down (default is 15m and feels like a hang on refresh).
+    timeout = "2m"
   }
 
   initialization {

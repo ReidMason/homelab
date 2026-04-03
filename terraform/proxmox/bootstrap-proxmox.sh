@@ -68,11 +68,9 @@ if [ -n "${TOKEN_SECRET:-}" ]; then
 
   if [ ! -f "$CREDS_FILE" ]; then
     cat > "$CREDS_FILE" <<EOF
-proxmox_endpoint     = "https://${PROXMOX_HOST}:8006/"
-proxmox_api_token    = "terraform@pve!terraform=${TOKEN_SECRET}"
-proxmox_ssh_username = "root"
-proxmox_node         = "${NODE_NAME}"
-proxmox_ssh_host     = "${PROXMOX_HOST}"
+proxmox_endpoint  = "https://${PROXMOX_HOST}:8006/"
+proxmox_api_token = "terraform@pve!terraform=${TOKEN_SECRET}"
+proxmox_node      = "${NODE_NAME}"
 EOF
     echo "  Done. Created ${CREDS_FILE}"
   else
