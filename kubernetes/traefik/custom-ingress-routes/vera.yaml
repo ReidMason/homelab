@@ -44,7 +44,7 @@ spec:
       kind: Rule
       services:
         - name: vera-service
-          port: 7878
+          port: 9696
 
     - match: Host(`nginx.skippythesnake.com`)
       kind: Rule
