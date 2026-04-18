@@ -40,6 +40,12 @@ spec:
         - name: vera-service
           port: 7878
 
+    - match: Host(`prowlarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 7878
+
     - match: Host(`nginx.skippythesnake.com`)
       kind: Rule
       services:
