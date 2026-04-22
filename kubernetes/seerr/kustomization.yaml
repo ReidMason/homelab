@@ -1,0 +1,4 @@
+resources:
+  - namespace.yaml
+  - seerr-helm-app.yaml
+  - ingress.yaml

@@ -1,0 +1,9 @@
+# Seerr Helm chart: https://github.com/seerr-team/seerr/tree/develop/charts/seerr-chart
+# Ingress: Traefik via kubernetes/seerr/ingress.yaml (this repo is GitOps, not the chart)
+fullnameOverride: seerr
+ingress:
+  enabled: false
+config:
+  persistence:
+    size: 5Gi
+    # storageClass: your-sc  # set if the cluster default is wrong
