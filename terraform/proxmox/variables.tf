@@ -21,6 +21,12 @@ variable "proxmox_node" {
   type        = string
 }
 
+variable "github_username" {
+  description = "Optional metadata kept in credentials tfvars; not referenced by Terraform resources here."
+  type        = string
+  default     = ""
+}
+
 variable "proxmox_datastore" {
   description = "Proxmox datastore for VM disks (e.g. local-lvm)"
   type        = string
