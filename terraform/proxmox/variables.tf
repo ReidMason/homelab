@@ -43,7 +43,7 @@ variable "nixos_image_id" {
 # --- Talos (1 control plane + 2 workers), optional ---
 
 variable "enable_talos_cluster" {
-  description = "When true, create Talos VMs and bootstrap. Requires talos_* IPs; Talos disk is downloaded on the Proxmox node unless talos_image_id is set."
+  description = "When true, create Talos VMs and bootstrap. Requires talos_controlplanes (one node) and talos_workers list; Talos disk is downloaded on the Proxmox node unless talos_image_id is set."
   type        = bool
   default     = false
 }
@@ -78,28 +78,24 @@ variable "talos_metal_image_url" {
   default     = ""
 }
 
-variable "talos_controlplane_vm_id" {
-  description = "Unique Proxmox VM ID for the Talos control plane"
-  type        = number
-  default     = 210
+variable "talos_controlplanes" {
+  description = "Talos control plane VMs: Proxmox vm_id, stable ip (DHCP reservation), optional mac_address (empty = Proxmox-assigned). Exactly one entry when enable_talos_cluster is true; bootstrap uses that node."
+  type = list(object({
+    vm_id       = number
+    ip          = string
+    mac_address = optional(string, "")
+  }))
+  default = []
 }
 
-variable "talos_worker_vm_ids" {
-  description = "Unique Proxmox VM IDs for Talos workers (length must match talos_worker_ips when Talos is enabled)"
-  type        = list(number)
-  default     = [211, 212]
-}
-
-variable "talos_controlplane_ip" {
-  description = "Stable IP (DHCP reservation) for the control plane; required when enable_talos_cluster is true"
-  type        = string
-  default     = ""
-}
-
-variable "talos_worker_ips" {
-  description = "Stable IPs (DHCP reservations) for workers, same order as talos_worker_vm_ids; required when Talos is enabled"
-  type        = list(string)
-  default     = []
+variable "talos_workers" {
+  description = "Talos worker VMs in join order: vm_id, stable ip, optional mac_address (empty = Proxmox-assigned). vm_id values must be unique across talos_controlplanes and talos_workers."
+  type = list(object({
+    vm_id       = number
+    ip          = string
+    mac_address = optional(string, "")
+  }))
+  default = []
 }
 
 variable "talos_controlplane_cores" {

@@ -70,9 +70,9 @@ just env=dev apply
 
 1. By default, Terraform tells Proxmox to download `metal-amd64.raw.zst` for your `talos_version` (default `1.12.6`), decompress it on the node, and attach it to the VMs. The Proxmox API token needs permission for the download-url API (see `proxmox_download_file` in the [bpg provider docs](https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/download_file)). The image lands on `talos_image_datastore_id` (default `local`). To use a file you uploaded yourself instead, set `talos_image_id` (e.g. `local:iso/talos-metal-amd64.qcow2`) or run `just upload-talos-image` and point `talos_image_id` at that volid.
 
-2. Create three DHCP reservations so the control plane and two workers always receive the same addresses you will put in tfvars. Match each reservation to the VM’s MAC address (Terraform creates the VMs on first apply; you can note MACs in the Proxmox UI after creation, or run a targeted apply for the VMs first).
+2. Create DHCP reservations on your router so each Talos NIC MAC gets the **`ip`** you set on that node in tfvars (or omit `mac_address` / set it to `""` on a node to let Proxmox assign a MAC, then add a reservation after you read the MAC from the UI—possibly a second `apply`).
 
-3. In `credentials.<env>.tfvars`, set `enable_talos_cluster = true`, `talos_controlplane_ip`, and `talos_worker_ips` (same length as `talos_worker_vm_ids`, default two workers). Optionally adjust `talos_controlplane_vm_id`, `talos_worker_vm_ids`, CPU, memory, or `talos_disk_gb`.
+3. In `credentials.<env>.tfvars`, set `enable_talos_cluster = true`, **`talos_controlplanes`** (exactly one object: `vm_id`, `ip`, optional `mac_address`), and **`talos_workers`** (a list of the same shape, unique `vm_id`s). Scale workers by adding or removing list elements. Optionally adjust CPU, memory, or `talos_disk_gb`.
 
 4. Apply:
 
