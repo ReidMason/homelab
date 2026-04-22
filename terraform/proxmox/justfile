@@ -10,8 +10,8 @@ setup-backend host=unraid_host:
 bootstrap proxmox_host env=env:
     bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}}
 
-# Download Talos metal image, convert to qcow2, upload to Proxmox (same path style as NixOS image).
-# Requires: curl, zstd, qemu-img, ssh. version must match talos_version in tfvars.
+# Optional: download Talos metal image, convert to qcow2, upload to Proxmox if you prefer a manual image
+# instead of Terraform proxmox_download_file. Requires: curl, zstd, qemu-img, ssh. version must match talos_version in tfvars.
 upload-talos-image proxmox_host version='1.12.6':
     #!/usr/bin/env bash
     set -euo pipefail

@@ -1,5 +1,5 @@
 # Talos: 1 control plane + 2 workers on Proxmox. Bootstrap and kubeconfig via siderolabs/talos provider.
-# Set enable_talos_cluster = true after: upload talos qcow to Proxmox (just upload-talos-image),
+# With talos_image_id empty, Proxmox downloads metal-amd64.raw.zst (zstd) from Talos releases and decompresses it.
 # DHCP reservations for talos_controlplane_ip and talos_worker_ips matching VM MACs.
 
 locals {
@@ -12,6 +12,28 @@ locals {
       }
     }
   })
+  talos_version_for_url = trimprefix(var.talos_version, "v")
+  talos_metal_download_url = trimspace(var.talos_metal_image_url) != "" ? trimspace(var.talos_metal_image_url) : format(
+    "https://github.com/siderolabs/talos/releases/download/v%s/metal-amd64.raw.zst",
+    local.talos_version_for_url,
+  )
+  talos_disk_file_id = !local.talos_on ? "" : (
+    trimspace(var.talos_image_id) != "" ? trimspace(var.talos_image_id) : proxmox_download_file.talos_metal[0].id
+  )
+}
+
+resource "proxmox_download_file" "talos_metal" {
+  count = local.talos_on && trimspace(var.talos_image_id) == "" ? 1 : 0
+
+  content_type               = "iso"
+  datastore_id               = var.talos_image_datastore_id
+  node_name                    = var.proxmox_node
+  url                          = local.talos_metal_download_url
+  file_name                    = "talos-metal-amd64-${local.talos_version_for_url}.img"
+  decompression_algorithm      = "zst"
+  upload_timeout               = 1800
+  overwrite_unmanaged          = true
+  verify                       = true
 }
 
 check "talos_when_enabled" {
@@ -70,7 +92,7 @@ resource "proxmox_virtual_environment_vm" "talos_control_plane" {
 
   disk {
     datastore_id = var.proxmox_datastore
-    file_id      = var.talos_image_id
+    file_id      = local.talos_disk_file_id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -119,7 +141,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
 
   disk {
     datastore_id = var.proxmox_datastore
-    file_id      = var.talos_image_id
+    file_id      = local.talos_disk_file_id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -144,7 +166,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
     ip_config {
       ipv4 {
         address = "dhcp"
-      }
+}
     }
   }
 }

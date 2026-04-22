@@ -43,7 +43,7 @@ variable "nixos_image_id" {
 # --- Talos (1 control plane + 2 workers), optional ---
 
 variable "enable_talos_cluster" {
-  description = "When true, create Talos VMs and bootstrap. Requires talos_* IPs and uploaded talos image on Proxmox."
+  description = "When true, create Talos VMs and bootstrap. Requires talos_* IPs; Talos disk is downloaded on the Proxmox node unless talos_image_id is set."
   type        = bool
   default     = false
 }
@@ -61,9 +61,21 @@ variable "talos_version" {
 }
 
 variable "talos_image_id" {
-  description = "Proxmox file ID for Talos disk (run 'just upload-talos-image' first)"
+  description = "Proxmox volid for Talos disk. Leave empty to download metal-amd64.raw.zst from Talos releases onto the node (see talos_image_datastore_id). Set e.g. local:iso/talos-metal-amd64.qcow2 to use a file you uploaded yourself."
   type        = string
-  default     = "local:iso/talos-metal-amd64.qcow2"
+  default     = ""
+}
+
+variable "talos_image_datastore_id" {
+  description = "Proxmox datastore for downloaded Talos image (ISO/import content); only used when talos_image_id is empty and enable_talos_cluster is true"
+  type        = string
+  default     = "local"
+}
+
+variable "talos_metal_image_url" {
+  description = "HTTPS URL to Talos metal-amd64.raw.zst. Empty uses GitHub for talos_version."
+  type        = string
+  default     = ""
 }
 
 variable "talos_controlplane_vm_id" {

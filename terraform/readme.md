@@ -68,14 +68,7 @@ just env=dev apply
 
 ### Talos Kubernetes (optional, 1 control plane + 2 workers)
 
-1. Upload a Talos disk image to Proxmox (version must match `talos_version` in tfvars, default `1.12.6`):
-
-   ```sh
-   just upload-talos-image PROXMOX_HOST
-   # or: just upload-talos-image PROXMOX_HOST version=1.12.6
-   ```
-
-   Requires `curl`, `zstd`, `qemu-img`, and SSH as `root` to the Proxmox host. Proxmox file id defaults to `local:iso/talos-metal-amd64.qcow2` (`talos_image_id`).
+1. By default, Terraform tells Proxmox to download `metal-amd64.raw.zst` for your `talos_version` (default `1.12.6`), decompress it on the node, and attach it to the VMs. The Proxmox API token needs permission for the download-url API (see `proxmox_download_file` in the [bpg provider docs](https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/download_file)). The image lands on `talos_image_datastore_id` (default `local`). To use a file you uploaded yourself instead, set `talos_image_id` (e.g. `local:iso/talos-metal-amd64.qcow2`) or run `just upload-talos-image` and point `talos_image_id` at that volid.
 
 2. Create three DHCP reservations so the control plane and two workers always receive the same addresses you will put in tfvars. Match each reservation to the VM’s MAC address (Terraform creates the VMs on first apply; you can note MACs in the Proxmox UI after creation, or run a targeted apply for the VMs first).
 
