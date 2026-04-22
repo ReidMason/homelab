@@ -21,9 +21,10 @@ locals {
     "https://github.com/siderolabs/talos/releases/download/v%s/metal-amd64.raw.zst",
     local.talos_version_for_url,
   )
-  talos_disk_file_id = !local.talos_on ? "" : (
+  # API disk import (no SSH): disk.import_from in VM resources — see bpg provider cloud-image guide.
+  talos_disk_import_from = local.talos_ready ? (
     trimspace(var.talos_image_id) != "" ? trimspace(var.talos_image_id) : proxmox_download_file.talos_metal[0].id
-  )
+  ) : ""
   # Resources that need a valid control plane node use this (avoids partial apply with invalid lists).
   talos_ready = local.talos_cp != null && trimspace(local.talos_cp.ip) != ""
 }
@@ -31,15 +32,15 @@ locals {
 resource "proxmox_download_file" "talos_metal" {
   count = local.talos_ready && trimspace(var.talos_image_id) == "" ? 1 : 0
 
-  content_type               = "iso"
-  datastore_id               = var.talos_image_datastore_id
-  node_name                    = var.proxmox_node
-  url                          = local.talos_metal_download_url
-  file_name                    = "talos-metal-amd64-${local.talos_version_for_url}.img"
-  decompression_algorithm      = "zst"
-  upload_timeout               = 1800
-  overwrite_unmanaged          = true
-  verify                       = true
+  content_type          = "import"
+  datastore_id          = var.talos_image_datastore_id
+  node_name             = var.proxmox_node
+  url                   = local.talos_metal_download_url
+  file_name             = "talos-metal-amd64-${local.talos_version_for_url}.img"
+  decompression_algorithm = "zst"
+  upload_timeout        = 1800
+  overwrite_unmanaged   = true
+  verify                = true
 }
 
 check "talos_when_enabled" {
@@ -116,7 +117,7 @@ resource "proxmox_virtual_environment_vm" "talos_control_plane" {
 
   disk {
     datastore_id = var.proxmox_datastore
-    file_id      = local.talos_disk_file_id
+    import_from  = local.talos_disk_import_from
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -166,7 +167,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
 
   disk {
     datastore_id = var.proxmox_datastore
-    file_id      = local.talos_disk_file_id
+    import_from  = local.talos_disk_import_from
     interface    = "virtio0"
     iothread     = true
     discard      = "on"

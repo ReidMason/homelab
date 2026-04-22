@@ -52,7 +52,7 @@ echo "  Done."
 # ── 5. Local storage content types ───────────────────────────────────────────
 
 echo "→ Enabling snippets and disk images on local storage..."
-$SSH "pvesm set local --content iso,backup,vztmpl,snippets,images"
+$SSH "pvesm set local --content iso,import,backup,vztmpl,snippets,images"
 echo "  Done."
 
 # ── 6. Detect node name ───────────────────────────────────────────────────────

@@ -15,7 +15,7 @@ resource "proxmox_virtual_environment_vm" "runner" {
 
   disk {
     datastore_id = var.proxmox_datastore
-    file_id      = var.nixos_image_id
+    import_from  = var.nixos_image_id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"

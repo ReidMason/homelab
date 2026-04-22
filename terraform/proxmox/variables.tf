@@ -41,7 +41,7 @@ variable "runner_vm_id" {
 }
 
 variable "nixos_image_id" {
-  description = "Proxmox file ID of the pre-uploaded NixOS cloud image (run 'just upload-image' first)"
+  description = "Proxmox volid for the NixOS cloud image used as disk import source (run 'just upload-image' first; default is under local ISO storage)."
   type        = string
   default     = "local:iso/nixos-cloud.img"
 }
@@ -67,13 +67,13 @@ variable "talos_version" {
 }
 
 variable "talos_image_id" {
-  description = "Proxmox volid for Talos disk. Leave empty to download metal-amd64.raw.zst from Talos releases onto the node (see talos_image_datastore_id). Set e.g. local:iso/talos-metal-amd64.qcow2 to use a file you uploaded yourself."
+  description = "Proxmox volid for an existing Talos disk image (API import source), e.g. local:import/talos-metal-amd64.qcow2. Leave empty to download metal-amd64.raw.zst via proxmox_download_file (requires Import on talos_image_datastore_id)."
   type        = string
   default     = ""
 }
 
 variable "talos_image_datastore_id" {
-  description = "Proxmox datastore for downloaded Talos image (ISO/import content); only used when talos_image_id is empty and enable_talos_cluster is true"
+  description = "Datastore for proxmox_download_file when talos_image_id is empty; must allow Disk image / Import content (e.g. directory storage `local` with import enabled — see bootstrap-proxmox.sh)."
   type        = string
   default     = "local"
 }

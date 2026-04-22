@@ -4,6 +4,8 @@ Manages Proxmox VMs via the [bpg/proxmox](https://registry.terraform.io/provider
 
 Run `just` recipes from `terraform/proxmox` (this directory’s justfile).
 
+VM disks use **`import_from`** (Proxmox API disk import), not `file_id`, so **no SSH to Proxmox** is required for Terraform. The directory storage used for downloads (default **`local`**) must allow **Disk image / Import** content. `just bootstrap` enables that on `local`; on an existing node run: `pvesm set local --content iso,import,backup,vztmpl,snippets,images` once if Talos download fails with a storage error.
+
 ## Recovery (full Proxmox reset)
 
 After a full Proxmox reset, run these commands in order:
@@ -68,7 +70,7 @@ just env=dev apply
 
 ### Talos Kubernetes (optional, 1 control plane + 2 workers)
 
-1. By default, Terraform tells Proxmox to download `metal-amd64.raw.zst` for your `talos_version` (default `1.12.6`), decompress it on the node, and attach it to the VMs. The Proxmox API token needs permission for the download-url API (see `proxmox_download_file` in the [bpg provider docs](https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/download_file)). The image lands on `talos_image_datastore_id` (default `local`). To use a file you uploaded yourself instead, set `talos_image_id` (e.g. `local:iso/talos-metal-amd64.qcow2`) or run `just upload-talos-image` and point `talos_image_id` at that volid.
+1. By default, Terraform uses `proxmox_download_file` with **`content_type = "import"`** so Proxmox downloads `metal-amd64.raw.zst` for your `talos_version` (default `1.12.6`), decompresses it, stores it under **Import** on `talos_image_datastore_id` (default `local`), and attaches disks via **`import_from`** (API only, no SSH). The API token needs download-url permissions ([bpg `proxmox_download_file` docs](https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/download_file)). To use an image you uploaded yourself, set **`talos_image_id`** to its volid (e.g. `local:import/talos-metal-amd64.qcow2`). Re-run **`just bootstrap`** (or the `pvesm set local …` line above) if `local` did not yet allow **import** content.
 
 2. Create DHCP reservations on your router so each Talos NIC MAC gets the **`ip`** you set on that node in tfvars (or omit `mac_address` / set it to `""` on a node to let Proxmox assign a MAC, then add a reservation after you read the MAC from the UI—possibly a second `apply`).
 
