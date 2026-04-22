@@ -10,6 +10,20 @@ setup-backend host=unraid_host:
 bootstrap proxmox_host env=env:
     bash {{justfile_directory()}}/bootstrap-proxmox.sh {{proxmox_host}} {{env}}
 
+# Download Talos metal image, convert to qcow2, upload to Proxmox (same path style as NixOS image).
+# Requires: curl, zstd, qemu-img, ssh. version must match talos_version in tfvars.
+upload-talos-image proxmox_host version='1.12.6':
+    #!/usr/bin/env bash
+    set -euo pipefail
+    ver="{{version}}"
+    tmp=$(mktemp -d)
+    trap 'rm -rf "$tmp"' EXIT
+    curl -fL -o "$tmp/metal-amd64.raw.zst" "https://github.com/siderolabs/talos/releases/download/v${ver}/metal-amd64.raw.zst"
+    zstd -d "$tmp/metal-amd64.raw.zst" -o "$tmp/metal-amd64.raw"
+    qemu-img convert -f raw -O qcow2 "$tmp/metal-amd64.raw" "$tmp/talos-metal-amd64.qcow2"
+    scp "$tmp/talos-metal-amd64.qcow2" root@{{proxmox_host}}:/var/lib/vz/template/iso/talos-metal-amd64.qcow2
+    ssh root@{{proxmox_host}} "chmod 644 /var/lib/vz/template/iso/talos-metal-amd64.qcow2"
+
 # Build the NixOS cloud image from the runner config and upload it to Proxmox
 # Requires: nix, ssh access to Proxmox host. Re-run on NixOS version bumps or config changes.
 upload-image proxmox_host:

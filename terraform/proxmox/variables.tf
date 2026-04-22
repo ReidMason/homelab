@@ -39,3 +39,79 @@ variable "nixos_image_id" {
   type        = string
   default     = "local:iso/nixos-cloud.img"
 }
+
+# --- Talos (1 control plane + 2 workers), optional ---
+
+variable "enable_talos_cluster" {
+  description = "When true, create Talos VMs and bootstrap. Requires talos_* IPs and uploaded talos image on Proxmox."
+  type        = bool
+  default     = false
+}
+
+variable "talos_cluster_name" {
+  description = "Talos / Kubernetes cluster name in generated machine config"
+  type        = string
+  default     = "homelab"
+}
+
+variable "talos_version" {
+  description = "Talos release for machine config and secrets (match uploaded disk image, e.g. 1.12.6)"
+  type        = string
+  default     = "1.12.6"
+}
+
+variable "talos_image_id" {
+  description = "Proxmox file ID for Talos disk (run 'just upload-talos-image' first)"
+  type        = string
+  default     = "local:iso/talos-metal-amd64.qcow2"
+}
+
+variable "talos_controlplane_vm_id" {
+  description = "Unique Proxmox VM ID for the Talos control plane"
+  type        = number
+  default     = 210
+}
+
+variable "talos_worker_vm_ids" {
+  description = "Unique Proxmox VM IDs for Talos workers (length must match talos_worker_ips when Talos is enabled)"
+  type        = list(number)
+  default     = [211, 212]
+}
+
+variable "talos_controlplane_ip" {
+  description = "Stable IP (DHCP reservation) for the control plane; required when enable_talos_cluster is true"
+  type        = string
+  default     = ""
+}
+
+variable "talos_worker_ips" {
+  description = "Stable IPs (DHCP reservations) for workers, same order as talos_worker_vm_ids; required when Talos is enabled"
+  type        = list(string)
+  default     = []
+}
+
+variable "talos_controlplane_cores" {
+  type    = number
+  default = 2
+}
+
+variable "talos_controlplane_memory_mb" {
+  type    = number
+  default = 6144
+}
+
+variable "talos_worker_cores" {
+  type    = number
+  default = 4
+}
+
+variable "talos_worker_memory_mb" {
+  type    = number
+  default = 8192
+}
+
+variable "talos_disk_gb" {
+  description = "OS disk size for each Talos VM (GiB)"
+  type        = number
+  default     = 40
+}

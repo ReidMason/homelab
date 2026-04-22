@@ -66,6 +66,40 @@ just init
 just env=dev apply
 ```
 
+### Talos Kubernetes (optional, 1 control plane + 2 workers)
+
+1. Upload a Talos disk image to Proxmox (version must match `talos_version` in tfvars, default `1.12.6`):
+
+   ```sh
+   just upload-talos-image PROXMOX_HOST
+   # or: just upload-talos-image PROXMOX_HOST version=1.12.6
+   ```
+
+   Requires `curl`, `zstd`, `qemu-img`, and SSH as `root` to the Proxmox host. Proxmox file id defaults to `local:iso/talos-metal-amd64.qcow2` (`talos_image_id`).
+
+2. Create three DHCP reservations so the control plane and two workers always receive the same addresses you will put in tfvars. Match each reservation to the VM’s MAC address (Terraform creates the VMs on first apply; you can note MACs in the Proxmox UI after creation, or run a targeted apply for the VMs first).
+
+3. In `credentials.<env>.tfvars`, set `enable_talos_cluster = true`, `talos_controlplane_ip`, and `talos_worker_ips` (same length as `talos_worker_vm_ids`, default two workers). Optionally adjust `talos_controlplane_vm_id`, `talos_worker_vm_ids`, CPU, memory, or `talos_disk_gb`.
+
+4. Apply:
+
+   ```sh
+   just env=dev apply
+   ```
+
+   The Talos provider applies machine config over the network, bootstraps etcd/Kubernetes on the control plane, joins workers, then writes kubeconfig.
+
+5. Fetch kubeconfig:
+
+   ```sh
+   terraform workspace select dev
+   terraform output -raw talos_kubeconfig > kubeconfig
+   export KUBECONFIG=$PWD/kubeconfig
+   kubectl get nodes
+   ```
+
+With `enable_talos_cluster = false` (default), Talos resources are omitted so existing Proxmox-only plans stay unchanged.
+
 ### 6. Register the runner
 
 ```sh
@@ -125,10 +159,32 @@ Run with `just env=prod plan` / `just env=prod apply`. Defaults to `dev`.
 
 ## CI/CD
 
-Set these secrets in your pipeline and run `terraform init` without a backend config file — Terraform picks them up automatically:
+The [Terraform workflow](../.github/workflows/terraform.yml) runs only on **workflow_dispatch** (manual run). It does **not** run on pull requests.
 
-```sh
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
-TF_WORKSPACE=prod
-```
+**Why no PR runs?** A self-hosted runner sits on your LAN and the job injects real secrets (Garage, Proxmox). `terraform plan` is not safe arbitrary code: it still evaluates **data sources**, initializes the **remote state** backend, and can reach your network. Any PR branch could add malicious Terraform or providers. Fork PRs were already excluded, but **same-repo PRs** are still untrusted until you review and merge. Use **local `just plan`** or dispatch the workflow from **`main`** after merge when you want CI to touch real infrastructure.
+
+### Repository secrets
+
+Create these under **Settings → Secrets and variables → Actions**:
+
+| Secret | Purpose |
+|--------|---------|
+| `AWS_ACCESS_KEY_ID` | Garage S3 access key (same values `setup-backend` writes into `proxmox.s3.tfbackend`) |
+| `AWS_SECRET_ACCESS_KEY` | Garage S3 secret key |
+| `PROXMOX_ENDPOINT` | API URL, e.g. `https://nia.lan:8006/` |
+| `PROXMOX_API_TOKEN` | `terraform@pve!terraform=…` token |
+| `PROXMOX_NODE` | Proxmox node name |
+
+The S3 endpoint and bucket are in `providers.tf`; the runner must reach Garage and Proxmox on your LAN. Terraform uses `AWS_*` from the environment — you do not need `proxmox.s3.tfbackend` in CI.
+
+### Behaviour
+
+- **workflow_dispatch**: pick **dev** or **prod** (runner must have that label). Every run does **plan**; enable **apply** only when you intend to change infra. **Apply** runs only if the workflow was started from the **default branch** (e.g. `main`).
+
+### Security notes
+
+- Workflow **`permissions`** are **`contents: read`**. Checkout uses **`persist-credentials: false`**.
+- Actions are pinned to **commit SHAs** (see comments in the workflow).
+- Terraform uses **`TF_INPUT=false`** and **`-input=false`**.
+- Optional: add a [GitHub Environment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment) with required reviewers on the apply step for production.
+- Protect `.github/workflows/terraform.yml` with branch rules if multiple people can push.
