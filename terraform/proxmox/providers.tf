@@ -2,9 +2,9 @@ terraform {
   required_version = ">= 1.14.4"
 
   backend "s3" {
-    bucket   = "terraform-state"
-    key      = "proxmox/terraform.tfstate"
-    region   = "garage"
+    bucket = "terraform-state"
+    key    = "proxmox/terraform.tfstate"
+    region = "garage"
 
     endpoints = {
       s3 = "http://fern.lan:3900"
@@ -14,7 +14,7 @@ terraform {
     skip_metadata_api_check     = true
     skip_region_validation      = true
     skip_requesting_account_id  = true
-  } 
+  }
 
   required_providers {
     proxmox = {

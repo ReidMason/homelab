@@ -4,7 +4,7 @@ Manages Proxmox VMs via the [bpg/proxmox](https://registry.terraform.io/provider
 
 Run `just` recipes from `terraform/proxmox` (this directory’s justfile).
 
-VM disks use **`import_from`** (Proxmox API disk import), not `file_id`, so **no SSH to Proxmox** is required for Terraform. The directory storage used for downloads (default **`local`**) must allow **Disk image / Import** content. `just bootstrap` enables that on `local`; on an existing node run: `pvesm set local --content iso,import,backup,vztmpl,snippets,images` once if Talos download fails with a storage error.
+The optional **GitHub runner** VM is off by default (`enable_github_runner = false`). When enabled, it uses **`import_from`** with **`local:999/nixos-cloud.qcow2`** (run **`just upload-image`** first). **Talos** matches the old **`kubernetes-cluster-v2` / `proxmox-vms`** setup: an **empty virtio disk** plus **`metal-amd64.iso`** on **IDE2** (same idea as `local:iso/talos-nocloud-amd64.iso` there). By default **`proxmox_download_file`** pulls **`metal-amd64.iso`** onto **`local`** (no zstd, no SSH). Set **`talos_image_id`** to a volid such as **`local:iso/talos-metal-amd64.iso`** if you upload the ISO yourself.
 
 ## Recovery (full Proxmox reset)
 
@@ -13,14 +13,13 @@ After a full Proxmox reset, run these commands in order:
 ```sh
 just setup-backend                    # write proxmox.s3.tfbackend from Garage credentials
 just bootstrap PROXMOX_HOST           # create user/token/permissions, write credentials.dev.tfvars
-just upload-image PROXMOX_HOST        # build and upload the NixOS image from runner config
-just init && just env=dev apply       # initialise Terraform and provision the VM
-just register-runner TOKEN            # place runner token and start the runner service
+just init && just env=dev apply       # initialise Terraform and apply (Talos / other VMs per tfvars)
+# If enable_github_runner = true in credentials.<env>.tfvars:
+#   just upload-image PROXMOX_HOST && just env=dev apply
+#   just register-runner TOKEN      # https://github.com/reidmason/homelab/settings/actions/runners/new
 ```
 
-Generate a runner registration token at: https://github.com/reidmason/homelab/settings/actions/runners/new
-
-Everything is fully automatic. No prompts.
+With the runner disabled (default), skip `upload-image` / `register-runner` unless you turn **`enable_github_runner`** on.
 
 ---
 
@@ -50,16 +49,18 @@ This will:
 - Create the `terraform@pve` user (random password — Terraform uses the API token)
 - Create the `terraform` API token
 - Assign the `Administrator` role at `/`
-- Enable snippets and disk images on `local` storage
+- Enable ISO, **Import**, snippets, disk images, etc. on `local` storage (ISO for Talos URL download; **images** for `local:999/…` when you use the runner)
 - Detect the node name and write `credentials.<env>.tfvars`
 
-### 4. Build and upload the NixOS image
+### 4. GitHub runner only: NixOS image + VM
+
+Set **`enable_github_runner = true`** in `credentials.<env>.tfvars`, then:
 
 ```sh
 just upload-image PROXMOX_HOST
 ```
 
-Requires `nix`. Builds the image directly from the runner config in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) (`hosts/github-runner/`). The provisioned VM boots fully configured — root SSH keys come from that flake (not Terraform). Re-run `upload-image` when the NixOS version bumps, after significant config changes, or when you rotate GitHub keys (update the `fetchurl` hash in the flake first).
+Requires `nix`. Uploads **`local:999/nixos-cloud.qcow2`**. Re-run when the runner flake changes materially or you rotate keys (update the `fetchurl` hash in dotfiles if needed).
 
 ### 5. Apply
 
@@ -70,7 +71,7 @@ just env=dev apply
 
 ### Talos Kubernetes (optional, 1 control plane + 2 workers)
 
-1. By default, Terraform uses `proxmox_download_file` with **`content_type = "import"`** so Proxmox downloads `metal-amd64.raw.zst` for your `talos_version` (default `1.12.6`), decompresses it, stores it under **Import** on `talos_image_datastore_id` (default `local`), and attaches disks via **`import_from`** (API only, no SSH). The API token needs download-url permissions ([bpg `proxmox_download_file` docs](https://registry.terraform.io/providers/bpg/proxmox/latest/docs/resources/download_file)). To use an image you uploaded yourself, set **`talos_image_id`** to its volid (e.g. `local:import/talos-metal-amd64.qcow2`). Re-run **`just bootstrap`** (or the `pvesm set local …` line above) if `local` did not yet allow **import** content.
+1. **Default (`talos_image_id` empty):** `proxmox_download_file` pulls **`metal-amd64.iso`** from GitHub onto **`talos_image_datastore_id`** (usually **`local`**). Each Talos VM uses **OVMF** (`bios = "ovmf"`, **`efi_disk`**, **`machine = "q35"`**) because the Talos ISO is **UEFI-only**; with SeaBIOS you typically see **“no bootable device”**. The ISO is on **IDE2** with **`boot_order`** preferring it over the empty **`virtio0`** disk. There is **no Proxmox `initialization` / cloud-init** on these VMs (it would grab **IDE2** and replace the boot CD). **`install.image`** in the config patch points at **`ghcr.io/siderolabs/installer`** with the same release tag as **`talos_version`**. **Optional:** set **`talos_image_id = "local:iso/your-talos.iso"`** to skip the download.
 
 2. Create DHCP reservations on your router so each Talos NIC MAC gets the **`ip`** you set on that node in tfvars (or omit `mac_address` / set it to `""` on a node to let Proxmox assign a MAC, then add a reservation after you read the MAC from the UI—possibly a second `apply`).
 
@@ -95,13 +96,15 @@ just env=dev apply
 
 With `enable_talos_cluster = false` (default), Talos resources are omitted so existing Proxmox-only plans stay unchanged.
 
+**Apply mode:** `talos_machine_configuration_apply` uses **`apply_mode = "staged"`** so config is written and picked up after reboot. That avoids **`staged_if_needing_reboot`**, which has triggered **inconsistent final plan** errors in the Talos provider when `resolved_apply_mode` changes between plan and apply. If nodes were left half-updated after a failed apply, run **`terraform apply`** again after fixing other errors; reboot stuck VMs from Proxmox if they stay in maintenance with staged config pending.
+
 ### 6. Register the runner
+
+Only if **`enable_github_runner = true`**. Generate a token at https://github.com/reidmason/homelab/settings/actions/runners/new then:
 
 ```sh
 just register-runner TOKEN
 ```
-
-Generate a registration token at: https://github.com/reidmason/homelab/settings/actions/runners/new
 
 The token only needs to be placed once — it persists across config updates and reboots.
 
@@ -109,7 +112,7 @@ The token only needs to be placed once — it persists across config updates and
 
 ## Updating the runner config
 
-The VM’s NixOS configuration lives in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) under `hosts/github-runner/`. After pushing changes to dotfiles, from `terraform/proxmox` run:
+When the runner is enabled, the VM’s NixOS configuration lives in [reidmason/dotfiles](https://github.com/reidmason/dotfiles) under `hosts/github-runner/`. After pushing changes to dotfiles, from `terraform/proxmox` run:
 
 ```sh
 just deploy-runner             # update dev runner (default workspace)

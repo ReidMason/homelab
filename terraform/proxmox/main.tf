@@ -1,4 +1,11 @@
+moved {
+  from = proxmox_virtual_environment_vm.runner
+  to   = proxmox_virtual_environment_vm.runner[0]
+}
+
 resource "proxmox_virtual_environment_vm" "runner" {
+  count = var.enable_github_runner ? 1 : 0
+
   name      = "github-runner"
   node_name = var.proxmox_node
   vm_id     = var.runner_vm_id
@@ -47,8 +54,9 @@ resource "proxmox_virtual_environment_vm" "runner" {
 }
 
 output "runner_ip" {
-  value = [
-    for addr in flatten(proxmox_virtual_environment_vm.runner.ipv4_addresses) :
-    addr if addr != "127.0.0.1"
-  ][0]
+  description = "Runner IPv4 when enable_github_runner is true; null otherwise."
+  value = var.enable_github_runner ? try(
+    [for addr in flatten(proxmox_virtual_environment_vm.runner[0].ipv4_addresses) : addr if addr != "127.0.0.1"][0],
+    null,
+  ) : null
 }

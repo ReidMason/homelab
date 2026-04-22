@@ -34,6 +34,12 @@ variable "proxmox_datastore" {
 }
 
 # VM
+variable "enable_github_runner" {
+  description = "When true, create the NixOS GitHub Actions runner VM (requires nixos_image_id on Proxmox, e.g. after just upload-image)."
+  type        = bool
+  default     = false
+}
+
 variable "runner_vm_id" {
   description = "VM ID in Proxmox (must be unique)"
   type        = number
@@ -41,15 +47,15 @@ variable "runner_vm_id" {
 }
 
 variable "nixos_image_id" {
-  description = "Proxmox volid for the NixOS cloud image used as disk import source (run 'just upload-image' first; default is under local ISO storage)."
+  description = "Proxmox volid for the NixOS qcow2 used as import_from source. Directory storage requires images/<vmid>/name.qcow2, e.g. local:999/nixos-cloud.qcow2 (999 is only a library folder, not a VM). If apply fails with cannot import / could not get size, the file is missing on the node: run just upload-image PROXMOX_HOST from terraform/proxmox."
   type        = string
-  default     = "local:iso/nixos-cloud.img"
+  default     = "local:999/nixos-cloud.qcow2"
 }
 
 # --- Talos (1 control plane + 2 workers), optional ---
 
 variable "enable_talos_cluster" {
-  description = "When true, create Talos VMs and bootstrap. Requires talos_controlplanes (one node) and talos_workers list; Talos disk is downloaded on the Proxmox node unless talos_image_id is set."
+  description = "When true, create Talos VMs and bootstrap. Requires talos_controlplanes (one node) and talos_workers list. Talos boots from ISO (downloaded on the node unless talos_image_id is set) and installs to an empty virtio disk."
   type        = bool
   default     = false
 }
@@ -67,19 +73,19 @@ variable "talos_version" {
 }
 
 variable "talos_image_id" {
-  description = "Proxmox volid for an existing Talos disk image (API import source), e.g. local:import/talos-metal-amd64.qcow2. Leave empty to download metal-amd64.raw.zst via proxmox_download_file (requires Import on talos_image_datastore_id)."
+  description = "Optional Proxmox volid for the Talos boot ISO on IDE (e.g. local:iso/talos-metal-amd64.iso). When empty, proxmox_download_file fetches metal-amd64.iso from GitHub onto talos_image_datastore_id (API only)."
   type        = string
   default     = ""
 }
 
 variable "talos_image_datastore_id" {
-  description = "Datastore for proxmox_download_file when talos_image_id is empty; must allow Disk image / Import content (e.g. directory storage `local` with import enabled — see bootstrap-proxmox.sh)."
+  description = "Datastore for proxmox_download_file when talos_image_id is empty (content iso; default local with ISO enabled)."
   type        = string
   default     = "local"
 }
 
 variable "talos_metal_image_url" {
-  description = "HTTPS URL to Talos metal-amd64.raw.zst. Empty uses GitHub for talos_version."
+  description = "HTTPS URL to a Talos metal-amd64.iso (uncompressed). Empty uses GitHub for talos_version."
   type        = string
   default     = ""
 }
