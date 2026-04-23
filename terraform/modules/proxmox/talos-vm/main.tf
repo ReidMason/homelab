@@ -9,6 +9,15 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     type         = "4m"
   }
 
+  operating_system {
+    type = "l26"
+  }
+
+  agent {
+    enabled = true
+    timeout = "2m"
+  }
+
   machine    = "q35"
   boot_order = ["ide2", "virtio0"]
 

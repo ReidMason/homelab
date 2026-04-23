@@ -43,29 +43,34 @@ module "proxmox" {
   kubernetes_cluster = {
     enabled = true
     nodes = {
-      "be:53:5d:eb:f4:a0" = {
-        ip   = "10.128.0.80"
-        type = "control-plane"
-      },
-      "be:53:5d:eb:f4:a1" = {
-        ip   = "10.128.0.81"
-        type = "worker"
-      },
-      "be:53:5d:eb:f4:a2" = {
-        ip      = "10.128.0.82"
-        type    = "worker"
-        enabled = false
-      },
-      "be:53:5d:eb:f4:a3" = {
-        ip      = "10.128.0.83"
-        type    = "worker"
-        enabled = false
-      },
-      "be:53:5d:eb:f4:a4" = {
-        ip      = "10.128.0.84"
-        type    = "worker"
-        enabled = false
-      },
+      "181" = {
+        mac_address = "be:53:5d:eb:f4:a0"
+        ip          = "10.128.0.80"
+        type        = "control-plane"
+      }
+      "182" = {
+        mac_address = "be:53:5d:eb:f4:a1"
+        ip          = "10.128.0.81"
+        type        = "worker"
+      }
+      "183" = {
+        mac_address = "be:53:5d:eb:f4:a2"
+        ip          = "10.128.0.82"
+        type        = "worker"
+        enabled     = false
+      }
+      "184" = {
+        mac_address = "be:53:5d:eb:f4:a3"
+        ip          = "10.128.0.83"
+        type        = "worker"
+        enabled     = false
+      }
+      "185" = {
+        mac_address = "be:53:5d:eb:f4:a4"
+        ip          = "10.128.0.84"
+        type        = "worker"
+        enabled     = false
+      }
     }
   }
 }

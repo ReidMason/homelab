@@ -6,11 +6,11 @@ module "kubernetes_nodes" {
 
   source               = "./talos-vm"
   node_type            = each.value.type
-  vm_id                = 180 + index(keys(var.kubernetes_cluster.nodes), each.key) + 1
+  vm_id                = tonumber(each.key)
   proxmox_node_name    = var.node_name
   vm_disk_datastore_id = var.vm_disk_datastore_id
   iso_file_id          = proxmox_download_file.iso["talos-metal-amd64-v1.12.6.iso"].id
-  mac_address          = each.key
+  mac_address          = each.value.mac_address
 
   cores = coalesce(
     try(each.value.cores, null),
