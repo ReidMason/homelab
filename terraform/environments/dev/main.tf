@@ -30,6 +30,7 @@ locals {
   talos_schematic_id = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
   talos_version      = "1.12.6"
   talos_arch         = "amd64"
+  kubernetes_version = "1.35.3"
   nodes = {
     "181" = {
       mac_address = "be:53:5d:eb:f4:a0"
@@ -71,6 +72,7 @@ module "talos" {
   talos_schematic_id = local.talos_schematic_id
   talos_version      = local.talos_version
   talos_arch         = local.talos_arch
+  kubernetes_version = local.kubernetes_version
   depends_on         = [module.proxmox]
 }
 

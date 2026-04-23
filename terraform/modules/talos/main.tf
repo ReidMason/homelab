@@ -18,9 +18,11 @@ data "talos_client_configuration" "talosconfig" {
 data "talos_machine_configuration" "machineconfig_cp" {
   cluster_name = var.cluster_config.cluster_name
   // This shoud use a load balancer
-  cluster_endpoint = local.cluster_endpoint
-  machine_type     = "controlplane"
-  machine_secrets  = talos_machine_secrets.machine_secrets.machine_secrets
+  cluster_endpoint   = local.cluster_endpoint
+  machine_type       = "controlplane"
+  machine_secrets    = talos_machine_secrets.machine_secrets.machine_secrets
+  kubernetes_version = "v${var.kubernetes_version}"
+  talos_version      = "v${var.talos_version}"
 }
 
 resource "talos_machine_configuration_apply" "cp_config_apply" {
@@ -37,7 +39,7 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
           image = local.image
         }
         network = {
-          hostname    = "${var.cluster_config.cluster_name}-${each.key}"
+          #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }
@@ -46,10 +48,12 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
 }
 
 data "talos_machine_configuration" "machineconfig_worker" {
-  cluster_name     = var.cluster_config.cluster_name
-  cluster_endpoint = local.cluster_endpoint
-  machine_type     = "worker"
-  machine_secrets  = talos_machine_secrets.machine_secrets.machine_secrets
+  cluster_name       = var.cluster_config.cluster_name
+  cluster_endpoint   = local.cluster_endpoint
+  machine_type       = "worker"
+  machine_secrets    = talos_machine_secrets.machine_secrets.machine_secrets
+  kubernetes_version = "v${var.kubernetes_version}"
+  talos_version      = "v${var.talos_version}"
 }
 
 resource "talos_machine_configuration_apply" "worker_config_apply" {
@@ -66,7 +70,7 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
           image = local.image
         }
         network = {
-          hostname    = "${var.cluster_config.cluster_name}-${each.key}"
+          #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }

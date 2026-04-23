@@ -45,3 +45,8 @@ variable "talos_arch" {
   type        = string
   description = "The architecture of the Talos image to use"
 }
+
+variable "kubernetes_version" {
+  type        = string
+  description = "The version of Kubernetes to use"
+}
