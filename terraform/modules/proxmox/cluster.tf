@@ -9,7 +9,7 @@ module "kubernetes_nodes" {
   vm_id                = tonumber(each.key)
   proxmox_node_name    = var.node_name
   vm_disk_datastore_id = var.vm_disk_datastore_id
-  iso_file_id          = proxmox_download_file.iso["talos-metal-amd64-v1.12.6.iso"].id
+  iso_file_id          = proxmox_download_file.iso["talos-metal.iso"].id
   mac_address          = each.value.mac_address
 
   cores = coalesce(

@@ -10,15 +10,26 @@ variable "vm_disk_datastore_id" {
   type = string
 }
 
+variable "talos_schematic_id" {
+  type        = string
+  description = "The schematic ID of the Talos image to use"
+}
+
+variable "talos_version" {
+  type        = string
+  description = "The version of the Talos image to use"
+}
+
+variable "talos_arch" {
+  type        = string
+  description = "The architecture of the Talos image to use"
+}
+
 variable "isos" {
   type = map(object({
     url = string
   }))
-  default = {
-    "talos-metal-amd64-v1.12.6.iso" = {
-      url = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.6/metal-amd64.iso"
-    }
-  }
+  default = {}
 }
 
 variable "kubernetes_cluster" {

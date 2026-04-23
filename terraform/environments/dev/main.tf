@@ -19,7 +19,59 @@ terraform {
       source  = "bpg/proxmox"
       version = "~> 0.96"
     }
+    talos = {
+      source  = "siderolabs/talos"
+      version = "0.11.0-beta.2"
+    }
   }
+}
+
+locals {
+  talos_schematic_id = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
+  talos_version      = "1.12.6"
+  talos_arch         = "amd64"
+  nodes = {
+    "181" = {
+      mac_address = "be:53:5d:eb:f4:a0"
+      ip          = "10.128.0.80"
+      type        = "control-plane"
+    }
+    "182" = {
+      mac_address = "be:53:5d:eb:f4:a1"
+      ip          = "10.128.0.81"
+      type        = "worker"
+    }
+    "183" = {
+      mac_address = "be:53:5d:eb:f4:a2"
+      ip          = "10.128.0.82"
+      type        = "worker"
+      enabled     = false
+    }
+    "184" = {
+      mac_address = "be:53:5d:eb:f4:a3"
+      ip          = "10.128.0.83"
+      type        = "worker"
+      enabled     = false
+    }
+    "185" = {
+      mac_address = "be:53:5d:eb:f4:a4"
+      ip          = "10.128.0.84"
+      type        = "worker"
+      enabled     = false
+    }
+  }
+}
+
+module "talos" {
+  source = "../../modules/talos"
+  cluster_config = {
+    cluster_name = "kubernetes-dev"
+    nodes        = local.nodes
+  }
+  talos_schematic_id = local.talos_schematic_id
+  talos_version      = local.talos_version
+  talos_arch         = local.talos_arch
+  depends_on         = [module.proxmox]
 }
 
 module "proxmox" {
@@ -27,6 +79,9 @@ module "proxmox" {
   node_name            = var.proxmox_node
   iso_datastore_id     = "local"
   vm_disk_datastore_id = "local-lvm"
+  talos_schematic_id   = local.talos_schematic_id
+  talos_version        = local.talos_version
+  talos_arch           = local.talos_arch
 
   control_plane_defaults = {
     cores     = 2
@@ -42,36 +97,7 @@ module "proxmox" {
 
   kubernetes_cluster = {
     enabled = true
-    nodes = {
-      "181" = {
-        mac_address = "be:53:5d:eb:f4:a0"
-        ip          = "10.128.0.80"
-        type        = "control-plane"
-      }
-      "182" = {
-        mac_address = "be:53:5d:eb:f4:a1"
-        ip          = "10.128.0.81"
-        type        = "worker"
-      }
-      "183" = {
-        mac_address = "be:53:5d:eb:f4:a2"
-        ip          = "10.128.0.82"
-        type        = "worker"
-        enabled     = false
-      }
-      "184" = {
-        mac_address = "be:53:5d:eb:f4:a3"
-        ip          = "10.128.0.83"
-        type        = "worker"
-        enabled     = false
-      }
-      "185" = {
-        mac_address = "be:53:5d:eb:f4:a4"
-        ip          = "10.128.0.84"
-        type        = "worker"
-        enabled     = false
-      }
-    }
+    nodes   = local.nodes
   }
 }
 

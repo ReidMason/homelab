@@ -1,19 +1,10 @@
-variable "cluster_config" {
-  description = "Cluster configuration"
-  type = object({
-    cluster_name = string
-  })
-  default = {
-    cluster_name = "kubernetes"
-  }
-}
-
 locals {
-  controlplanes     = { for k, v in var.kube_servers : k => v if v.type == "controlplane" }
-  workers           = { for k, v in var.kube_servers : k => v if v.type == "worker" }
-  main_controlplane = values(local.controlplanes)[0]
+  nodes             = { for k, v in var.cluster_config.nodes : k => v if coalesce(v.enabled, true) }
+  controlplanes     = { for k, v in local.nodes : k => v if v.type == "control-plane" }
+  workers           = { for k, v in local.nodes : k => v if v.type == "worker" }
+  main_controlplane = local.controlplanes[sort([for k in keys(local.controlplanes) : k])[0]]
   cluster_endpoint  = "https://${local.main_controlplane.ip}:6443"
-  image             = "factory.talos.dev/installer/b8e8fbbe1b520989e6c52c8dc8303070cb42095997e76e812fa8892393e1d176:v1.9.2"
+  image             = "factory.talos.dev/installer/${var.talos_schematic_id}:v${var.talos_version}"
 }
 
 resource "talos_machine_secrets" "machine_secrets" {}
@@ -46,7 +37,7 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
           image = local.image
         }
         network = {
-          hostname    = each.value.name
+          hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }
@@ -75,7 +66,7 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
           image = local.image
         }
         network = {
-          hostname    = each.value.name
+          hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }
@@ -97,7 +88,7 @@ resource "talos_machine_bootstrap" "bootstrap" {
 //   endpoints            = data.talos_client_configuration.talosconfig.endpoints
 // }
 
-data "talos_cluster_kubeconfig" "kubeconfig" {
+resource "talos_cluster_kubeconfig" "kubeconfig" {
   // depends_on           = [ talos_machine_bootstrap.bootstrap, data.talos_cluster_health.health ]
   depends_on           = [talos_machine_bootstrap.bootstrap]
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
@@ -110,6 +101,6 @@ output "talosconfig" {
 }
 
 output "kubeconfig" {
-  value     = data.talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
+  value     = talos_cluster_kubeconfig.kubeconfig.kubeconfig_raw
   sensitive = true
 }
