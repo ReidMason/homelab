@@ -1,0 +1,14 @@
+env := "dev"
+env-dir := "environments/" + env
+
+init:
+    cd {{env-dir}} && terraform init -backend-config={{env}}.s3.tfbackend
+
+init-migrate:
+    cd {{env-dir}} && terraform init -backend-config={{env}}.s3.tfbackend -migrate-state
+
+plan:
+    cd {{env-dir}} && terraform plan -var-file=credentials.tfvars
+
+apply:
+    cd {{env-dir}} && terraform apply -var-file=credentials.tfvars
