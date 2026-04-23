@@ -29,7 +29,7 @@ module "proxmox" {
   vm_disk_datastore_id = "local-lvm"
   kubernetes_cluster = {
     enabled                 = true
-    control_planes          = 1
+    control_planes          = 2
     control_plane_cores     = 2
     control_plane_memory_mb = 4096
     control_plane_disk_gb   = 50
