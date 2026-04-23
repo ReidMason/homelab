@@ -36,7 +36,6 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
     iothread     = true
     discard      = "on"
     size         = var.disk_size_gb
-    ssd          = true
   }
 
   cdrom {
