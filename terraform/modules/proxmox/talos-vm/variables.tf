@@ -11,8 +11,8 @@ variable "vm_id" {
   type        = number
   description = "The ID of the VM to create"
   validation {
-    condition     = var.vm_id >= 160 && var.vm_id < 170
-    error_message = "VM ID must be between 160 and 169."
+    condition     = var.vm_id >= 180 && var.vm_id < 190
+    error_message = "VM ID must be between 180 and 189."
   }
 }
 
@@ -67,5 +67,14 @@ variable "iso_file_id" {
   validation {
     condition     = length(var.iso_file_id) > 0
     error_message = "ISO file ID must be a non-empty string."
+  }
+}
+
+variable "mac_address" {
+  type        = string
+  description = "The MAC address of the VM"
+  validation {
+    condition     = length(var.mac_address) > 0
+    error_message = "MAC address must be a non-empty string."
   }
 }

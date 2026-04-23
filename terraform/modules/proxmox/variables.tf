@@ -24,15 +24,36 @@ variable "isos" {
 variable "kubernetes_cluster" {
   type = object({
     enabled = optional(bool, false)
+    nodes = map(object({
+      enabled   = optional(bool, true)
+      ip        = string
+      type      = string
+      cores     = optional(number, null)
+      memory_mb = optional(number, null)
+      disk_gb   = optional(number, null)
+    }))
+  })
+  validation {
+    condition = alltrue([
+      for _, node in var.kubernetes_cluster.nodes :
+      contains(["control-plane", "worker"], node.type)
+    ])
+    error_message = "Each node must have a type of either control-plane or worker."
+  }
+}
 
-    control_planes          = number
-    control_plane_cores     = number
-    control_plane_memory_mb = optional(number, 4096)
-    control_plane_disk_gb   = optional(number, 50)
+variable "control_plane_defaults" {
+  type = object({
+    cores     = optional(number, 2)
+    memory_mb = optional(number, 4096)
+    disk_gb   = optional(number, 50)
+  })
+}
 
-    workers          = number
-    worker_cores     = optional(number, 2)
-    worker_memory_mb = optional(number, 4096)
-    worker_disk_gb   = optional(number, 50)
+variable "worker_defaults" {
+  type = object({
+    cores     = optional(number, 2)
+    memory_mb = optional(number, 4096)
+    disk_gb   = optional(number, 50)
   })
 }
