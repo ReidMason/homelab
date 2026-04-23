@@ -108,3 +108,16 @@ provider "proxmox" {
   api_token = var.proxmox_api_token
   insecure  = var.proxmox_insecure
 }
+
+
+output "talosconfig" {
+  description = "Talos client configuration (same CAs as Terraform)."
+  value       = module.talos.talosconfig
+  sensitive   = true
+}
+
+output "kubeconfig" {
+  description = "Cluster admin kubeconfig."
+  value       = module.talos.kubeconfig
+  sensitive   = true
+}
