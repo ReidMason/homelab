@@ -19,7 +19,7 @@ resource "proxmox_virtual_environment_vm" "talos_vm" {
   }
 
   machine    = "q35"
-  boot_order = ["ide2", "virtio0"]
+  boot_order = ["virtio0", "ide2"]
 
   cpu {
     cores = var.cores

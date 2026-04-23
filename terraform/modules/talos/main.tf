@@ -37,6 +37,7 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
       machine = {
         install = {
           image = local.image
+          disk  = "/dev/vda"
         }
         network = {
           #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
@@ -68,6 +69,7 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
       machine = {
         install = {
           image = local.image
+          disk  = "/dev/vda"
         }
         network = {
           #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
