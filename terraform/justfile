@@ -15,3 +15,6 @@ plan:
 
 apply:
     cd {{env-dir}} && terraform apply -var-file=credentials.tfvars
+
+destroy:
+    cd {{env-dir}} && terraform destroy -var-file=credentials.tfvars

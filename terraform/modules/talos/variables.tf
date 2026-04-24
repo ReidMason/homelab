@@ -50,3 +50,16 @@ variable "kubernetes_version" {
   type        = string
   description = "The version of Kubernetes to use"
 }
+
+variable "install_disk" {
+  type        = string
+  default     = "/dev/vda"
+  description = "Block device for Talos install (e.g. VirtIO on Proxmox)"
+}
+
+variable "nameservers" {
+  type        = list(string)
+  default     = ["10.128.0.1", "1.1.1.1"]
+  description = "DNS resolvers for Talos machine config"
+}
+
