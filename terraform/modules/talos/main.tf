@@ -40,10 +40,15 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
           disk  = "/dev/vda"
         }
         network = {
-          #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }
+    }),
+    yamlencode({
+      apiVersion = "v1alpha1"
+      kind       = "HostnameConfig"
+      auto       = "off"
+      hostname   = "${var.cluster_config.cluster_name}-${each.key}"
     })
   ]
 }
@@ -72,10 +77,15 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
           disk  = "/dev/vda"
         }
         network = {
-          #   hostname    = "${var.cluster_config.cluster_name}-${each.key}"
           nameservers = ["10.128.0.1", "1.1.1.1"]
         }
       }
+    }),
+    yamlencode({
+      apiVersion = "v1alpha1"
+      kind       = "HostnameConfig"
+      auto       = "off"
+      hostname   = "${var.cluster_config.cluster_name}-${each.key}"
     })
   ]
 }
