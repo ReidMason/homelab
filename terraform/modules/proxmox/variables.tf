@@ -22,6 +22,7 @@ variable "talos_version" {
 
 variable "talos_arch" {
   type        = string
+  default     = "amd64"
   description = "The architecture of the Talos image to use"
 }
 

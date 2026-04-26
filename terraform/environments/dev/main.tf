@@ -29,7 +29,6 @@ terraform {
 locals {
   talos_schematic_id   = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
   talos_version        = "1.12.6"
-  talos_arch           = "amd64"
   kubernetes_version   = "1.35.3"
   talos_node_ip_prefix = "10.128.30"
   talos_nodes = {
@@ -47,7 +46,6 @@ module "talos" {
   }
   talos_schematic_id = local.talos_schematic_id
   talos_version      = local.talos_version
-  talos_arch         = local.talos_arch
   kubernetes_version = local.kubernetes_version
   nameservers        = ["10.128.30.1", "1.1.1.1"]
   depends_on         = [module.proxmox]
@@ -60,7 +58,6 @@ module "proxmox" {
   vm_disk_datastore_id = "local-lvm"
   talos_schematic_id   = local.talos_schematic_id
   talos_version        = local.talos_version
-  talos_arch           = local.talos_arch
 
   control_plane_defaults = {
     cores     = 2
