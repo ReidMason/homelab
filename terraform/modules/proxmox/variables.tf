@@ -36,13 +36,12 @@ variable "kubernetes_cluster" {
   type = object({
     enabled = optional(bool, false)
     nodes = map(object({
-      mac_address = string
-      ip          = string
-      type        = string
-      enabled     = optional(bool, true)
-      cores       = optional(number, null)
-      memory_mb   = optional(number, null)
-      disk_gb     = optional(number, null)
+      ip        = string
+      type      = string
+      enabled   = optional(bool, true)
+      cores     = optional(number, null)
+      memory_mb = optional(number, null)
+      disk_gb   = optional(number, null)
     }))
   })
   validation {
@@ -51,12 +50,6 @@ variable "kubernetes_cluster" {
       contains(["control-plane", "worker"], node.type)
     ])
     error_message = "Each node must have a type of either control-plane or worker."
-  }
-  validation {
-    condition = length(distinct([
-      for _, node in var.kubernetes_cluster.nodes : node.mac_address
-    ])) == length(var.kubernetes_cluster.nodes)
-    error_message = "Each node must have a unique mac_address."
   }
   validation {
     condition = alltrue([

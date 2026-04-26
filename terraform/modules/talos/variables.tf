@@ -3,10 +3,9 @@ variable "cluster_config" {
   type = object({
     cluster_name = string
     nodes = map(object({
-      mac_address = string
-      ip          = string
-      type        = string
-      enabled     = optional(bool, true)
+      ip      = string
+      type    = string
+      enabled = optional(bool, true)
     }))
   })
   validation {
@@ -15,12 +14,6 @@ variable "cluster_config" {
       contains(["control-plane", "worker"], node.type)
     ])
     error_message = "Each node must have a type of either control-plane or worker."
-  }
-  validation {
-    condition = length(distinct([
-      for _, node in var.cluster_config.nodes : node.mac_address
-    ])) == length(var.cluster_config.nodes)
-    error_message = "Each node must have a unique mac_address."
   }
   validation {
     condition = alltrue([

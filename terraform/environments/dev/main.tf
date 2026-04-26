@@ -33,32 +33,27 @@ locals {
   kubernetes_version = "1.35.3"
   nodes = {
     "180" = {
-      mac_address = "be:53:5d:eb:f4:a0"
-      ip          = "10.128.0.80"
-      type        = "control-plane"
+      ip   = "10.128.30.20"
+      type = "control-plane"
     }
     "181" = {
-      mac_address = "be:53:5d:eb:f4:a1"
-      ip          = "10.128.0.81"
-      type        = "worker"
+      ip   = "10.128.30.21"
+      type = "worker"
     }
     "182" = {
-      mac_address = "be:53:5d:eb:f4:a2"
-      ip          = "10.128.0.82"
-      type        = "worker"
-      enabled     = false
+      ip      = "10.128.30.22"
+      type    = "worker"
+      enabled = false
     }
     "183" = {
-      mac_address = "be:53:5d:eb:f4:a3"
-      ip          = "10.128.0.83"
-      type        = "worker"
-      enabled     = false
+      ip      = "10.128.30.23"
+      type    = "worker"
+      enabled = false
     }
     "184" = {
-      mac_address = "be:53:5d:eb:f4:a4"
-      ip          = "10.128.0.84"
-      type        = "worker"
-      enabled     = false
+      ip      = "10.128.30.24"
+      type    = "worker"
+      enabled = false
     }
   }
 }
@@ -73,6 +68,7 @@ module "talos" {
   talos_version      = local.talos_version
   talos_arch         = local.talos_arch
   kubernetes_version = local.kubernetes_version
+  nameservers        = ["10.128.30.1", "1.1.1.1"]
   depends_on         = [module.proxmox]
 }
 

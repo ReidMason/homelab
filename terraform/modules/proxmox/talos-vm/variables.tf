@@ -70,11 +70,3 @@ variable "iso_file_id" {
   }
 }
 
-variable "mac_address" {
-  type        = string
-  description = "The MAC address of the VM"
-  validation {
-    condition     = length(var.mac_address) > 0
-    error_message = "MAC address must be a non-empty string."
-  }
-}

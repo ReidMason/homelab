@@ -10,7 +10,6 @@ module "kubernetes_nodes" {
   proxmox_node_name    = var.node_name
   vm_disk_datastore_id = var.vm_disk_datastore_id
   iso_file_id          = proxmox_download_file.iso["talos-nocloud.iso"].id
-  mac_address          = each.value.mac_address
 
   cores = coalesce(
     try(each.value.cores, null),
