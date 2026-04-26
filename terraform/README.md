@@ -4,7 +4,7 @@
 
 We need to run Rustfs on a separate machine like a nas. This will store the fstate files.
 
-See the compose file in `bootstrap/rustfs` for setup.
+See the compose file in [`compose/rustfs`](../compose/rustfs) for setup.
 
 1. In the webui create a new bucket call it **terraform-state**
 2. Create an access key and name it **terraform**
