@@ -1,7 +1,8 @@
 variable "cluster_config" {
   description = "Talos cluster configuration"
   type = object({
-    cluster_name = string
+    cluster_name   = string
+    node_ip_prefix = string
     nodes = map(object({
       type    = string
       enabled = optional(bool, true)
@@ -15,14 +16,15 @@ variable "cluster_config" {
     error_message = "Each node must have a type of either control-plane or worker."
   }
   validation {
+    condition     = length(split(".", var.cluster_config.node_ip_prefix)) == 3
+    error_message = "node_ip_prefix must be the first three IPv4 octets without a trailing dot (e.g. 10.128.30)."
+  }
+  validation {
     condition = alltrue([
       for k in keys(var.cluster_config.nodes) :
-      length(split(".", k)) == 4 &&
-      can(tonumber(element(split(".", k), 3))) &&
-      tonumber(element(split(".", k), 3)) >= 20 &&
-      tonumber(element(split(".", k), 3)) < 60
+      can(tonumber(k)) && tonumber(k) == floor(tonumber(k)) && tonumber(k) >= 20 && tonumber(k) < 60
     ])
-    error_message = "Each nodes map key must be an IPv4 address with last octet in 20–59 (matches Proxmox vm_id = 100 + octet)."
+    error_message = "Each nodes map key must be the last IPv4 octet as a decimal string in 20–59 (Proxmox vm_id = 100 + that number)."
   }
 }
 

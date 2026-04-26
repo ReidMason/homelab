@@ -1,5 +1,9 @@
 locals {
-  nodes         = { for k, v in var.cluster_config.nodes : k => v if coalesce(v.enabled, true) }
+  nodes_expanded = {
+    for oct, v in var.cluster_config.nodes :
+    "${var.cluster_config.node_ip_prefix}.${oct}" => v
+  }
+  nodes         = { for k, v in local.nodes_expanded : k => v if coalesce(v.enabled, true) }
   controlplanes = { for k, v in local.nodes : k => v if v.type == "control-plane" }
   workers       = { for k, v in local.nodes : k => v if v.type == "worker" }
   main_controlplane_ip = one([

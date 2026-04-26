@@ -1,8 +1,13 @@
-module "kubernetes_nodes" {
-  for_each = var.kubernetes_cluster.enabled ? {
-    for k, n in var.kubernetes_cluster.nodes : k => n
+locals {
+  kubernetes_nodes_for_each = var.kubernetes_cluster.enabled ? {
+    for oct, n in var.kubernetes_cluster.nodes :
+    "${var.kubernetes_cluster.node_ip_prefix}.${oct}" => n
     if coalesce(n.enabled, true)
   } : {}
+}
+
+module "kubernetes_nodes" {
+  for_each = local.kubernetes_nodes_for_each
 
   source               = "./talos-vm"
   node_type            = each.value.type
