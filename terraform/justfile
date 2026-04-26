@@ -1,6 +1,9 @@
 env := "dev"
 env-dir := "environments/" + env
 
+default:
+    @just --list
+
 init:
     cd {{env-dir}} && terraform init -backend-config={{env}}.s3.tfbackend
 
@@ -18,3 +21,27 @@ apply:
 
 destroy:
     cd {{env-dir}} && terraform destroy -var-file=credentials.tfvars
+
+# Write Terraform talosconfig; prints export for eval (run from this directory: eval "$(just talosconfig)").
+talosconfig outfile="talosconfig":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    root="{{ justfile_directory() }}"
+    dir="$root/{{ env-dir }}"
+    cd "$dir"
+    terraform output -raw talosconfig > "{{outfile}}"
+    abs="$dir/{{outfile}}"
+    echo "Wrote $abs" >&2
+    printf 'export TALOSCONFIG=%q\n' "$abs"
+
+# Write Terraform kubeconfig; prints export for eval: eval "$(just kubeconfig)".
+kubeconfig outfile="kubeconfig":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    root="{{ justfile_directory() }}"
+    dir="$root/{{ env-dir }}"
+    cd "$dir"
+    terraform output -raw kubeconfig > "{{outfile}}"
+    abs="$dir/{{outfile}}"
+    echo "Wrote $abs" >&2
+    printf 'export KUBECONFIG=%q\n' "$abs"
