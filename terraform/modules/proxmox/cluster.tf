@@ -1,7 +1,7 @@
 locals {
   kubernetes_nodes_for_each = var.kubernetes_cluster.enabled ? {
     for oct, n in var.kubernetes_cluster.nodes :
-    "${var.kubernetes_cluster.node_ip_prefix}.${oct}" => n
+    oct => n
     if coalesce(n.enabled, true)
   } : {}
 }
@@ -11,7 +11,7 @@ module "kubernetes_nodes" {
 
   source               = "./talos-vm"
   node_type            = each.value.type
-  vm_id                = 100 + tonumber(element(split(".", each.key), 3))
+  vm_id                = 100 + tonumber(each.key)
   proxmox_node_name    = var.node_name
   vm_disk_datastore_id = var.vm_disk_datastore_id
   iso_file_id          = proxmox_download_file.iso["talos-nocloud.iso"].id
@@ -28,4 +28,6 @@ module "kubernetes_nodes" {
     try(each.value.disk_gb, null),
     each.value.type == "control-plane" ? var.control_plane_defaults.disk_gb : var.worker_defaults.disk_gb
   )
+
+  mac_address = each.value.mac_address
 }

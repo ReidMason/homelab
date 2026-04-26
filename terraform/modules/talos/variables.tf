@@ -1,11 +1,12 @@
 variable "cluster_config" {
   description = "Talos cluster configuration"
   type = object({
-    cluster_name   = string
-    node_ip_prefix = string
+    cluster_name = string
     nodes = map(object({
-      type    = string
-      enabled = optional(bool, true)
+      type        = string
+      hostname    = string
+      mac_address = string
+      enabled     = optional(bool, true)
     }))
   })
   validation {
@@ -16,15 +17,36 @@ variable "cluster_config" {
     error_message = "Each node must have a type of either control-plane or worker."
   }
   validation {
-    condition     = length(split(".", var.cluster_config.node_ip_prefix)) == 3
-    error_message = "node_ip_prefix must be the first three IPv4 octets without a trailing dot (e.g. 10.128.30)."
-  }
-  validation {
     condition = alltrue([
       for k in keys(var.cluster_config.nodes) :
       can(tonumber(k)) && tonumber(k) == floor(tonumber(k)) && tonumber(k) >= 20 && tonumber(k) < 60
     ])
-    error_message = "Each nodes map key must be the last IPv4 octet as a decimal string in 20–59 (Proxmox vm_id = 100 + that number)."
+    error_message = "Each nodes map key must be the last IPv4 octet as a decimal string in 20-59 (Proxmox vm_id = 100 + that number)."
+  }
+  validation {
+    condition = length(distinct([
+      for _, node in var.cluster_config.nodes : lower(node.mac_address)
+    ])) == length(var.cluster_config.nodes)
+    error_message = "Each node must have a unique mac_address."
+  }
+  validation {
+    condition = alltrue([
+      for _, node in var.cluster_config.nodes :
+      can(regex("^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$", node.mac_address))
+    ])
+    error_message = "Each mac_address must be six colon-separated hex octets (e.g. bc:24:11:aa:00:01)."
+  }
+  validation {
+    condition = alltrue([
+      for _, node in var.cluster_config.nodes : length(trimspace(node.hostname)) > 0
+    ])
+    error_message = "Each node must have a non-empty hostname (FQDN recommended)."
+  }
+  validation {
+    condition = length(distinct([
+      for _, node in var.cluster_config.nodes : lower(trimspace(node.hostname))
+    ])) == length(var.cluster_config.nodes)
+    error_message = "Each node must have a unique hostname."
   }
 }
 

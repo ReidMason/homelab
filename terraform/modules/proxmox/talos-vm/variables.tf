@@ -70,3 +70,12 @@ variable "iso_file_id" {
   }
 }
 
+variable "mac_address" {
+  type        = string
+  description = "Stable NIC MAC for DHCP reservations (e.g. bc:24:11:aa:00:01)"
+  validation {
+    condition     = can(regex("^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$", var.mac_address))
+    error_message = "mac_address must be six colon-separated hex octets (e.g. bc:24:11:aa:00:01)."
+  }
+}
+

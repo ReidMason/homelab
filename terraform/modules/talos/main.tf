@@ -1,17 +1,14 @@
 locals {
-  nodes_expanded = {
-    for oct, v in var.cluster_config.nodes :
-    "${var.cluster_config.node_ip_prefix}.${oct}" => v
-  }
-  nodes         = { for k, v in local.nodes_expanded : k => v if coalesce(v.enabled, true) }
+  nodes         = { for k, v in var.cluster_config.nodes : k => v if coalesce(v.enabled, true) }
   controlplanes = { for k, v in local.nodes : k => v if v.type == "control-plane" }
   workers       = { for k, v in local.nodes : k => v if v.type == "worker" }
-  main_controlplane_ip = one([
-    for k in keys(local.controlplanes) :
-    k if tonumber(element(split(".", k), 3)) == min([for k2 in keys(local.controlplanes) : tonumber(element(split(".", k2), 3))]...)
-  ])
-  cluster_endpoint = "https://${local.main_controlplane_ip}:6443"
-  image            = "factory.talos.dev/installer/${var.talos_schematic_id}:v${var.talos_version}"
+  # Map keys are last IPv4 octets (20–59); pick lowest-octet control plane as bootstrap / API endpoint host.
+  main_controlplane_octet    = min([for k in keys(local.controlplanes) : tonumber(k)]...)
+  main_controlplane_key      = one([for k in keys(local.controlplanes) : k if tonumber(k) == local.main_controlplane_octet])
+  main_controlplane_hostname = local.controlplanes[local.main_controlplane_key].hostname
+  cluster_endpoint           = "https://${local.main_controlplane_hostname}:6443"
+  control_plane_hostnames    = [for k in sort(keys(local.controlplanes)) : local.controlplanes[k].hostname]
+  image                      = "factory.talos.dev/installer/${var.talos_schematic_id}:v${var.talos_version}"
   machine_config_by_role = {
     controlplane = "controlplane"
     worker       = "worker"
@@ -39,7 +36,7 @@ resource "talos_machine_secrets" "machine_secrets" {}
 data "talos_client_configuration" "talosconfig" {
   cluster_name         = var.cluster_config.cluster_name
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  endpoints            = keys(local.controlplanes)
+  endpoints            = local.control_plane_hostnames
 }
 
 data "talos_machine_configuration" "machine" {
@@ -59,11 +56,11 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
 
   client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.machine["controlplane"].machine_configuration
-  node                        = each.key
+  node                        = each.value.hostname
   config_patches = [
     local.machine_base_patch,
     yamlencode(merge(local.hostname_config, {
-      hostname = "${var.cluster_config.cluster_name}-controlplane-${replace(each.key, ".", "-")}"
+      hostname = each.value.hostname
     }))
   ]
 }
@@ -73,11 +70,11 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
 
   client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.machine["worker"].machine_configuration
-  node                        = each.key
+  node                        = each.value.hostname
   config_patches = [
     local.machine_base_patch,
     yamlencode(merge(local.hostname_config, {
-      hostname = "${var.cluster_config.cluster_name}-worker-${replace(each.key, ".", "-")}"
+      hostname = each.value.hostname
     }))
   ]
 }
@@ -85,7 +82,7 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
 resource "talos_machine_bootstrap" "bootstrap" {
   depends_on           = [talos_machine_configuration_apply.cp_config_apply]
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  node                 = local.main_controlplane_ip
+  node                 = local.main_controlplane_hostname
 }
 
 // data "talos_cluster_health" "health" {
@@ -100,7 +97,7 @@ resource "talos_cluster_kubeconfig" "kubeconfig" {
   // depends_on           = [ talos_machine_bootstrap.bootstrap, data.talos_cluster_health.health ]
   depends_on           = [talos_machine_bootstrap.bootstrap]
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  node                 = local.main_controlplane_ip
+  node                 = local.main_controlplane_hostname
 }
 
 output "talosconfig" {

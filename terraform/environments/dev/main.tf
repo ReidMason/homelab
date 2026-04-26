@@ -27,21 +27,19 @@ terraform {
 }
 
 locals {
-  talos_version        = "1.12.6"
-  kubernetes_version   = "1.35.3"
-  talos_node_ip_prefix = "10.128.30"
+  talos_version      = "1.12.6"
+  kubernetes_version = "1.35.3"
   talos_nodes = {
-    "20" = { type = "control-plane" }
-    "21" = { type = "worker" }
+    "20" = { type = "control-plane", hostname = "kube1.dev.internal", mac_address = "be:53:5d:eb:f4:a0" }
+    "21" = { type = "worker", hostname = "kube2.dev.internal", mac_address = "be:53:5d:eb:f4:a1" }
   }
 }
 
 module "talos" {
   source = "../../modules/talos"
   cluster_config = {
-    cluster_name   = "kubernetes-dev"
-    node_ip_prefix = local.talos_node_ip_prefix
-    nodes          = local.talos_nodes
+    cluster_name = "kubernetes-dev"
+    nodes        = local.talos_nodes
   }
   talos_version      = local.talos_version
   kubernetes_version = local.kubernetes_version
@@ -69,9 +67,8 @@ module "proxmox" {
   }
 
   kubernetes_cluster = {
-    enabled        = true
-    node_ip_prefix = local.talos_node_ip_prefix
-    nodes          = local.talos_nodes
+    enabled = true
+    nodes   = local.talos_nodes
   }
 }
 
