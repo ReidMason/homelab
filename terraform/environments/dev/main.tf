@@ -27,7 +27,6 @@ terraform {
 }
 
 locals {
-  talos_schematic_id   = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
   talos_version        = "1.12.6"
   kubernetes_version   = "1.35.3"
   talos_node_ip_prefix = "10.128.30"
@@ -44,7 +43,6 @@ module "talos" {
     node_ip_prefix = local.talos_node_ip_prefix
     nodes          = local.talos_nodes
   }
-  talos_schematic_id = local.talos_schematic_id
   talos_version      = local.talos_version
   kubernetes_version = local.kubernetes_version
   nameservers        = ["10.128.30.1", "1.1.1.1"]
@@ -56,7 +54,6 @@ module "proxmox" {
   node_name            = var.proxmox_node
   iso_datastore_id     = "local"
   vm_disk_datastore_id = "local-lvm"
-  talos_schematic_id   = local.talos_schematic_id
   talos_version        = local.talos_version
 
   control_plane_defaults = {
