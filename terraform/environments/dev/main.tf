@@ -32,29 +32,8 @@ locals {
   talos_arch         = "amd64"
   kubernetes_version = "1.35.3"
   nodes = {
-    "180" = {
-      ip   = "10.128.30.20"
-      type = "control-plane"
-    }
-    "181" = {
-      ip   = "10.128.30.21"
-      type = "worker"
-    }
-    "182" = {
-      ip      = "10.128.30.22"
-      type    = "worker"
-      enabled = false
-    }
-    "183" = {
-      ip      = "10.128.30.23"
-      type    = "worker"
-      enabled = false
-    }
-    "184" = {
-      ip      = "10.128.30.24"
-      type    = "worker"
-      enabled = false
-    }
+    "10.128.30.20" = { type = "control-plane" }
+    "10.128.30.21" = { type = "worker" }
   }
 }
 

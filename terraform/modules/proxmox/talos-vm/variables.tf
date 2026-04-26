@@ -9,10 +9,10 @@ variable "node_type" {
 
 variable "vm_id" {
   type        = number
-  description = "The ID of the VM to create"
+  description = "Proxmox VM ID; use 100 + last IPv4 octet for Talos nodes (.20-.59 → 120-159)"
   validation {
-    condition     = var.vm_id >= 180 && var.vm_id < 190
-    error_message = "VM ID must be between 180 and 189."
+    condition     = var.vm_id >= 120 && var.vm_id < 160
+    error_message = "VM ID must be between 120 and 159 (100 + node last octet for .20-.59)."
   }
 }
 

@@ -36,7 +36,6 @@ variable "kubernetes_cluster" {
   type = object({
     enabled = optional(bool, false)
     nodes = map(object({
-      ip        = string
       type      = string
       enabled   = optional(bool, true)
       cores     = optional(number, null)
@@ -54,9 +53,12 @@ variable "kubernetes_cluster" {
   validation {
     condition = alltrue([
       for k in keys(var.kubernetes_cluster.nodes) :
-      can(tonumber(k)) && tonumber(k) == floor(tonumber(k)) && tonumber(k) >= 180 && tonumber(k) < 190
+      length(split(".", k)) == 4 &&
+      can(tonumber(element(split(".", k), 3))) &&
+      tonumber(element(split(".", k), 3)) >= 20 &&
+      tonumber(element(split(".", k), 3)) < 60
     ])
-    error_message = "Each nodes map key must be a numeric vm_id string between 180 and 189 (matches talos-vm module)."
+    error_message = "Each nodes map key must be an IPv4 address with last octet in 20-59 (Proxmox vm_id = 100 + that octet)."
   }
 }
 

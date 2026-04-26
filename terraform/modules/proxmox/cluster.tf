@@ -6,7 +6,7 @@ module "kubernetes_nodes" {
 
   source               = "./talos-vm"
   node_type            = each.value.type
-  vm_id                = tonumber(each.key)
+  vm_id                = 100 + tonumber(element(split(".", each.key), 3))
   proxmox_node_name    = var.node_name
   vm_disk_datastore_id = var.vm_disk_datastore_id
   iso_file_id          = proxmox_download_file.iso["talos-nocloud.iso"].id
