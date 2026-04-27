@@ -1,20 +1,6 @@
 # kubernetes-v2
 
-Helm values and small manifests. Pin chart versions on the CLI and in `application.yaml` where noted.
-
-## MetalLB
-
-```bash
-helm repo add metallb https://metallb.github.io/metallb
-helm repo update
-helm upgrade --install metallb metallb/metallb \
-  -n metallb-system --create-namespace \
-  --version 0.15.3 \
-  -f metallb/values.yaml
-kubectl apply -f metallb/pool.yaml
-```
-
-## Argo CD (same values for bootstrap and GitOps)
+## Argo CD
 
 Install / upgrade Argo CD and apply the self-managed `Application` (run from anywhere):
 
