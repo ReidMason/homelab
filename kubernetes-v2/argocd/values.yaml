@@ -1,6 +1,6 @@
-# Shared with: helm -f … and argocd/application.yaml ($values/…).
-# Chart pin: see targetRevision in application.yaml (keep bootstrap helm --version in sync).
-
 server:
   service:
     type: NodePort
+
+applicationSet:
+  replicas: 1

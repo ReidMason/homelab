@@ -1,0 +1,13 @@
+namespace: metallb-system
+
+resources:
+  - github.com/metallb/metallb/config/native?ref=v0.15.3
+  - ../../bases/metallb
+
+patches:
+  - path: pool-addresses.yaml
+    target:
+      group: metallb.io
+      version: v1beta1
+      kind: IPAddressPool
+      name: default-pool

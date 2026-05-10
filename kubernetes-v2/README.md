@@ -14,4 +14,4 @@ Install / upgrade Argo CD and apply the self-managed `Application` (run from any
 kubectl port-forward -n argocd svc/argocd-server 8080:443
 ```
 
-**Initial admin password:** printed at the end of `bootstrap.sh` when `argocd-initial-admin-secret` still exists (first install). Otherwise:
+**Initial admin password:** printed at the end of `bootstrap.sh` when `argocd-initial-admin-secret` still exists (first install).
