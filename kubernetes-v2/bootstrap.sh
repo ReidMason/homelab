@@ -14,6 +14,10 @@ helm upgrade --install argocd argo/argo-cd \
 
 kubectl apply -n argocd -f "${DIR}/argocd/application.yaml"
 
+if [[ "${CLUSTER_ENV:-}" == "prod" && -f "${DIR}/argocd/applicationset-prod.yaml" ]]; then
+  kubectl apply -n argocd -f "${DIR}/argocd/applicationset-prod.yaml"
+fi
+
 if kubectl get secret argocd-initial-admin-secret -n argocd &>/dev/null; then
   echo "Initial admin password:"
   kubectl -n argocd get secret argocd-initial-admin-secret \
