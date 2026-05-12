@@ -26,3 +26,8 @@ spec:
         repoURL: https://github.com/ReidMason/homelab.git
         targetRevision: main
         path: "{{path}}"
+        helm:
+          releaseName: "{{path.basename}}"
+          valueFiles:
+            - "values.yaml"
+            - "../../../values/dev/{{path.basename}}/values.yaml"
