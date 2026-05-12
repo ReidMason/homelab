@@ -1,1 +1,6 @@
 {}
+
+nginx:
+  service:
+    type: LoadBalancer
+    loadBalancerIP: "10.128.30.61"
