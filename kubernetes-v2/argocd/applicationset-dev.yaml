@@ -20,6 +20,7 @@ spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
+        namespace: {{path.basename}}
       syncPolicy:
         automated:
           prune: true
@@ -32,4 +33,5 @@ spec:
           releaseName: "{{path.basename}}"
           valueFiles:
             - "values.yaml"
-            - "../../values/dev/{{path.basename}}/values.yaml"
+            # This is breaking things not sure why yet
+            # - "../../values/dev/{{path.basename}}/values.yaml"
