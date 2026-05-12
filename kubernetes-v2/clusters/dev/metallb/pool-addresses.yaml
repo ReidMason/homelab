@@ -1,7 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: default-pool
-spec:
-  addresses:
-    - 10.128.30.60-10.128.30.69

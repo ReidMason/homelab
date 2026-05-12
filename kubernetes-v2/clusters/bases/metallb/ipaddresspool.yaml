@@ -1,9 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: default-pool
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
-spec:
-  addresses:
-    - 192.0.2.0/32
