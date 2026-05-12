@@ -1,0 +1,33 @@
+traefik:
+  additionalArguments:
+    - "--serversTransport.insecureSkipVerify=true"
+
+  ingressRoute:
+    dashboard:
+      enabled: true
+      entryPoints:
+        - websecure
+      matchRule: Host(`traefik.dev.skippythesnake.com`)
+
+  providers:
+    kubernetesCRD:
+      enabled: true
+      allowExternalNameServices: true
+      allowCrossNamespace: true
+    kubernetesIngress:
+      enabled: true
+      allowExternalNameServices: true
+      publishedService:
+        enabled: false
+
+  service:
+    enabled: true
+    type: LoadBalancer
+    spec:
+      externalTrafficPolicy: Local
+
+  experimental:
+    plugins:
+      themepark:
+        moduleName: "github.com/packruler/traefik-themepark"
+        version: "v1.4.2"

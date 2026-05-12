@@ -1,0 +1,8 @@
+traefik:
+  service:
+    spec:
+      loadBalancerIP: "10.128.30.60"
+
+  ingressRoute:
+    dashboard:
+      matchRule: Host(`traefik.dev.skippythesnake.com`)
