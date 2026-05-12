@@ -32,4 +32,4 @@ spec:
           releaseName: "{{path.basename}}"
           valueFiles:
             - "values.yaml"
-            # - "../../values/dev/{{path.basename}}/values.yaml"
+            - "../../values/dev/{{path.basename}}/values.yaml"
