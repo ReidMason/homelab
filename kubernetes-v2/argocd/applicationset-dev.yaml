@@ -9,7 +9,6 @@ spec:
         repoURL: https://github.com/ReidMason/homelab.git
         revision: main
         directories:
-          - path: kubernetes-v2/clusters/dev/*
           - path: kubernetes-v2/charts/*
   template:
     metadata:
@@ -31,4 +30,4 @@ spec:
           releaseName: "{{path.basename}}"
           valueFiles:
             - "values.yaml"
-            - "../../../values/dev/{{path.basename}}/values.yaml"
+            - "../../values/dev/{{path.basename}}/values.yaml"
