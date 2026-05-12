@@ -10,6 +10,7 @@ spec:
         revision: main
         directories:
           - path: kubernetes-v2/clusters/dev/*
+          - path: kubernetes-v2/charts/*
   template:
     metadata:
       name: "{{path.basename}}"
