@@ -35,5 +35,4 @@ spec:
           releaseName: "{{path.basename}}"
           valueFiles:
             - "values.yaml"
-            # This is breaking things not sure why yet
-            # - "../../values/dev/{{path.basename}}/values.yaml"
+            - "../../values/dev/{{path.basename}}/values.yaml"

@@ -1,0 +1,5 @@
+metallb: {}
+
+ipPool:
+  addresses:
+    - 10.128.30.60-10.128.30.69
