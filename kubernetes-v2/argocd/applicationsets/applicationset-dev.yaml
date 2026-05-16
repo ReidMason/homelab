@@ -14,8 +14,6 @@ spec:
     metadata:
       name: "{{path.basename}}"
       namespace: argocd
-      annotations:
-        argocd.argoproj.io/manifest-generate-paths: ".;..;../../values/dev/{{path.basename}}"
     spec:
       project: default
       destination:
