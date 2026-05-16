@@ -13,3 +13,5 @@ credentials.*.tfvars
 
 *-secret.yaml
 *-secret.yml
+
+!external-secret.yaml
