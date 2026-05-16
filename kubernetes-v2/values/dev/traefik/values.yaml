@@ -1,3 +1,9 @@
+homelab:
+  externalSecret:
+    enabled: true
+    remoteKey: secret/data/dev/cloudflare/dev
+    property: letsencrypt-token
+
 traefik:
   additionalArguments:
     - "--serversTransport.insecureSkipVerify=true"

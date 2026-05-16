@@ -1,0 +1,9 @@
+apiVersion: v2
+name: sealed-secrets-bootstrap
+description: Sealed Secrets controller (wrapper chart; installs early via 0- prefix)
+type: application
+version: 0.1.0
+dependencies:
+  - name: sealed-secrets
+    version: 2.18.5
+    repository: https://bitnami-labs.github.io/sealed-secrets
