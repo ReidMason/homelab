@@ -11,7 +11,7 @@ homelab:
     certificateName: skippythesnake-dev
     secretName: skippythesnake-dev-tls
     issuerRef:
-      name: letsencrypt-staging
+      name: letsencrypt-production
       kind: ClusterIssuer
     commonName: "*.dev.skippythesnake.com"
     dnsNames:

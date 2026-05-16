@@ -5,6 +5,10 @@ metadata:
   name: argocd-server
   namespace: {{ .Release.Namespace }}
 spec:
+{{- if and .Values.homelab.certManagerTls.enabled .Values.homelab.certManagerTls.secretName }}
+  tls:
+    secretName: {{ .Values.homelab.certManagerTls.secretName | quote }}
+{{- end }}
   entryPoints:
 {{- range .Values.homelab.argocdIngressRoute.entryPoints }}
     - {{ . }}
