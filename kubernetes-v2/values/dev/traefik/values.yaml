@@ -1,7 +1,7 @@
 homelab:
   externalSecret:
     enabled: true
-    remoteKey: secret/data/dev/cloudflare/dev
+    remoteKey: secret/dev/cloudflare
     property: letsencrypt-token
 
   argocdIngressRoute:
