@@ -4,6 +4,10 @@ homelab:
     remoteKey: secret/data/dev/cloudflare/dev
     property: letsencrypt-token
 
+  argocdIngressRoute:
+    enabled: true
+    host: argocd.dev.skippythesnake.com
+
 traefik:
   additionalArguments:
     - "--serversTransport.insecureSkipVerify=true"

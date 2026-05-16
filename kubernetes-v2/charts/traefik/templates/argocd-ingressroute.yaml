@@ -1,0 +1,28 @@
+{{- if and .Values.homelab.argocdIngressRoute.enabled .Values.homelab.argocdIngressRoute.host }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+{{- range .Values.homelab.argocdIngressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.homelab.argocdIngressRoute.host }}`)
+      priority: 10
+      services:
+        - name: {{ .Values.homelab.argocdIngressRoute.serviceName }}
+          namespace: {{ .Values.homelab.argocdIngressRoute.serviceNamespace }}
+          port: {{ .Values.homelab.argocdIngressRoute.servicePort }}
+    - kind: Rule
+      match: Host(`{{ .Values.homelab.argocdIngressRoute.host }}`) && Header(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: {{ .Values.homelab.argocdIngressRoute.serviceName }}
+          namespace: {{ .Values.homelab.argocdIngressRoute.serviceNamespace }}
+          port: {{ .Values.homelab.argocdIngressRoute.servicePort }}
+          scheme: h2c
+{{- end }}

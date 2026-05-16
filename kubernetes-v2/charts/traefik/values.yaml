@@ -7,6 +7,15 @@ homelab:
     remoteKey: secret/data/homelab/traefik/cloudflare
     property: token
 
+  argocdIngressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    serviceName: argocd-server
+    serviceNamespace: argocd
+    servicePort: 443
+
 traefik:
   additionalArguments:
     - "--serversTransport.insecureSkipVerify=true"
