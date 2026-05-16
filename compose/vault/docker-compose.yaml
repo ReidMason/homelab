@@ -1,0 +1,15 @@
+services:
+  hashicorp-vault:
+    image: hashicorp/vault:2.0
+    command: ["vault", "server", "-config=/vault/config/vault.hcl"]
+    entrypoint: []
+    ports:
+      - 8200:8200
+    volumes:
+      - /mnt/user/appdata/hashicorp-vault/data:/vault/data
+      - /mnt/user/appdata/hashicorp-vault/config/vault.hcl:/vault/config/vault.hcl:ro
+    environment:
+      - SKIP_SETCAP=true
+      - SKIP_CHOWN=true
+    cap_add:
+      - IPC_LOCK
