@@ -1,0 +1,17 @@
+{{- if and .Values.homelab.certManagerTls.enabled .Values.homelab.certManagerTls.secretName (gt (len .Values.homelab.certManagerTls.dnsNames) 0) }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.homelab.certManagerTls.certificateName | quote }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: {{ .Values.homelab.certManagerTls.secretName | quote }}
+  issuerRef:
+    name: {{ .Values.homelab.certManagerTls.issuerRef.name | quote }}
+    kind: {{ .Values.homelab.certManagerTls.issuerRef.kind | default "ClusterIssuer" | quote }}
+  commonName: {{ .Values.homelab.certManagerTls.commonName | default (index .Values.homelab.certManagerTls.dnsNames 0) | quote }}
+  dnsNames:
+{{- range .Values.homelab.certManagerTls.dnsNames }}
+    - {{ . | quote }}
+{{- end }}
+{{- end }}

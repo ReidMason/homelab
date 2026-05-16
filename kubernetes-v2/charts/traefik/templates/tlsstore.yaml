@@ -1,0 +1,10 @@
+{{- if and .Values.homelab.certManagerTls.enabled .Values.homelab.certManagerTls.secretName }}
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: {{ .Release.Namespace }}
+spec:
+  defaultCertificate:
+    secretName: {{ .Values.homelab.certManagerTls.secretName | quote }}
+{{- end }}

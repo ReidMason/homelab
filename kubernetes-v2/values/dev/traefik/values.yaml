@@ -1,18 +1,26 @@
 homelab:
   externalSecret:
-    enabled: true
-    remoteKey: secret/dev/cloudflare
-    property: letsencrypt-token
+    enabled: false
 
   argocdIngressRoute:
     enabled: true
     host: argocd.dev.skippythesnake.com
 
+  certManagerTls:
+    enabled: true
+    certificateName: skippythesnake-dev
+    secretName: skippythesnake-dev-tls
+    issuerRef:
+      name: letsencrypt-staging
+      kind: ClusterIssuer
+    commonName: "*.dev.skippythesnake.com"
+    dnsNames:
+      - "*.dev.skippythesnake.com"
+      - dev.skippythesnake.com
+
 traefik:
   additionalArguments:
     - "--serversTransport.insecureSkipVerify=true"
-    - "--certificatesresolvers.letsencrypt.acme.domains[0].main=*.dev.skippythesnake.com"
-    - "--certificatesresolvers.letsencrypt.acme.domains[0].sans=dev.skippythesnake.com"
 
   service:
     spec:

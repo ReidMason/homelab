@@ -1,0 +1,35 @@
+cert-manager:
+  installCRDs: true
+  global:
+    leaderElection:
+      namespace: cert-manager
+
+homelab:
+  acme:
+    email: maddogshain132@gmail.com
+    cloudflare:
+      dnsChallengeEmail: maddogshain132@gmail.com
+    dnsZones:
+      - skippythesnake.com
+
+  cloudflare:
+    externalSecret:
+      enabled: true
+      name: cloudflare-token-secret
+      refreshInterval: 1h
+      clusterSecretStoreName: vault-homelab
+      remoteKey: ""
+      property: letsencrypt-token
+      secretKey: cloudflare-token
+
+  clusterIssuers:
+    staging:
+      enabled: true
+      name: letsencrypt-staging
+      acmeServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      privateKeySecretRef: letsencrypt-staging
+    production:
+      enabled: true
+      name: letsencrypt-production
+      acmeServer: https://acme-v02.api.letsencrypt.org/directory
+      privateKeySecretRef: letsencrypt-production
