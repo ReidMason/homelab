@@ -6,6 +6,7 @@ persistence:
   enabled: true
   storageClass: nfs
   size: 10Gi
+  storagePath: portainer
 
 homelab:
   ingressRoute:
