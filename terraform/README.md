@@ -31,11 +31,16 @@ Override `isos` from an environment module block if you do not want to edit the 
 
 ## Init terraform
 
-In the environment directory e.g. `environments/dev` run the terraform init command
+Per environment (`dev` or `prod`):
 
-1. Put the rustfs key and secret into the `ENV.secrets.tfbackend` file
-2. Init terraform with **Just**
+1. Copy `environments/<env>/credentials.tfvars.example` → `credentials.tfvars` and fill in Proxmox API details.
+2. Copy `environments/<env>/<env>.s3.tfbackend.example` → `<env>.s3.tfbackend` with Rustfs keys.
+3. Init and apply with **Just**:
 
 ```bash
-just init
+just env=dev init
+just env=dev apply
+
+just env=prod init
+just env=prod apply
 ```
