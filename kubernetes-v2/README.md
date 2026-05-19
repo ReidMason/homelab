@@ -2,10 +2,11 @@
 
 ## Argo CD
 
-Install / upgrade Argo CD and apply the self-managed `Application` (run from anywhere):
+Install / upgrade Argo CD and apply the self-managed `Application` (run from anywhere). Set `CLUSTER_ENV` to match the cluster (`dev` default, `prod` for production):
 
 ```bash
-./kubernetes-v2/bootstrap.sh
+export KUBECONFIG=path/to/kubeconfig
+CLUSTER_ENV=prod ./kubernetes-v2/bootstrap.sh
 ```
 
 **UI:** open `https://localhost:8080` after:
