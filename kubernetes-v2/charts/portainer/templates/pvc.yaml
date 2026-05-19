@@ -10,6 +10,7 @@ spec:
     storage: {{ .Values.persistence.size }}
   accessModes:
     - ReadWriteMany
+  storageClassName: ""
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: {{ .Values.persistence.nfs.server | quote }}
@@ -20,6 +21,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: portainer-data
 spec:
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
   resources:
