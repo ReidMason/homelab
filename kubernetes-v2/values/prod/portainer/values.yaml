@@ -1,3 +1,8 @@
+persistence:
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/portainer
+
 homelab:
   ingressRoute:
     enabled: true

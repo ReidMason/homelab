@@ -1,15 +1,29 @@
 {{- if .Values.persistence.enabled }}
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-portainer-data
+  labels:
+    app.kubernetes.io/instance: portainer-data
+spec:
+  capacity:
+    storage: {{ .Values.persistence.size }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: {{ .Values.persistence.nfs.server | quote }}
+    path: {{ .Values.persistence.nfs.path | quote }}
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: portainer-data
-  annotations:
-    nfs.io/storage-path: {{ .Values.persistence.storagePath | quote }}
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: {{ .Values.persistence.storageClass | quote }}
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.persistence.size }}
+  volumeName: {{ .Release.Namespace }}-portainer-data
 {{- end }}

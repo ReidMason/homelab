@@ -4,9 +4,10 @@ image:
 
 persistence:
   enabled: true
-  storageClass: nfs
   size: 10Gi
-  storagePath: portainer
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/portainer
 
 homelab:
   ingressRoute:

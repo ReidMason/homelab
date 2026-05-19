@@ -1,3 +1,7 @@
+persistence:
+  nfs:
+    path: /mnt/user/kubernetes-dev/portainer
+
 homelab:
   ingressRoute:
     enabled: true
