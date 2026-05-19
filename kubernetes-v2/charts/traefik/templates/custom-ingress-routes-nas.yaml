@@ -21,5 +21,5 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   type: ExternalName
-  externalName: nas.lan
+  externalName: nas.internal
 {{- end }}

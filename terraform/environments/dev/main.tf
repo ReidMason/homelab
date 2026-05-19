@@ -11,7 +11,7 @@ terraform {
     skip_region_validation      = true
     skip_requesting_account_id  = true
 
-    endpoint = "http://fern.lan:9000"
+    endpoint = "http://fern.internal:9000"
   }
 
   required_providers {
