@@ -1,0 +1,69 @@
+{{- if .Values.homelab.customIngressRoutes.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vera
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`qbittorrent.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8080
+      middlewares:
+        - name: qbittorrent-theme
+          namespace: {{ .Release.Namespace }}
+    - match: Host(`jackett.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 9117
+      middlewares:
+        - name: jackett-theme
+          namespace: {{ .Release.Namespace }}
+    - match: Host(`sonarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8989
+      middlewares:
+        - name: sonarr-theme
+          namespace: {{ .Release.Namespace }}
+    - match: Host(`radarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 7878
+    - match: Host(`prowlarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 9696
+    - match: Host(`nginx.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 81
+    - match: Host(`vault.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 8200
+    - match: Host(`uptime-kuma.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: vera-service
+          port: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vera-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ExternalName
+  externalName: vera.lan
+{{- end }}

@@ -16,6 +16,9 @@ homelab:
     serviceNamespace: argocd
     servicePort: 443
 
+  customIngressRoutes:
+    enabled: false
+
   certManagerTls:
     enabled: false
     certificateName: wildcard-tls

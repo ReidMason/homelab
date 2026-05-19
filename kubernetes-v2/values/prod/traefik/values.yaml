@@ -2,6 +2,9 @@ homelab:
   externalSecret:
     enabled: false
 
+  customIngressRoutes:
+    enabled: true
+
   argocdIngressRoute:
     enabled: true
     host: argocd.skippythesnake.com
