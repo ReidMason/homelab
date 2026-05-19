@@ -1,7 +1,7 @@
 nfs-subdir-external-provisioner:
   nfs:
     server: fern.internal
-    path: /mnt/user/kubernetes-prod
+    path: /mnt/user/kubernetes
   storageClass:
     name: nfs
     defaultClass: true
