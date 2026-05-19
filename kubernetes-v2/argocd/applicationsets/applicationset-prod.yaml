@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/ReidMason/homelab.git
+        revision: main
+        directories:
+          - path: "kubernetes-v2/charts/*"
+  template:
+    metadata:
+      name: "{{path.basename}}"
+      namespace: argocd
+    spec:
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+        automated:
+          prune: true
+          selfHeal: true
+      source:
+        repoURL: https://github.com/ReidMason/homelab.git
+        targetRevision: main
+        path: "{{path}}"
+        helm:
+          releaseName: "{{path.basename}}"
+          valueFiles:
+            - "values.yaml"
+            - "../../values/prod/{{path.basename}}/values.yaml"

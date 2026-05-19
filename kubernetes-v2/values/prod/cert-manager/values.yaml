@@ -1,0 +1,4 @@
+homelab:
+  cloudflare:
+    externalSecret:
+      remoteKey: secret/prod/cloudflare

@@ -22,8 +22,3 @@ spec:
     - repoURL: https://github.com/ReidMason/homelab.git
       targetRevision: main
       ref: values
-    - repoURL: https://github.com/ReidMason/homelab.git
-      targetRevision: main
-      path: kubernetes-v2/argocd/applicationsets
-      directory:
-        include: "*.yaml"
