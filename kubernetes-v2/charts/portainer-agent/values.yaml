@@ -1,0 +1,11 @@
+image:
+  repository: portainer/agent
+  tag: "2.21.4"
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 9001

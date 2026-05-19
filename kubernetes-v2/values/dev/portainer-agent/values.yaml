@@ -1,0 +1,4 @@
+homelab:
+  ingressRoute:
+    enabled: true
+    host: portainer-agent.dev.skippythesnake.com

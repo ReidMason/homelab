@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portainer
+  labels:
+    app: portainer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portainer
+  template:
+    metadata:
+      labels:
+        app: portainer
+    spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 0
+      containers:
+        - name: portainer
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 9443
+          volumeMounts:
+            - name: portainer-storage
+              mountPath: /data
+      volumes:
+        - name: portainer-storage
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: portainer-data
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

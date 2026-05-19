@@ -1,0 +1,17 @@
+{{- if and .Values.homelab.ingressRoute.enabled .Values.homelab.ingressRoute.host }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portainer-agent
+spec:
+  entryPoints:
+{{- range .Values.homelab.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    - match: Host(`{{ .Values.homelab.ingressRoute.host }}`)
+      kind: Rule
+      services:
+        - name: portainer-agent
+          port: {{ .Values.homelab.ingressRoute.servicePort }}
+{{- end }}

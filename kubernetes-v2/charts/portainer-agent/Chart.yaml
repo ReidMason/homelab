@@ -1,0 +1,5 @@
+apiVersion: v2
+name: portainer-agent
+description: Portainer agent for in-cluster management
+type: application
+version: 0.1.0

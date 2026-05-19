@@ -1,0 +1,17 @@
+image:
+  repository: portainer/portainer-ce
+  tag: "2.21.4"
+
+persistence:
+  enabled: true
+  storageClass: nfs
+  size: 10Gi
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 9443
+    scheme: https
