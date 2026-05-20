@@ -49,20 +49,6 @@ spec:
               mountPath: {{ .mountPath }}
               subPath: {{ .subPath }}
             {{- end }}
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - sh
-                  - -c
-                  - |
-                    for i in $(seq 1 60); do
-                      if [ -S /run/pihole/FTL.sock ]; then
-                        chmod 666 /run/pihole/FTL.sock /var/run/pihole/FTL.sock 2>/dev/null || true
-                        exit 0
-                      fi
-                      sleep 1
-                    done
       volumes:
         - name: pihole-storage
           {{- if .Values.persistence.enabled }}
