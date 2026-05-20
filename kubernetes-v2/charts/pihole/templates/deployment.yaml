@@ -15,6 +15,11 @@ spec:
         app: pihole
     spec:
       hostname: pihole
+      {{- if .Values.persistence.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.persistence.fsGroup }}
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
       tolerations:
         - key: node.kubernetes.io/unreachable
           effect: NoExecute
