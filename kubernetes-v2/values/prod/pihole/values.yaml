@@ -1,6 +1,6 @@
 persistence:
-  uid: "65534"
-  gid: "65534"
+  uid: "1000"
+  gid: "100"
 
 homelab:
   dnsService:
