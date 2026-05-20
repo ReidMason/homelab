@@ -1,0 +1,4 @@
+homelab:
+  externalSecret:
+    remoteKey: secret/prod/cloudflare
+    property: cloudflare-ddns

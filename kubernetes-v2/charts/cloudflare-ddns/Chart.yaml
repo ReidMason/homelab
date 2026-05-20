@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cloudflare-ddns
+description: Cloudflare DDNS updater (favonia/cloudflare-ddns)
+type: application
+version: 0.1.0

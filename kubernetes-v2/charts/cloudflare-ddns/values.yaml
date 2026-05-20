@@ -1,0 +1,15 @@
+image:
+  repository: favonia/cloudflare-ddns
+  tag: "1.15.1"
+
+homelab:
+  domains: skippythesnake.com
+  proxied: "true"
+  externalSecret:
+    enabled: true
+    name: cloudflare-ddns-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    property: api-token
+    secretKey: api-token

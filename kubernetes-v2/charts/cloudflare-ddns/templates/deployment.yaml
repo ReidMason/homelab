@@ -16,17 +16,17 @@ spec:
     spec:
       containers:
         - name: cloudflare-ddns
-          image: favonia/cloudflare-ddns:1.15.1
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           env:
             - name: CLOUDFLARE_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: cloudflare-ddns-secret
-                  key: api-token
+                  name: {{ .Values.homelab.externalSecret.name }}
+                  key: {{ .Values.homelab.externalSecret.secretKey }}
             - name: DOMAINS
-              value: skippythesnake.com
+              value: {{ .Values.homelab.domains | quote }}
             - name: PROXIED
-              value: "true"
+              value: {{ .Values.homelab.proxied | quote }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
