@@ -1,0 +1,5 @@
+apiVersion: v2
+name: discord-bot
+description: Discord bot deployment
+type: application
+version: 0.1.0

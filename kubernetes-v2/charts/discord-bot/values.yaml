@@ -1,0 +1,13 @@
+image:
+  repository: ghcr.io/reidmason/discord-bot
+  tag: "1.0.0"
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: discord-bot-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    property: token
+    secretKey: token

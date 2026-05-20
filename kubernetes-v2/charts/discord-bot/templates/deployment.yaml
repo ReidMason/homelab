@@ -15,15 +15,15 @@ spec:
         app: discord-bot
     spec:
       tolerations:
-        - key: "node.kubernetes.io/unreachable"
-          effect: "NoExecute"
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
           tolerationSeconds: 0
       containers:
         - name: discord-bot
-          image: ghcr.io/reidmason/discord-bot:1.0.0
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           env:
             - name: TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: discord-bot-secret
-                  key: token
+                  name: {{ .Values.homelab.externalSecret.name }}
+                  key: {{ .Values.homelab.externalSecret.secretKey }}

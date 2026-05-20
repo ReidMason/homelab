@@ -1,0 +1,3 @@
+homelab:
+  externalSecret:
+    remoteKey: secret/prod/discord-bot
