@@ -1,3 +1,7 @@
+persistence:
+  uid: "65534"
+  gid: "65534"
+
 homelab:
   dnsService:
     loadBalancerIP: 10.128.20.62

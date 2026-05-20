@@ -13,10 +13,11 @@ persistence:
       subPath: data
     - mountPath: /etc/dnsmasq.d
       subPath: dnsmasq.d
+  uid: "1000"
+  gid: "100"
+  fixPermissions: true
 
 env:
-  piholeUid: "1000"
-  piholeGid: "100"
   tz: Europe/London
 
 homelab:
