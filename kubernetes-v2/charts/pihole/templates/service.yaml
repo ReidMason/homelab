@@ -8,6 +8,9 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.homelab.dnsService.type }}
+  {{- if .Values.homelab.dnsService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.homelab.dnsService.loadBalancerIP | quote }}
+  {{- end }}
   selector:
     app: pihole
   ports:

@@ -1,4 +1,6 @@
 homelab:
+  dnsService:
+    loadBalancerIP: 10.128.20.62
   externalSecret:
     remoteKey: secret/prod/pihole
   ingressRoute:

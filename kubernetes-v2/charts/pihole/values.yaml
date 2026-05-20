@@ -31,7 +31,7 @@ homelab:
   dnsService:
     type: LoadBalancer
     externalTrafficPolicy: Local
-    metallbAddressPool: pihole
+    metallbAddressPool: default-pool
   ingressRoute:
     enabled: false
     host: ""
