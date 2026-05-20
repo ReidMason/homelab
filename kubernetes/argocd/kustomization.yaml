@@ -1,8 +1,0 @@
-namespace: argocd
-
-resources:
-  - namespace.yaml
-  - argocd.yaml
-  - ingress-route.yaml
-  - appproject-homelab.yaml
-  - applicationset-apps.yaml
