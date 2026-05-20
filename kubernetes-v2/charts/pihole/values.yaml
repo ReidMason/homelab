@@ -1,0 +1,40 @@
+image:
+  repository: pihole/pihole
+  tag: "2024.07.0"
+
+persistence:
+  enabled: true
+  size: 10Gi
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/pihole
+  volumeMounts:
+    - mountPath: /etc/pihole
+      subPath: data
+    - mountPath: /etc/dnsmasq.d
+      subPath: dnsmasq.d
+
+env:
+  piholeUid: "1000"
+  piholeGid: "100"
+  tz: Europe/London
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: pihole-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    property: webui-password
+    secretKey: webui-password
+  dnsService:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    metallbAddressPool: pihole
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 80

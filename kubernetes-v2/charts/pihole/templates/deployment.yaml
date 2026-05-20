@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      hostname: pihole
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 0
+      containers:
+        - name: pihole
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 53
+              name: dns-udp
+              protocol: UDP
+            - containerPort: 53
+              name: dns-tcp
+              protocol: TCP
+            - containerPort: 67
+            - containerPort: 80
+          env:
+            - name: PIHOLE_UID
+              value: {{ .Values.env.piholeUid | quote }}
+            - name: PIHOLE_GID
+              value: {{ .Values.env.piholeGid | quote }}
+            - name: TZ
+              value: {{ .Values.env.tz | quote }}
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.homelab.externalSecret.name }}
+                  key: {{ .Values.homelab.externalSecret.secretKey }}
+          volumeMounts:
+            {{- range .Values.persistence.volumeMounts }}
+            - name: pihole-storage
+              mountPath: {{ .mountPath }}
+              subPath: {{ .subPath }}
+            {{- end }}
+      volumes:
+        - name: pihole-storage
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: pihole-pvc
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

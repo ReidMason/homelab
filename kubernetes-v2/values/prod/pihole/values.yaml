@@ -1,0 +1,6 @@
+homelab:
+  externalSecret:
+    remoteKey: secret/prod/pihole
+  ingressRoute:
+    enabled: true
+    host: pihole-kube.skippythesnake.com

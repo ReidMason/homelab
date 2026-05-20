@@ -1,0 +1,5 @@
+apiVersion: v2
+name: pihole
+description: Pi-hole DNS with NFS persistence and Traefik IngressRoute
+type: application
+version: 0.1.0
