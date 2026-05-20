@@ -15,7 +15,6 @@ persistence:
       subPath: dnsmasq.d
   uid: "1000"
   gid: "100"
-  fixPermissions: true
 
 env:
   tz: Europe/London
