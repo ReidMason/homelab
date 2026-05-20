@@ -47,11 +47,6 @@ spec:
       services:
         - name: vera-service
           port: 81
-    - match: Host(`vault.skippythesnake.com`)
-      kind: Rule
-      services:
-        - name: vera-service
-          port: 8200
     - match: Host(`uptime-kuma.skippythesnake.com`)
       kind: Rule
       services:
