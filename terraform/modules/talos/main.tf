@@ -22,6 +22,16 @@ locals {
       network = {
         nameservers = var.nameservers
       }
+      kubelet = {
+        extraMounts = [
+          {
+            destination = "/var/lib/longhorn"
+            type        = "bind"
+            source      = "/var/lib/longhorn"
+            options     = ["bind", "rshared", "rw"]
+          }
+        ]
+      }
     }
   })
   hostname_config = {

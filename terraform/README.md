@@ -21,11 +21,16 @@ The Proxmox module downloads Talos install media. The default lives in [`modules
 To get that URL:
 
 1. Open [factory.talos.dev](https://factory.talos.dev/).
-2. Choose the **same Talos version** you run elsewhere (the path segment after the schematic ID, e.g. `v1.12.6`).
-3. Select **Metal** / **amd64** and tick the `siderolabs/qemu-guest-agent` extension for the QEMU guest agent on Proxmox.
-4. Copy the **Metal ISO** download link and paste it into `isos` → `url`. The link looks like  
-   `https://factory.talos.dev/image/<schematic-id>/<version>/metal-amd64.iso`.  
-   The schematic ID changes when you change extensions or the Talos version.
+2. Choose **Cloud Server**. It should indicate that it's for Proxmox
+3. Choose the **same Talos version**. Latest is probably fine
+4. For the cloud type select **Nocloud**
+5. Select **amd64**
+6. For the **System Extensions** we want:
+   1. siderolabs/qemu-guest-agent (so that Proxmox can pull some info)
+   2. siderolabs/iscsi-tools (for longhorn)
+   3. siderolabs/util-linux-tools (for longhorn)
+7. Bootloader and stuff can stay on auto
+8. Copy the **schematic ID** and update it in this repo
 
 Override `isos` from an environment module block if you do not want to edit the module default.
 
