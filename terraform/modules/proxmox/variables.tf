@@ -12,7 +12,7 @@ variable "vm_disk_datastore_id" {
 
 variable "talos_schematic_id" {
   type        = string
-  default     = "ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515"
+  default     = "88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b"
   description = "The schematic ID of the Talos image to use"
 }
 
