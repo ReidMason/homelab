@@ -10,3 +10,26 @@ spec:
       protocol: TCP
       port: 8989
       targetPort: 8989
+{{- if .Values.homelab.lanService.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-lan
+  {{- if .Values.homelab.lanService.metallbAddressPool }}
+  annotations:
+    metallb.io/address-pool: {{ .Values.homelab.lanService.metallbAddressPool | quote }}
+  {{- end }}
+spec:
+  type: {{ .Values.homelab.lanService.type }}
+  {{- if .Values.homelab.lanService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.homelab.lanService.loadBalancerIP | quote }}
+  {{- end }}
+  selector:
+    app: sonarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8989
+      targetPort: 8989
+{{- end }}

@@ -36,3 +36,8 @@ homelab:
       enabled: true
       name: sonarr-theme
       namespace: traefik
+  lanService:
+    enabled: false
+    type: LoadBalancer
+    loadBalancerIP: ""
+    metallbAddressPool: default-pool
