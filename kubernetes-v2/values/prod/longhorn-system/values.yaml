@@ -1,0 +1,12 @@
+longhorn:
+  persistence:
+    defaultClassReplicaCount: 2
+  defaultSettings:
+    defaultReplicaCount: "2"
+  longhornUI:
+    replicas: 1
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: longhorn.skippythesnake.com

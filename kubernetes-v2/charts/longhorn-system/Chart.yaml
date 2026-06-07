@@ -1,0 +1,9 @@
+apiVersion: v2
+name: longhorn-system
+description: Longhorn distributed block storage with Traefik IngressRoute
+type: application
+version: 0.1.0
+dependencies:
+  - name: longhorn
+    version: 1.12.0
+    repository: https://charts.longhorn.io

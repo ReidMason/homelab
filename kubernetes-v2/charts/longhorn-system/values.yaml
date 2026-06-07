@@ -1,0 +1,19 @@
+longhorn:
+  persistence:
+    defaultClass: true
+    defaultClassReplicaCount: 3
+  defaultSettings:
+    defaultReplicaCount: "3"
+    defaultDataPath: /var/lib/longhorn
+  longhornUI:
+    replicas: 2
+  ingress:
+    enabled: false
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 80
