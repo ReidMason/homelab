@@ -32,6 +32,7 @@ locals {
   talos_nodes = {
     "20" = { type = "control-plane", hostname = "kube1.prod.internal", mac_address = "bc:24:11:00:00:20" }
     "21" = { type = "worker", hostname = "kube2.prod.internal", mac_address = "bc:24:11:00:00:21" }
+    "22" = { type = "worker", hostname = "kube3.prod.internal", mac_address = "bc:24:11:00:00:22" }
   }
 }
 
