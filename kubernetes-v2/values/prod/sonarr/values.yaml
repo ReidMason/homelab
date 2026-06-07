@@ -1,8 +1,8 @@
+replicaCount: 0
+
 persistence:
   config:
-    nfs:
-      server: fern.internal
-      path: /mnt/user/kubernetes/sonarr
+    storageClass: longhorn
   downloads:
     nfs:
       server: fern.internal
