@@ -27,7 +27,7 @@ spec:
       tolerations:
         - key: node.kubernetes.io/unreachable
           effect: NoExecute
-          tolerationSeconds: 0
+          tolerationSeconds: 10
       containers:
         - name: sonarr
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
