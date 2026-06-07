@@ -7,7 +7,10 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: sonarr
@@ -44,10 +47,8 @@ spec:
               mountPath: /config
             - name: downloads
               mountPath: /downloads
-              readOnly: {{ .Values.persistence.downloads.readOnly }}
             - name: tv
               mountPath: /tv
-              readOnly: {{ .Values.persistence.tv.readOnly }}
       volumes:
         - name: config
           {{- if .Values.persistence.enabled }}
@@ -60,9 +61,7 @@ spec:
           nfs:
             server: {{ .Values.persistence.downloads.nfs.server | quote }}
             path: {{ .Values.persistence.downloads.nfs.path | quote }}
-            readOnly: {{ .Values.persistence.downloads.readOnly }}
         - name: tv
           nfs:
             server: {{ .Values.persistence.tv.nfs.server | quote }}
             path: {{ .Values.persistence.tv.nfs.path | quote }}
-            readOnly: {{ .Values.persistence.tv.readOnly }}

@@ -15,12 +15,10 @@ persistence:
       server: ""
       path: ""
   downloads:
-    readOnly: true
     nfs:
       server: ""
       path: ""
   tv:
-    readOnly: true
     nfs:
       server: ""
       path: ""
