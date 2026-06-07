@@ -61,8 +61,8 @@ module "proxmox" {
   }
 
   worker_defaults = {
-    cores     = 2
-    memory_mb = 8192
+    cores     = 8
+    memory_mb = 32768
     disk_gb   = 50
   }
 
