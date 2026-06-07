@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: valkey
+spec:
+  selector:
+    app: valkey
+  ports:
+    - protocol: TCP
+      name: api
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}

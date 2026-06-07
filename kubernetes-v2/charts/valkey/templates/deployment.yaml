@@ -14,21 +14,12 @@ spec:
       labels:
         app: valkey
     spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 0
       containers:
         - name: valkey
-          image: valkey/valkey:8.1.1
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           ports:
             - containerPort: 6379
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: valkey
-spec:
-  selector:
-    app: valkey
-  ports:
-    - protocol: TCP
-      name: api
-      port: 80
-      targetPort: 6379

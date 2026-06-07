@@ -1,0 +1,5 @@
+homelab:
+  ingressRouteTcp:
+    enabled: true
+    host: valkey.skippythesnake.com
+    tlsSecretName: skippythesnake-tls

@@ -1,0 +1,16 @@
+image:
+  repository: valkey/valkey
+  tag: "8.1.1"
+
+service:
+  port: 80
+  targetPort: 6379
+
+homelab:
+  ingressRouteTcp:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 80
+    tlsSecretName: ""
