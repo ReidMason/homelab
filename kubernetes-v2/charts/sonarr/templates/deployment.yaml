@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      {{- if .Values.persistence.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.env.pgid | int }}
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 0
+      containers:
+        - name: sonarr
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: PUID
+              value: {{ .Values.env.puid | quote }}
+            - name: PGID
+              value: {{ .Values.env.pgid | quote }}
+            - name: TZ
+              value: {{ .Values.env.tz | quote }}
+            - name: DOTNET_SYSTEM_NET_DISABLEIPV6
+              value: "1"
+          ports:
+            - containerPort: 8989
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+              readOnly: {{ .Values.persistence.downloads.readOnly }}
+            - name: tv
+              mountPath: /tv
+              readOnly: {{ .Values.persistence.tv.readOnly }}
+      volumes:
+        - name: config
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: sonarr-config
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: downloads
+          nfs:
+            server: {{ .Values.persistence.downloads.nfs.server | quote }}
+            path: {{ .Values.persistence.downloads.nfs.path | quote }}
+            readOnly: {{ .Values.persistence.downloads.readOnly }}
+        - name: tv
+          nfs:
+            server: {{ .Values.persistence.tv.nfs.server | quote }}
+            path: {{ .Values.persistence.tv.nfs.path | quote }}
+            readOnly: {{ .Values.persistence.tv.readOnly }}

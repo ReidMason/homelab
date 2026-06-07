@@ -24,14 +24,6 @@ spec:
       middlewares:
         - name: jackett-theme
           namespace: {{ .Release.Namespace }}
-    - match: Host(`sonarr.skippythesnake.com`)
-      kind: Rule
-      services:
-        - name: vera-service
-          port: 8989
-      middlewares:
-        - name: sonarr-theme
-          namespace: {{ .Release.Namespace }}
     - match: Host(`radarr.skippythesnake.com`)
       kind: Rule
       services:

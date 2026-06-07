@@ -1,0 +1,38 @@
+image:
+  repository: linuxserver/sonarr
+  tag: "4.0.15"
+
+env:
+  puid: "99"
+  pgid: "100"
+  tz: Europe/London
+
+persistence:
+  enabled: true
+  size: 5Gi
+  config:
+    nfs:
+      server: ""
+      path: ""
+  downloads:
+    readOnly: true
+    nfs:
+      server: ""
+      path: ""
+  tv:
+    readOnly: true
+    nfs:
+      server: ""
+      path: ""
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 8989
+    middleware:
+      enabled: true
+      name: sonarr-theme
+      namespace: traefik

@@ -1,0 +1,18 @@
+persistence:
+  config:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/kubernetes/sonarr
+  downloads:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Downloads/qBittorrent/Completed
+  tv:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Plex
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: sonarr.skippythesnake.com
