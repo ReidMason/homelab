@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: habit-tracker
+  labels:
+    app: habit-tracker
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: habit-tracker
+  template:
+    metadata:
+      labels:
+        app: habit-tracker
+    spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 10
+      containers:
+        - name: habit-tracker
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+          volumeMounts:
+            - name: habit-tracker-data
+              mountPath: /app/data
+      volumes:
+        - name: habit-tracker-data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: habit-tracker-data
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

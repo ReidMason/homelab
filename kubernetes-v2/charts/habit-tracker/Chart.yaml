@@ -1,0 +1,5 @@
+apiVersion: v2
+name: habit-tracker
+description: Personal habit tracker
+type: application
+version: 0.1.0

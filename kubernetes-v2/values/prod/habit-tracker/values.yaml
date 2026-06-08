@@ -1,0 +1,9 @@
+persistence:
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/habit-tracker
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: habit.skippythesnake.com

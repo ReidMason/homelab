@@ -1,0 +1,31 @@
+{{- if and .Values.persistence.enabled .Values.persistence.nfs.server .Values.persistence.nfs.path }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-habit-tracker-data
+  labels:
+    app.kubernetes.io/instance: habit-tracker-data
+spec:
+  capacity:
+    storage: {{ .Values.persistence.size }}
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: {{ .Values.persistence.nfs.server | quote }}
+    path: {{ .Values.persistence.nfs.path | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: habit-tracker-data
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  volumeName: {{ .Release.Namespace }}-habit-tracker-data
+{{- end }}
