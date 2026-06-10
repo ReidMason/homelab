@@ -1,0 +1,20 @@
+jellyfin:
+  ingress:
+    enabled: false
+  persistence:
+    config:
+      enabled: true
+      size: 20Gi
+      storageClass: ""
+    media:
+      enabled: false
+  service:
+    type: ClusterIP
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 8096

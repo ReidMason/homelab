@@ -1,0 +1,18 @@
+jellyfin:
+  persistence:
+    config:
+      storageClass: longhorn
+  volumes:
+    - name: media
+      nfs:
+        server: fern.internal
+        path: /mnt/user/Plex
+  volumeMounts:
+    - name: media
+      mountPath: /media
+      readOnly: true
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: jellyfin.skippythesnake.com
