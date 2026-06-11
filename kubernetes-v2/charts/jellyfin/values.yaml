@@ -18,3 +18,9 @@ homelab:
     entryPoints:
       - websecure
     servicePort: 8096
+  abyss:
+    enabled: false
+    repo: AumGupta/abyss-jellyfin
+    branch: main
+    customCss: |
+      @import url('https://cdn.jsdelivr.net/gh/AumGupta/abyss-jellyfin@main/abyss.css');
