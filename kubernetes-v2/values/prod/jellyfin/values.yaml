@@ -16,5 +16,3 @@ homelab:
   ingressRoute:
     enabled: true
     host: jellyfin.skippythesnake.com
-  abyss:
-    enabled: true
