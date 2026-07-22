@@ -15,12 +15,12 @@ helm upgrade --install argocd argo/argo-cd \
 kubectl apply -n argocd -f "${DIR}/argocd/application.yaml"
 
 CLUSTER_ENV="${CLUSTER_ENV:-dev}"
-APPSET="${DIR}/argocd/applicationsets/applicationset-${CLUSTER_ENV}.yaml"
-if [[ ! -f "${APPSET}" ]]; then
-  echo "No ApplicationSet for CLUSTER_ENV=${CLUSTER_ENV}: ${APPSET}" >&2
+BOOTSTRAP_APP="${DIR}/argocd/bootstrap-${CLUSTER_ENV}.yaml"
+if [[ ! -f "${BOOTSTRAP_APP}" ]]; then
+  echo "No bootstrap Application for CLUSTER_ENV=${CLUSTER_ENV}: ${BOOTSTRAP_APP}" >&2
   exit 1
 fi
-kubectl apply -n argocd -f "${APPSET}"
+kubectl apply -n argocd -f "${BOOTSTRAP_APP}"
 
 if kubectl get secret argocd-initial-admin-secret -n argocd &>/dev/null; then
   echo "Initial admin password:"
