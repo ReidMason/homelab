@@ -21,10 +21,12 @@ persistence:
     nfs:
       server: ""
       path: ""
+    readOnly: false
   tv:
     nfs:
       server: ""
       path: ""
+    readOnly: false
 
 homelab:
   ingressRoute:

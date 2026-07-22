@@ -4,21 +4,23 @@ metadata:
   name: cluster-apps
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
     - git:
         repoURL: https://github.com/ReidMason/homelab.git
         revision: main
-        directories:
-          - path: "kubernetes-v2/charts/*"
+        files:
+          - path: "kubernetes-v2/values/dev/*/deploy.yaml"
   template:
     metadata:
-      name: "{{path.basename}}"
+      name: '{{ index .path.segments 3 }}'
       namespace: argocd
     spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{path.basename}}"
+        namespace: '{{ index .path.segments 3 }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
@@ -29,9 +31,9 @@ spec:
       source:
         repoURL: https://github.com/ReidMason/homelab.git
         targetRevision: main
-        path: "{{path}}"
+        path: 'kubernetes-v2/charts/{{ .chart }}'
         helm:
-          releaseName: "{{path.basename}}"
+          releaseName: '{{ index .path.segments 3 }}'
           valueFiles:
-            - "values.yaml"
-            - "../../values/dev/{{path.basename}}/values.yaml"
+            - values.yaml
+            - ../../values/dev/{{ index .path.segments 3 }}/values.yaml

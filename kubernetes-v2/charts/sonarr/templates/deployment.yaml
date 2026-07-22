@@ -63,8 +63,14 @@ spec:
               mountPath: /config
             - name: downloads
               mountPath: /downloads
+              {{- if .Values.persistence.downloads.readOnly }}
+              readOnly: true
+              {{- end }}
             - name: tv
               mountPath: /tv
+              {{- if .Values.persistence.tv.readOnly }}
+              readOnly: true
+              {{- end }}
       volumes:
         - name: config
           {{- if .Values.persistence.enabled }}

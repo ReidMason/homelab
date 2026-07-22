@@ -1,0 +1,20 @@
+persistence:
+  config:
+    storageClass: longhorn
+  downloads:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Downloads/qBittorrent/Completed
+    readOnly: true
+  tv:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Plex
+    readOnly: true
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: sonarr-temp.skippythesnake.com
+  lanService:
+    enabled: false
