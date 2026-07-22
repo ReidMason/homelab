@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-appset
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://github.com/ReidMason/homelab.git
+    targetRevision: main
+    path: kubernetes-v2/argocd/applicationsets
+    directory:
+      include: applicationset-prod.yaml
