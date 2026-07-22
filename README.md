@@ -31,6 +31,19 @@ Gateways: **`10.128.20.1`** (prod), **`10.128.30.1`** (dev). Each lab host’s s
 | MetalLB Traefik / nginx        | `10.128.20.60`, `.61`   | `10.128.30.60`, `.61`          |
 | MetalLB pool                   | `10.128.20.60–69`       | `10.128.30.60–69`              |
 
+### Trusted LAN hosts (`.internal` DNS)
+
+Add static DNS entries on UniFi (or Pi-hole) so cluster pods and Traefik can resolve these:
+
+| Host            | IP            | Notes              |
+| --------------- | ------------- | ------------------ |
+| `nas.internal`  | `10.128.0.30` | Synology DSM       |
+| `fern.internal` | `10.128.0.50` | Unraid / NFS / S3  |
+| `ivy.internal`  | `10.128.20.5` | Proxmox (prod lab) |
+| `vera.internal` | `10.128.20.6` | *arr stack         |
+
+`nas.skippythesnake.com` is routed by Traefik to `nas.internal:5000` (DSM).
+
 ## Production cluster
 
 Prereqs: Proxmox on `ivy` (`10.128.20.5`), switch port native VLAN 20, UniFi static host entries for Talos MACs → `.20` / `.21` / `.22` (same as dev), DNS for `kube1.prod.internal` / `kube2.prod.internal` / `kube3.prod.internal`.
