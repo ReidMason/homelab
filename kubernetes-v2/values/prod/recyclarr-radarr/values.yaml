@@ -20,12 +20,46 @@ config: |
         - trash_id: d1d67249d3890e49bc12e275d989a7e9 # HD Bluray + WEB
           reset_unmatched_scores:
             enabled: true
+          upgrade:
+            allowed: false
         - trash_id: 722b624f9af1e492284c4bc842153a38 # [Anime] Remux-1080p
           reset_unmatched_scores:
             enabled: true
+          upgrade:
+            allowed: false
+          qualities:
+            - name: Remux-2160p
+              qualities:
+                - Remux-2160p
+                - Bluray-2160p
+            - name: WEB 2160p
+              qualities:
+                - WEBDL-2160p
+                - WEBRip-2160p
+                - HDTV-2160p
+            - name: Remux-1080p
+              qualities:
+                - Remux-1080p
+                - Bluray-1080p
+            - name: WEB 1080p
+              qualities:
+                - WEBDL-1080p
+                - WEBRip-1080p
+                - HDTV-1080p
+            - name: Bluray-720p
+            - name: WEB 720p
+              qualities:
+                - WEBDL-720p
+                - WEBRip-720p
+                - HDTV-720p
+            - name: Bluray-480p
+            - name: DVD
+            - name: SDTV
         - trash_id: 64fb5f9858489bdac2af690e27c8f42f # UHD Bluray + WEB
           reset_unmatched_scores:
             enabled: true
+          upgrade:
+            allowed: false
 
       custom_format_groups:
         add:
@@ -48,3 +82,15 @@ config: |
               - e204b80c87be9497a8a6eaff48f72905 # LQ (Release Title)
               - 712d74cd88bceb883ee32f773656b1f5 # Sing-Along Versions
               - bfd8eb01832d646a0a89c4deb46f8564 # Upscaled
+
+      custom_formats:
+        - trash_ids:
+            - 4a3b087eea2ce012fcc1ce319259a3be # Anime Dual Audio
+          assign_scores_to:
+            - trash_id: 722b624f9af1e492284c4bc842153a38 # [Anime] Remux-1080p
+              score: 2000
+        - trash_ids:
+            - 064af5f084a0a24458cc8ecd3220f93f # Uncensored
+          assign_scores_to:
+            - trash_id: 722b624f9af1e492284c4bc842153a38 # [Anime] Remux-1080p
+              score: 101
