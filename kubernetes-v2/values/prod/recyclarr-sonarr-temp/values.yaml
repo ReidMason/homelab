@@ -59,3 +59,15 @@ config: |
             - name: Bluray-480p
             - name: DVD
             - name: SDTV
+
+      custom_formats:
+        - trash_ids:
+            - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
+          assign_scores_to:
+            - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+              score: 2000
+        - trash_ids:
+            - 026d5aadd1a6b4e550b134cb6c72b3ca # Uncensored
+          assign_scores_to:
+            - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+              score: 101
