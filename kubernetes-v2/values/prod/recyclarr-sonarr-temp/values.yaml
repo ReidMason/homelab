@@ -16,9 +16,12 @@ config: |
       api_key: !env_var SONARR_API_KEY
 
       quality_profiles:
-        - trash_id: e6ce0f6cc48a231be228c1e5cf9d47a3 # WEB-1080p
+        - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
           reset_unmatched_scores:
             enabled: true
-
-      quality_definition:
-        type: series
+        - trash_id: d1498e7d189fbe6c7110ceaabb7473e6 # WEB-2160p
+          reset_unmatched_scores:
+            enabled: true
+        - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+          reset_unmatched_scores:
+            enabled: true
