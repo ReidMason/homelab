@@ -6,7 +6,7 @@ persistence:
   downloads:
     nfs:
       server: fern.internal
-      path: /mnt/user/Downloads/qBittorrent/Completed
+      path: /mnt/user/Downloads/qBittorrent
   movies:
     nfs:
       server: fern.internal
