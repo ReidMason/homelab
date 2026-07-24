@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: recyclarr
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  timeZone: {{ .Values.timeZone | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          tolerations:
+            - key: node.kubernetes.io/unreachable
+              effect: NoExecute
+              tolerationSeconds: 10
+          containers:
+            - name: recyclarr
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              args: ["sync"]
+              env:
+                - name: SONARR_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.homelab.externalSecret.name | quote }}
+                      key: {{ .Values.homelab.externalSecret.secretKey | quote }}
+              volumeMounts:
+                - name: config
+                  mountPath: /config/recyclarr.yml
+                  subPath: recyclarr.yml
+                  readOnly: true
+          volumes:
+            - name: config
+              configMap:
+                name: recyclarr-config

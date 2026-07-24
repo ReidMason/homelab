@@ -1,0 +1,5 @@
+apiVersion: v2
+name: recyclarr
+description: Recyclarr - syncs TRaSH Guide quality profiles/custom formats into Sonarr/Radarr
+type: application
+version: 0.1.0

@@ -1,0 +1,24 @@
+schedule: "@daily"
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: recyclarr-sonarr-api-key
+    clusterSecretStoreName: vault-homelab
+    remoteKey: secret/prod/sonarr
+    property: api_key
+    secretKey: api-key
+
+config: |
+  sonarr:
+    sonarr-temp:
+      base_url: http://sonarr.sonarr-temp.svc.cluster.local:8989
+      api_key: !env_var SONARR_API_KEY
+
+      quality_profiles:
+        - trash_id: e6ce0f6cc48a231be228c1e5cf9d47a3 # WEB-1080p
+          reset_unmatched_scores:
+            enabled: true
+
+      quality_definition:
+        type: series

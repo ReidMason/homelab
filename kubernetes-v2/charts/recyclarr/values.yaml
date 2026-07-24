@@ -1,0 +1,19 @@
+image:
+  repository: ghcr.io/recyclarr/recyclarr
+  tag: "8"
+
+schedule: "@daily"
+timeZone: "Etc/UTC"
+
+# Full contents of recyclarr.yml (see https://recyclarr.dev)
+config: ""
+
+homelab:
+  externalSecret:
+    enabled: false
+    name: ""
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    property: api_key
+    secretKey: api-key
