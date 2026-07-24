@@ -67,7 +67,7 @@ spec:
               readOnly: true
               {{- end }}
             - name: movies
-              mountPath: /movies
+              mountPath: /media
               {{- if .Values.persistence.movies.readOnly }}
               readOnly: true
               {{- end }}
