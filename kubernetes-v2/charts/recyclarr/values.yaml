@@ -14,6 +14,7 @@ homelab:
     name: ""
     refreshInterval: 15s
     clusterSecretStoreName: vault-homelab
-    remoteKey: ""
-    property: api_key
-    secretKey: api-key
+  remoteKey: ""
+  property: api_key
+  secretKey: api-key
+  envVarName: SONARR_API_KEY

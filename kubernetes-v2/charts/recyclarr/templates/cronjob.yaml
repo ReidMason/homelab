@@ -23,7 +23,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               args: ["sync"]
               env:
-                - name: SONARR_API_KEY
+                - name: {{ .Values.homelab.externalSecret.envVarName | quote }}
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.homelab.externalSecret.name | quote }}
