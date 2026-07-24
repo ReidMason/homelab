@@ -1,0 +1,22 @@
+{{- if and .Values.homelab.ingressRoute.enabled .Values.homelab.ingressRoute.host }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: radarr
+spec:
+  entryPoints:
+{{- range .Values.homelab.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    - match: Host(`{{ .Values.homelab.ingressRoute.host }}`)
+      kind: Rule
+      services:
+        - name: radarr
+          port: {{ .Values.homelab.ingressRoute.servicePort }}
+      {{- if .Values.homelab.ingressRoute.middleware.enabled }}
+      middlewares:
+        - name: {{ .Values.homelab.ingressRoute.middleware.name }}
+          namespace: {{ .Values.homelab.ingressRoute.middleware.namespace }}
+      {{- end }}
+{{- end }}

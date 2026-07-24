@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      {{- if .Values.persistence.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.env.pgid | int }}
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 10
+      containers:
+        - name: radarr
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: PUID
+              value: {{ .Values.env.puid | quote }}
+            - name: PGID
+              value: {{ .Values.env.pgid | quote }}
+            - name: TZ
+              value: {{ .Values.env.tz | quote }}
+            - name: DOTNET_SYSTEM_NET_DISABLEIPV6
+              value: "1"
+          ports:
+            - containerPort: 7878
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+              {{- if .Values.persistence.downloads.readOnly }}
+              readOnly: true
+              {{- end }}
+            - name: movies
+              mountPath: /movies
+              {{- if .Values.persistence.movies.readOnly }}
+              readOnly: true
+              {{- end }}
+      volumes:
+        - name: config
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: radarr-config
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: downloads
+          nfs:
+            server: {{ .Values.persistence.downloads.nfs.server | quote }}
+            path: {{ .Values.persistence.downloads.nfs.path | quote }}
+        - name: movies
+          nfs:
+            server: {{ .Values.persistence.movies.nfs.server | quote }}
+            path: {{ .Values.persistence.movies.nfs.path | quote }}

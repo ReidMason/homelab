@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repository: linuxserver/radarr
+  tag: "5.14.0"
+
+env:
+  puid: "99"
+  pgid: "100"
+  tz: Europe/London
+
+persistence:
+  enabled: true
+  size: 5Gi
+  config:
+    storageClass: ""
+    nfs:
+      server: ""
+      path: ""
+  downloads:
+    nfs:
+      server: ""
+      path: ""
+    readOnly: false
+  movies:
+    nfs:
+      server: ""
+      path: ""
+    readOnly: false
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 7878
+    middleware:
+      enabled: true
+      name: radarr-theme
+      namespace: traefik
+  lanService:
+    enabled: false
+    type: LoadBalancer
+    loadBalancerIP: ""
+    metallbAddressPool: default-pool

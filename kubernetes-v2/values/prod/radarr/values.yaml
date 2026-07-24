@@ -1,0 +1,21 @@
+replicaCount: 0
+
+persistence:
+  config:
+    storageClass: longhorn
+  downloads:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Downloads/qBittorrent/Completed
+  movies:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Plex
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: radarr.skippythesnake.com
+  lanService:
+    enabled: true
+    loadBalancerIP: 10.128.20.64

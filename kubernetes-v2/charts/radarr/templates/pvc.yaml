@@ -1,0 +1,45 @@
+{{- if .Values.persistence.enabled }}
+{{- if .Values.persistence.config.storageClass }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.persistence.config.storageClass | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+{{- else if and .Values.persistence.config.nfs.server .Values.persistence.config.nfs.path }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-radarr-config
+  labels:
+    app.kubernetes.io/instance: radarr-config
+spec:
+  capacity:
+    storage: {{ .Values.persistence.size }}
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: {{ .Values.persistence.config.nfs.server | quote }}
+    path: {{ .Values.persistence.config.nfs.path | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  volumeName: {{ .Release.Namespace }}-radarr-config
+{{- end }}
+{{- end }}
