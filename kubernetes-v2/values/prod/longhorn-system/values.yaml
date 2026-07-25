@@ -7,7 +7,7 @@ longhorn:
   defaultSettings:
     defaultReplicaCount: "2"
   defaultBackupStore:
-    backupTarget: "nfs://fern.internal:/mnt/user/backup/longhorn"
+    backupTarget: "nfs://fern.internal:/mnt/user/Backups/longhorn"
     backupTargetCredentialSecret: ""
     pollInterval: 300
   longhornUI:
