@@ -1,0 +1,23 @@
+{{- if .Values.homelab.backup.enabled }}
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: daily-backup
+  namespace: {{ .Release.Namespace }}
+spec:
+  cron: {{ .Values.homelab.backup.daily.cron | quote }}
+  task: "backup"
+  retain: {{ .Values.homelab.backup.daily.retain }}
+  concurrency: 2
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: weekly-backup
+  namespace: {{ .Release.Namespace }}
+spec:
+  cron: {{ .Values.homelab.backup.weekly.cron | quote }}
+  task: "backup"
+  retain: {{ .Values.homelab.backup.weekly.retain }}
+  concurrency: 2
+{{- end }}

@@ -1,8 +1,15 @@
 longhorn:
   persistence:
     defaultClassReplicaCount: 2
+    recurringJobSelector:
+      enable: true
+      jobList: '[{"name":"daily-backup", "isGroup":false},{"name":"weekly-backup", "isGroup":false}]'
   defaultSettings:
     defaultReplicaCount: "2"
+  defaultBackupStore:
+    backupTarget: "nfs://fern.internal:/mnt/user/backup/longhorn"
+    backupTargetCredentialSecret: ""
+    pollInterval: 300
   longhornUI:
     replicas: 1
 
@@ -10,3 +17,5 @@ homelab:
   ingressRoute:
     enabled: true
     host: longhorn.skippythesnake.com
+  backup:
+    enabled: true

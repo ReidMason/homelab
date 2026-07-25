@@ -5,9 +5,16 @@ longhorn:
   persistence:
     defaultClass: true
     defaultClassReplicaCount: 3
+    recurringJobSelector:
+      enable: false
+      jobList: ""
   defaultSettings:
     defaultReplicaCount: "3"
     defaultDataPath: /var/lib/longhorn
+  defaultBackupStore:
+    backupTarget: ~
+    backupTargetCredentialSecret: ~
+    pollInterval: ~
   longhornUI:
     replicas: 2
   ingress:
@@ -20,3 +27,11 @@ homelab:
     entryPoints:
       - websecure
     servicePort: 80
+  backup:
+    enabled: false
+    daily:
+      cron: "0 2 * * *"
+      retain: 7
+    weekly:
+      cron: "0 3 * * 0"
+      retain: 4
