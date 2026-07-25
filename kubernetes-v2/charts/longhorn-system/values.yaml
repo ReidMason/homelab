@@ -35,3 +35,6 @@ homelab:
     weekly:
       cron: "0 3 * * 0"
       retain: 4
+  trim:
+    enabled: false
+    cron: "0 4 * * 0"

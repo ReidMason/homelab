@@ -21,3 +21,16 @@ spec:
   retain: {{ .Values.homelab.backup.weekly.retain }}
   concurrency: 2
 {{- end }}
+{{- if .Values.homelab.trim.enabled }}
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: filesystem-trim
+  namespace: {{ .Release.Namespace }}
+spec:
+  cron: {{ .Values.homelab.trim.cron | quote }}
+  task: "filesystem-trim"
+  retain: 1
+  concurrency: 2
+{{- end }}

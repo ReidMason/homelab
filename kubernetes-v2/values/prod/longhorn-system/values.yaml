@@ -3,7 +3,7 @@ longhorn:
     defaultClassReplicaCount: 2
     recurringJobSelector:
       enable: true
-      jobList: '[{"name":"daily-backup", "isGroup":false},{"name":"weekly-backup", "isGroup":false}]'
+      jobList: '[{"name":"daily-backup", "isGroup":false},{"name":"weekly-backup", "isGroup":false},{"name":"filesystem-trim", "isGroup":false}]'
   defaultSettings:
     defaultReplicaCount: "2"
   defaultBackupStore:
@@ -18,4 +18,6 @@ homelab:
     enabled: true
     host: longhorn.skippythesnake.com
   backup:
+    enabled: true
+  trim:
     enabled: true
