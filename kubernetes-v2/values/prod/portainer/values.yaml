@@ -7,3 +7,5 @@ homelab:
   ingressRoute:
     enabled: true
     host: portainer.skippythesnake.com
+    forwardAuth:
+      enabled: true

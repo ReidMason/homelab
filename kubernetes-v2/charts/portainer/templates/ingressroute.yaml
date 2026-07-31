@@ -9,10 +9,24 @@ spec:
     - {{ . }}
 {{- end }}
   routes:
+    {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.host }}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceNamespace }}
+          port: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServicePort }}
+    {{- end }}
     - match: Host(`{{ .Values.homelab.ingressRoute.host }}`)
       kind: Rule
       services:
         - name: portainer-webui
           port: {{ .Values.homelab.ingressRoute.servicePort }}
           scheme: {{ .Values.homelab.ingressRoute.scheme }}
+      {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+      middlewares:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareNamespace }}
+      {{- end }}
 {{- end }}
