@@ -1,0 +1,9 @@
+persistence:
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/seerr
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: seerr.skippythesnake.com
