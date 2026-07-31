@@ -20,3 +20,10 @@ homelab:
     remoteKey: ""
     usernameProperty: admin-username
     passwordProperty: admin-password
+  ingressRouteTcp:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 5432
+    tlsSecretName: ""
