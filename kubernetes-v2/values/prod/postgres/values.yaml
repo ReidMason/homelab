@@ -4,4 +4,3 @@ homelab:
   ingressRouteTcp:
     enabled: true
     host: postgres.skippythesnake.com
-    tlsSecretName: skippythesnake-tls
