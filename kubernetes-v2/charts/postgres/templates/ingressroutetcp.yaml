@@ -16,5 +16,7 @@ spec:
   tls:
     {{- if .Values.homelab.ingressRouteTcp.tlsSecretName }}
     secretName: {{ .Values.homelab.ingressRouteTcp.tlsSecretName }}
+    {{- else }}
+    {}
     {{- end }}
 {{- end }}
