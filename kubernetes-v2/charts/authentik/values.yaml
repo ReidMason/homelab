@@ -1,0 +1,42 @@
+image:
+  repository: ghcr.io/goauthentik/server
+  tag: "2026.5.6"
+
+service:
+  port: 80
+  targetPort: 9000
+
+postgresql:
+  host: postgres.postgres.svc.cluster.local
+  port: 5432
+  name: authentik
+  user: authentik
+
+redis:
+  host: valkey.valkey.svc.cluster.local
+  port: 6379
+
+persistence:
+  enabled: true
+  size: 2Gi
+  nfs:
+    server: ""
+    path: ""
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: authentik-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    secretKeyProperty: secret-key
+    dbPasswordProperty: db-password
+    bootstrapPasswordProperty: bootstrap-password
+  bootstrapEmail: akadmin@skippythesnake.com
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 80

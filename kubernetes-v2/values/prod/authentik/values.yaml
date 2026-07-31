@@ -1,0 +1,11 @@
+persistence:
+  nfs:
+    server: fern.internal
+    path: /mnt/user/kubernetes/authentik
+
+homelab:
+  externalSecret:
+    remoteKey: ""
+  ingressRoute:
+    enabled: true
+    host: auth.skippythesnake.com
