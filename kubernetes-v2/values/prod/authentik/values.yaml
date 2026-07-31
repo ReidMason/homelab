@@ -5,7 +5,7 @@ persistence:
 
 homelab:
   externalSecret:
-    remoteKey: ""
+    remoteKey: "secret/prod/authentik"
   ingressRoute:
     enabled: true
     host: auth.skippythesnake.com
