@@ -1,0 +1,22 @@
+image:
+  repository: postgres
+  tag: "18"
+
+service:
+  port: 5432
+  targetPort: 5432
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClassName: longhorn
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: postgres-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    usernameProperty: admin-username
+    passwordProperty: admin-password
