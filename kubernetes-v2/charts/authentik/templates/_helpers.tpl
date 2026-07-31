@@ -22,7 +22,10 @@
 - name: AUTHENTIK_REDIS__PORT
   value: {{ .Values.redis.port | quote }}
 - name: AUTHENTIK_BOOTSTRAP_EMAIL
-  value: {{ .Values.homelab.bootstrapEmail | quote }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.homelab.externalSecret.name }}
+      key: bootstrap-email
 - name: AUTHENTIK_BOOTSTRAP_PASSWORD
   valueFrom:
     secretKeyRef:

@@ -33,7 +33,7 @@ homelab:
     secretKeyProperty: secret-key
     dbPasswordProperty: db-password
     bootstrapPasswordProperty: bootstrap-password
-  bootstrapEmail: akadmin@skippythesnake.com
+    bootstrapEmailProperty: admin-email
   ingressRoute:
     enabled: false
     host: ""
