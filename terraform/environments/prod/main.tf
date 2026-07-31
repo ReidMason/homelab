@@ -64,7 +64,7 @@ module "proxmox" {
   worker_defaults = {
     cores     = 8
     memory_mb = 32768
-    disk_gb   = 50
+    disk_gb   = 250
   }
 
   kubernetes_cluster = {
