@@ -16,29 +16,11 @@ spec:
       middlewares:
         - name: qbittorrent-theme
           namespace: {{ .Release.Namespace }}
-    - match: Host(`jackett.skippythesnake.com`)
-      kind: Rule
-      services:
-        - name: vera-service
-          port: 9117
-      middlewares:
-        - name: jackett-theme
-          namespace: {{ .Release.Namespace }}
-    - match: Host(`radarr.skippythesnake.com`)
-      kind: Rule
-      services:
-        - name: vera-service
-          port: 7878
     - match: Host(`prowlarr.skippythesnake.com`)
       kind: Rule
       services:
         - name: vera-service
           port: 9696
-    - match: Host(`nginx.skippythesnake.com`)
-      kind: Rule
-      services:
-        - name: vera-service
-          port: 81
     - match: Host(`uptime-kuma.skippythesnake.com`)
       kind: Rule
       services:
