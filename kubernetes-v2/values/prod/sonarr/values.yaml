@@ -16,6 +16,8 @@ homelab:
   ingressRoute:
     enabled: true
     host: sonarr.skippythesnake.com
+    forwardAuth:
+      enabled: true
   lanService:
     enabled: true
     loadBalancerIP: 10.128.20.63
