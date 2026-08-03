@@ -9,14 +9,29 @@ spec:
     - {{ . }}
 {{- end }}
   routes:
+    {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.host }}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceNamespace }}
+          port: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServicePort }}
+    {{- end }}
     - match: Host(`{{ .Values.homelab.ingressRoute.host }}`)
       kind: Rule
       services:
         - name: radarr
           port: {{ .Values.homelab.ingressRoute.servicePort }}
-      {{- if .Values.homelab.ingressRoute.middleware.enabled }}
+      {{- if or .Values.homelab.ingressRoute.middleware.enabled .Values.homelab.ingressRoute.forwardAuth.enabled }}
       middlewares:
+        {{- if .Values.homelab.ingressRoute.middleware.enabled }}
         - name: {{ .Values.homelab.ingressRoute.middleware.name }}
           namespace: {{ .Values.homelab.ingressRoute.middleware.namespace }}
+        {{- end }}
+        {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareNamespace }}
+        {{- end }}
       {{- end }}
 {{- end }}
