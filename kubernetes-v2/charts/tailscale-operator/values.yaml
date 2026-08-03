@@ -1,0 +1,22 @@
+tailscale-operator:
+  installCRDs: true
+  oauth:
+    clientId: ""
+    clientSecret: ""
+  operatorConfig:
+    defaultTags:
+      - "tag:k8s-operator"
+  proxyConfig:
+    defaultTags: "tag:k8s"
+  apiServerProxyConfig:
+    mode: "false"
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: operator-oauth
+    refreshInterval: 1h
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    clientIdProperty: client_id
+    clientSecretProperty: client_secret
