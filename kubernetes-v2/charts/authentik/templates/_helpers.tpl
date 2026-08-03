@@ -31,6 +31,8 @@
     secretKeyRef:
       name: {{ .Values.homelab.externalSecret.name }}
       key: bootstrap-password
+- name: AUTHENTIK_STORAGE__MEDIA__BACKEND
+  value: "file"
 {{- end }}
 
 {{- define "authentik.volumeMounts" }}
