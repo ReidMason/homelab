@@ -37,7 +37,7 @@
 
 {{- define "authentik.volumeMounts" }}
 - name: storage
-  mountPath: /media
+  mountPath: /data
   subPath: media
 - name: storage
   mountPath: /templates
