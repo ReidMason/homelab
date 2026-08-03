@@ -20,3 +20,12 @@ homelab:
     remoteKey: ""
     clientIdProperty: client_id
     clientSecretProperty: client_secret
+
+  connector:
+    enabled: false
+    name: cluster-subnet-router
+    hostname: k8s-subnet-router
+    tags:
+      - "tag:k8s"
+    advertiseRoutes: []
+    exitNode: false

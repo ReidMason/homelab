@@ -1,3 +1,8 @@
 homelab:
   externalSecret:
     remoteKey: secret/prod/tailscale
+
+  connector:
+    enabled: true
+    advertiseRoutes:
+      - "10.128.20.0/24"

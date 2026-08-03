@@ -1,0 +1,14 @@
+{{- if .Values.homelab.connector.enabled }}
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: {{ .Values.homelab.connector.name | quote }}
+spec:
+  hostname: {{ .Values.homelab.connector.hostname | quote }}
+  tags:
+    {{- toYaml .Values.homelab.connector.tags | nindent 4 }}
+  subnetRouter:
+    advertiseRoutes:
+      {{- toYaml .Values.homelab.connector.advertiseRoutes | nindent 6 }}
+  exitNode: {{ .Values.homelab.connector.exitNode }}
+{{- end }}
