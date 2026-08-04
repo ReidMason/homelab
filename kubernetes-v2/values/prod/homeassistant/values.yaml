@@ -1,0 +1,12 @@
+replicaCount: 1
+
+persistence:
+  config:
+    storageClass: longhorn
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: homeassistant.skippythesnake.com
+    forwardAuth:
+      enabled: false

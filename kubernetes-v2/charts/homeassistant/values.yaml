@@ -1,0 +1,41 @@
+replicaCount: 1
+
+image:
+  repository: homeassistant/home-assistant
+  tag: "stable"
+
+env:
+  tz: Europe/London
+
+persistence:
+  enabled: true
+  size: 5Gi
+  config:
+    storageClass: ""
+    nfs:
+      server: ""
+      path: ""
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 8123
+    middleware:
+      enabled: false
+      name: homeassistant-theme
+      namespace: traefik
+    forwardAuth:
+      enabled: false
+      middlewareName: authentik-forward-auth
+      middlewareNamespace: authentik
+      outpostServiceName: authentik
+      outpostServiceNamespace: authentik
+      outpostServicePort: 80
+  lanService:
+    enabled: false
+    type: LoadBalancer
+    loadBalancerIP: ""
+    metallbAddressPool: default-pool
