@@ -1,5 +1,7 @@
 replicaCount: 1
 
+hostNetwork: true
+
 persistence:
   config:
     storageClass: longhorn

@@ -1,5 +1,7 @@
 replicaCount: 1
 
+hostNetwork: false
+
 image:
   repository: homeassistant/home-assistant
   tag: "stable"
