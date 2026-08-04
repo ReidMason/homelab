@@ -1,0 +1,38 @@
+{{- if .Values.homelab.customIngressRoutes.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`homeassistant.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: homeassistant-service
+          port: 8123
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  clusterIP: None
+  ports:
+    - port: 8123
+      targetPort: 8123
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: homeassistant-service
+  namespace: {{ .Release.Namespace }}
+subsets:
+  - addresses:
+      - ip: 10.128.20.224
+    ports:
+      - port: 8123
+{{- end }}
