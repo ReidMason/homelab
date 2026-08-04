@@ -1,0 +1,7 @@
+replicaCount: 1
+
+hostNetwork: true
+
+persistence:
+  data:
+    storageClass: longhorn

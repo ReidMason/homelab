@@ -1,0 +1,23 @@
+replicaCount: 1
+
+hostNetwork: false
+
+image:
+  repository: ghcr.io/home-assistant-libs/python-matter-server
+  tag: "stable"
+
+persistence:
+  enabled: true
+  size: 1Gi
+  data:
+    storageClass: ""
+    nfs:
+      server: ""
+      path: ""
+
+homelab:
+  lanService:
+    enabled: false
+    type: LoadBalancer
+    loadBalancerIP: ""
+    metallbAddressPool: default-pool
