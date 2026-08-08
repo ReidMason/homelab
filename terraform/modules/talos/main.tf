@@ -50,6 +50,57 @@ locals {
     kind       = "HostnameConfig"
     auto       = "off"
   }
+  # The LAN has multiple devices advertising their own ULA prefix via RA
+  # (the UDM, an Apple TV acting as a Thread border router, and the SLZB-MR5U
+  # itself), so IPv6 default source address selection is ambiguous and has
+  # repeatedly picked an address on a prefix unrelated to the SLZB-MR5U's
+  # Thread network, silently breaking Matter/Thread connectivity. Pin the
+  # source address used to reach the Thread OMR prefix to each node's SLAAC
+  # address on the SLZB-MR5U's own advertised prefix (fdde:ad00:beef:cafe::/64),
+  # computed here from each node's MAC via modified EUI-64.
+  # NOTE: both the OMR prefix and gateway are tied to the SLZB-MR5U's current
+  # Thread dataset/link-local address and will need updating if that changes.
+  thread_omr_network = "fd1c:c484:c46d:1::/64"
+  thread_br_gateway  = "fe80::9c13:9eff:fe34:7ae4"
+  thread_br_prefix   = "fdde:ad00:beef:cafe"
+  eui64_suffix = { for k, v in local.nodes : k => (
+    (parseint(split(":", v.mac_address)[0], 16) % 4 >= 2) ?
+    format("%02x", parseint(split(":", v.mac_address)[0], 16) - 2) :
+    format("%02x", parseint(split(":", v.mac_address)[0], 16) + 2)
+  ) }
+  thread_src_address = { for k, v in local.nodes : k =>
+    "${local.thread_br_prefix}:${local.eui64_suffix[k]}${split(":", v.mac_address)[1]}:${split(":", v.mac_address)[2]}ff:fe${split(":", v.mac_address)[3]}:${split(":", v.mac_address)[4]}${split(":", v.mac_address)[5]}"
+  }
+  thread_route_patch = { for k, v in local.nodes : k => yamlencode({
+    machine = {
+      network = {
+        interfaces = [
+          {
+            interface = "eth0"
+            dhcp      = true
+            routes = [
+              {
+                network = local.thread_omr_network
+                gateway = local.thread_br_gateway
+                source  = local.thread_src_address[k]
+              }
+            ]
+          },
+          {
+            interface = "ens18"
+            dhcp      = true
+            routes = [
+              {
+                network = local.thread_omr_network
+                gateway = local.thread_br_gateway
+                source  = local.thread_src_address[k]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }) }
 }
 
 resource "talos_machine_secrets" "machine_secrets" {}
@@ -82,7 +133,8 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
     local.machine_base_patch,
     yamlencode(merge(local.hostname_config, {
       hostname = each.value.hostname
-    }))
+    })),
+    local.thread_route_patch[each.key]
   ]
 }
 
@@ -96,7 +148,8 @@ resource "talos_machine_configuration_apply" "worker_config_apply" {
     local.machine_base_patch,
     yamlencode(merge(local.hostname_config, {
       hostname = each.value.hostname
-    }))
+    })),
+    local.thread_route_patch[each.key]
   ]
 }
 
