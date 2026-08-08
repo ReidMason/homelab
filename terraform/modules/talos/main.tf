@@ -32,6 +32,17 @@ locals {
           }
         ]
       }
+      # Accept Route Information Options in RAs (RFC 4191) so hosts can learn
+      # routes to prefixes advertised by the Thread border router (SLZB-MR5U),
+      # which Linux ignores by default even with accept_ra=2. Proxmox
+      # q35/OVMF NIC naming is nondeterministic per-VM (observed both
+      # "eth0" and "ens18" across otherwise-identical nodes), so both
+      # names are set here to cover either outcome.
+      sysctls = {
+        "net.ipv6.conf.all.accept_ra_rt_info_max_plen"   = "64"
+        "net.ipv6.conf.eth0.accept_ra_rt_info_max_plen"  = "64"
+        "net.ipv6.conf.ens18.accept_ra_rt_info_max_plen" = "64"
+      }
     }
   })
   hostname_config = {
