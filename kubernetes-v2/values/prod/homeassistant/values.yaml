@@ -2,6 +2,9 @@ replicaCount: 1
 
 hostNetwork: true
 
+image:
+  tag: "2026.8.1"
+
 persistence:
   config:
     storageClass: longhorn
