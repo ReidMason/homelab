@@ -49,6 +49,10 @@ spec:
                   key: {{ .Values.homelab.externalSecret.passwordProperty }}
             - name: SERVER_REGIONS
               value: {{ .Values.vpn.serverRegions | quote }}
+            {{- if .Values.vpn.mtu }}
+            - name: OPENVPN_MTU
+              value: {{ .Values.vpn.mtu | quote }}
+            {{- end }}
             - name: FIREWALL_OUTBOUND_SUBNETS
               value: {{ .Values.vpn.outboundSubnets | quote }}
             - name: FIREWALL_INPUT_PORTS

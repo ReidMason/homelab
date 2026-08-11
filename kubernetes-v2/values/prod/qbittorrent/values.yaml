@@ -1,4 +1,5 @@
 vpn:
+  mtu: "1400"
   serverRegions: DE Berlin
 
 persistence:
