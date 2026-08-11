@@ -1,5 +1,4 @@
 vpn:
-  enabled: false
   serverRegions: DE Berlin
 
 persistence:
