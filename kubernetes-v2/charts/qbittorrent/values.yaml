@@ -20,9 +20,9 @@ image:
     tag: "v3.4.6"
 
 vpn:
+  enabled: true
   serviceProvider: private internet access
   type: openvpn
-  extraFlags: ""
   serverRegions: ""
   # LAN + cluster pod subnets allowed to bypass the VPN tunnel
   outboundSubnets: "10.128.20.0/24"
