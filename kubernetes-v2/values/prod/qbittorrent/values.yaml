@@ -1,0 +1,24 @@
+replicaCount: 1
+
+persistence:
+  qbittorrentConfig:
+    storageClass: longhorn
+  prowlarrConfig:
+    storageClass: longhorn
+  downloads:
+    nfs:
+      server: fern.internal
+      path: /mnt/user/Downloads/qBittorrent
+
+homelab:
+  externalSecret:
+    remoteKey: secret/prod/private-internet-access
+  ingressRoute:
+    enabled: true
+    qbittorrentHost: qbittorrent.skippythesnake.com
+    prowlarrHost: prowlarr.skippythesnake.com
+    forwardAuth:
+      enabled: true
+  lanService:
+    enabled: true
+    loadBalancerIP: 10.128.20.65

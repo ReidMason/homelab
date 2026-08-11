@@ -1,0 +1,79 @@
+replicaCount: 1
+
+env:
+  puid: "99"
+  pgid: "100"
+  tz: Europe/London
+
+image:
+  gluetun:
+    repository: qmcgaw/gluetun
+    tag: "v3.41.3"
+  qbittorrent:
+    repository: lscr.io/linuxserver/qbittorrent
+    tag: "5.2.3"
+  prowlarr:
+    repository: linuxserver/prowlarr
+    tag: "2.3.5"
+  flaresolverr:
+    repository: ghcr.io/flaresolverr/flaresolverr
+    tag: "v3.4.6"
+
+vpn:
+  serviceProvider: private internet access
+  type: openvpn
+  serverRegions: ""
+  # LAN + cluster pod subnets allowed to bypass the VPN tunnel
+  outboundSubnets: "10.128.20.0/24"
+  # Ports opened by containers sharing this pod's network namespace
+  inputPorts: "8080,9696,8191"
+
+ports:
+  qbittorrent: 8080
+  prowlarr: 9696
+  flaresolverr: 8191
+
+persistence:
+  enabled: true
+  size: 5Gi
+  qbittorrentConfig:
+    storageClass: ""
+  prowlarrConfig:
+    storageClass: ""
+  downloads:
+    nfs:
+      server: ""
+      path: ""
+    readOnly: false
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: qbittorrent-vpn-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    userProperty: vpn-user
+    passwordProperty: vpn-password
+  ingressRoute:
+    enabled: false
+    entryPoints:
+      - websecure
+    qbittorrentHost: ""
+    prowlarrHost: ""
+    middleware:
+      enabled: true
+      name: qbittorrent-theme
+      namespace: traefik
+    forwardAuth:
+      enabled: false
+      middlewareName: authentik-forward-auth
+      middlewareNamespace: authentik
+      outpostServiceName: authentik
+      outpostServiceNamespace: authentik
+      outpostServicePort: 80
+  lanService:
+    enabled: false
+    type: LoadBalancer
+    loadBalancerIP: ""
+    metallbAddressPool: default-pool

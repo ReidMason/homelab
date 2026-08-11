@@ -1,0 +1,60 @@
+{{- if .Values.homelab.ingressRoute.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: qbittorrent
+spec:
+  entryPoints:
+{{- range .Values.homelab.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    {{- if and .Values.homelab.ingressRoute.forwardAuth.enabled .Values.homelab.ingressRoute.qbittorrentHost }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.qbittorrentHost }}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceNamespace }}
+          port: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServicePort }}
+    {{- end }}
+    {{- if .Values.homelab.ingressRoute.qbittorrentHost }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.qbittorrentHost }}`)
+      kind: Rule
+      services:
+        - name: qbittorrent
+          port: {{ .Values.ports.qbittorrent }}
+      {{- if or .Values.homelab.ingressRoute.middleware.enabled .Values.homelab.ingressRoute.forwardAuth.enabled }}
+      middlewares:
+        {{- if .Values.homelab.ingressRoute.middleware.enabled }}
+        - name: {{ .Values.homelab.ingressRoute.middleware.name }}
+          namespace: {{ .Values.homelab.ingressRoute.middleware.namespace }}
+        {{- end }}
+        {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareNamespace }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if and .Values.homelab.ingressRoute.forwardAuth.enabled .Values.homelab.ingressRoute.prowlarrHost }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.prowlarrHost }}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServiceNamespace }}
+          port: {{ .Values.homelab.ingressRoute.forwardAuth.outpostServicePort }}
+    {{- end }}
+    {{- if .Values.homelab.ingressRoute.prowlarrHost }}
+    - match: Host(`{{ .Values.homelab.ingressRoute.prowlarrHost }}`)
+      kind: Rule
+      services:
+        - name: qbittorrent
+          port: {{ .Values.ports.prowlarr }}
+      {{- if .Values.homelab.ingressRoute.forwardAuth.enabled }}
+      middlewares:
+        - name: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareName }}
+          namespace: {{ .Values.homelab.ingressRoute.forwardAuth.middlewareNamespace }}
+      {{- end }}
+    {{- end }}
+{{- end }}
