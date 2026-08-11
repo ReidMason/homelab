@@ -14,7 +14,7 @@ image:
     tag: "5.2.3"
   prowlarr:
     repository: linuxserver/prowlarr
-    tag: "2.3.5"
+    tag: "2.5.2.5491"
   flaresolverr:
     repository: ghcr.io/flaresolverr/flaresolverr
     tag: "v3.4.6"
