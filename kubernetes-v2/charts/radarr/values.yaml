@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: linuxserver/radarr
-  tag: "5.14.0"
+  tag: "6.3.0.10514-ls313"
 
 env:
   puid: "99"
