@@ -1,5 +1,4 @@
 vpn:
-  extraFlags: "--tun-mtu 1380 --mssfix 1320"
   serverRegions: DE Berlin
 
 persistence:
