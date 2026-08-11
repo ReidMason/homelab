@@ -10,6 +10,9 @@ persistence:
       server: fern.internal
       path: /mnt/user/Downloads/qBittorrent
 
+vpn:
+  serverRegions: Switzerland
+
 homelab:
   externalSecret:
     remoteKey: secret/prod/private-internet-access
