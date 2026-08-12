@@ -26,6 +26,7 @@ vpn:
   serverRegions: ""
   # LAN + cluster pod subnets allowed to bypass the VPN tunnel
   outboundSubnets: "10.128.20.0/24"
+  upstreamDnsAddresses: "1.1.1.1,1.0.0.1,8.8.8.8,8.8.4.4"
   # Ports opened by containers sharing this pod's network namespace
   inputPorts: "8080,9696,8191"
 
