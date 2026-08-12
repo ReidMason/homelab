@@ -1,6 +1,6 @@
 image:
   repository: portainer/portainer-ce
-  tag: "2.21.4"
+  tag: "2.44.0-alpine"
 
 persistence:
   enabled: true
