@@ -34,8 +34,17 @@ spec:
               add:
                 - NET_ADMIN
           env:
+            {{- if .Values.vpn.customConfig.enabled }}
+            - name: VPN_SERVICE_PROVIDER
+              value: "custom"
+            - name: OPENVPN_CUSTOM_CONFIG
+              value: "/gluetun/custom.conf"
+            {{- else }}
             - name: VPN_SERVICE_PROVIDER
               value: {{ .Values.vpn.serviceProvider | quote }}
+            - name: SERVER_REGIONS
+              value: {{ .Values.vpn.serverRegions | quote }}
+            {{- end }}
             - name: VPN_TYPE
               value: {{ .Values.vpn.type | quote }}
             - name: OPENVPN_USER
@@ -48,8 +57,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.homelab.externalSecret.name }}
                   key: {{ .Values.homelab.externalSecret.passwordProperty }}
-            - name: SERVER_REGIONS
-              value: {{ .Values.vpn.serverRegions | quote }}
             - name: FIREWALL_OUTBOUND_SUBNETS
               value: {{ .Values.vpn.outboundSubnets | quote }}
             - name: FIREWALL_INPUT_PORTS
@@ -61,6 +68,12 @@ spec:
           volumeMounts:
             - name: dev-net-tun
               mountPath: /dev/net/tun
+            {{- if .Values.vpn.customConfig.enabled }}
+            - name: openvpn-custom-config
+              mountPath: /gluetun/custom.conf
+              subPath: custom.conf
+              readOnly: true
+            {{- end }}
         {{- end }}
         - name: qbittorrent
           image: {{ .Values.image.qbittorrent.repository }}:{{ .Values.image.qbittorrent.tag }}
@@ -109,6 +122,11 @@ spec:
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun
+        {{- if .Values.vpn.customConfig.enabled }}
+        - name: openvpn-custom-config
+          configMap:
+            name: qbittorrent-openvpn-custom-config
+        {{- end }}
         {{- end }}
         - name: qbittorrent-config
           {{- if .Values.persistence.enabled }}
