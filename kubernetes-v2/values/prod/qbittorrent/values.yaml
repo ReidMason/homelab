@@ -1,5 +1,5 @@
 vpn:
-  serverRegions: DE Berlin
+  serverRegions: Switzerland
 
 persistence:
   qbittorrentConfig:
