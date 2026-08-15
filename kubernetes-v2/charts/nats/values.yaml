@@ -1,0 +1,21 @@
+image:
+  repository: nats
+  tag: "2.10-alpine"
+
+service:
+  clientPort: 4222
+  monitorPort: 8222
+
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClassName: longhorn
+
+homelab:
+  ingressRouteTcp:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 4222
+    tlsSecretName: ""

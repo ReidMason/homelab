@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+  labels:
+    app: nats
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nats
+  template:
+    metadata:
+      labels:
+        app: nats
+    spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 10
+      containers:
+        - name: nats
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          args:
+            - "-js"
+            - "-sd"
+            - "/data"
+            - "-m"
+            - "{{ .Values.service.monitorPort }}"
+          ports:
+            - containerPort: {{ .Values.service.clientPort }}
+              name: client
+            - containerPort: {{ .Values.service.monitorPort }}
+              name: monitor
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.service.monitorPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.service.monitorPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: nats-data
+          {{- else }}
+          emptyDir: {}
+          {{- end }}

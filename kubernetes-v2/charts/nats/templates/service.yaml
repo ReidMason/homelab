@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+spec:
+  selector:
+    app: nats
+  ports:
+    - protocol: TCP
+      name: client
+      port: {{ .Values.service.clientPort }}
+      targetPort: {{ .Values.service.clientPort }}
+    - protocol: TCP
+      name: monitor
+      port: {{ .Values.service.monitorPort }}
+      targetPort: {{ .Values.service.monitorPort }}

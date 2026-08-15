@@ -1,0 +1,5 @@
+apiVersion: v2
+name: nats
+description: NATS with JetStream, homelab event bus
+type: application
+version: 0.1.0
