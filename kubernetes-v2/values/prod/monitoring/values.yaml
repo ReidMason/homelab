@@ -21,6 +21,17 @@ kube-prometheus-stack:
               requests:
                 storage: 20Gi
 
+  alertmanager:
+    alertmanagerSpec:
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: longhorn
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 2Gi
+
 homelab:
   ingressRoute:
     enabled: true
