@@ -48,3 +48,8 @@ homelab:
       remoteKey: ""
       property: discord_webhook_url
       secretKey: webhook_url
+  unraid:
+    enabled: false
+    job: unraid
+    # Node exporter host:port, e.g. fern.internal:9100
+    target: ""

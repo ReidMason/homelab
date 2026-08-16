@@ -9,6 +9,26 @@ kube-prometheus-stack:
       userKey: admin-user
       passwordKey: admin-password
 
+  grafana:
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        node-exporter-full:
+          gnetId: 1860
+          revision: 39
+          datasource: Prometheus
+
   prometheus:
     prometheusSpec:
       retention: 15d
@@ -20,6 +40,11 @@ kube-prometheus-stack:
             resources:
               requests:
                 storage: 20Gi
+      additionalScrapeConfigs:
+        - job_name: unraid
+          static_configs:
+            - targets:
+                - fern.internal:9100
 
   alertmanager:
     alertmanagerSpec:
@@ -43,3 +68,6 @@ homelab:
     externalSecret:
       enabled: true
       remoteKey: secret/prod/relay-notifier
+  unraid:
+    enabled: true
+    job: unraid

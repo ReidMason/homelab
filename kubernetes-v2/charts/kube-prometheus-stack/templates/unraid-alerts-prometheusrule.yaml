@@ -1,0 +1,49 @@
+{{- if .Values.homelab.unraid.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: unraid-alerts
+  labels:
+    name: unraid-alerts
+    release: monitoring
+spec:
+  groups:
+    - name: unraid
+      rules:
+        - alert: UnraidHostDown
+          expr: up{job="{{ .Values.homelab.unraid.job }}"} == 0
+          for: 5m
+          labels:
+            severity: critical
+            app: unraid
+          annotations:
+            summary: "Unraid node exporter is unreachable"
+            description: "Prometheus has not been able to scrape the Unraid host for 5 minutes."
+        - alert: UnraidRootDiskSpaceLow
+          expr: node_filesystem_avail_bytes{job="{{ .Values.homelab.unraid.job }}", mountpoint="/"} / node_filesystem_size_bytes{job="{{ .Values.homelab.unraid.job }}", mountpoint="/"} < 0.1
+          for: 15m
+          labels:
+            severity: warning
+            app: unraid
+          annotations:
+            summary: "Unraid root filesystem is nearly full"
+            description: '{{ "{{" }} $labels.mountpoint {{ "}}" }} has less than 10% free space.'
+        - alert: UnraidHighMemoryUsage
+          expr: (1 - (node_memory_MemAvailable_bytes{job="{{ .Values.homelab.unraid.job }}"} / node_memory_MemTotal_bytes{job="{{ .Values.homelab.unraid.job }}"})) > 0.9
+          for: 15m
+          labels:
+            severity: warning
+            app: unraid
+          annotations:
+            summary: "Unraid memory usage is high"
+            description: "Available memory has been below 10% for 15 minutes."
+        - alert: UnraidHighLoad
+          expr: node_load5{job="{{ .Values.homelab.unraid.job }}"} / count without (cpu, mode) (node_cpu_seconds_total{job="{{ .Values.homelab.unraid.job }}", mode="idle"}) > 1.5
+          for: 15m
+          labels:
+            severity: warning
+            app: unraid
+          annotations:
+            summary: "Unraid CPU load is high"
+            description: "5m load average is more than 1.5x the number of CPU cores."
+{{- end }}
