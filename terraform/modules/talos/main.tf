@@ -50,6 +50,18 @@ locals {
     kind       = "HostnameConfig"
     auto       = "off"
   }
+  # kube-proxy defaults to binding metrics on 127.0.0.1, which Prometheus
+  # (running in a pod, separate network namespace) can never reach, causing
+  # permanent KubeProxyInstanceUnreachable alerts. Bind on all interfaces.
+  cluster_proxy_patch = yamlencode({
+    cluster = {
+      proxy = {
+        extraArgs = {
+          "metrics-bind-address" = "0.0.0.0:10249"
+        }
+      }
+    }
+  })
   # The LAN has multiple devices advertising their own ULA prefix via RA
   # (the UDM, an Apple TV acting as a Thread border router, and the SLZB-MR5U
   # itself), so IPv6 default source address selection is ambiguous and has
@@ -131,6 +143,7 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
   node                        = each.value.hostname
   config_patches = [
     local.machine_base_patch,
+    local.cluster_proxy_patch,
     yamlencode(merge(local.hostname_config, {
       hostname = each.value.hostname
     })),
