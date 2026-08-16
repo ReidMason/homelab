@@ -15,6 +15,7 @@ spec:
           for: 10s
           labels:
             severity: warning
+            app: sonarr
           annotations:
             summary: "Sonarr reports its download client is unavailable"
             description: '{{ "{{" }} $labels.message {{ "}}" }}'
