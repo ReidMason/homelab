@@ -12,7 +12,7 @@ spec:
       rules:
         - alert: SonarrDownloadClientUnavailable
           expr: sonarr_system_health_issues{source=~".*DownloadClient.*"} > 0
-          for: 30m
+          for: 10s
           labels:
             severity: warning
           annotations:
