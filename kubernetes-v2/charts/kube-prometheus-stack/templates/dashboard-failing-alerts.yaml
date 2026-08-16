@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-failing-alerts
+  labels:
+    grafana_dashboard: "1"
+data:
+  failing-alerts.json: |
+    {
+      "uid": "failing-alerts",
+      "title": "Failing Alerts",
+      "tags": ["alerts"],
+      "timezone": "browser",
+      "schemaVersion": 39,
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 1,
+          "type": "alertlist",
+          "title": "Firing - Critical",
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 0 },
+          "options": {
+            "alertInstanceLabelFilter": "{severity=\"critical\"}",
+            "alertName": "",
+            "dashboardAlerts": false,
+            "groupBy": [],
+            "groupMode": "default",
+            "maxItems": 20,
+            "sortOrder": 2,
+            "viewMode": "list",
+            "stateFilter": {
+              "firing": true,
+              "pending": false,
+              "noData": false,
+              "normal": false,
+              "error": true
+            }
+          }
+        },
+        {
+          "id": 2,
+          "type": "alertlist",
+          "title": "Firing - Warning",
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 0 },
+          "options": {
+            "alertInstanceLabelFilter": "{severity=\"warning\"}",
+            "alertName": "",
+            "dashboardAlerts": false,
+            "groupBy": [],
+            "groupMode": "default",
+            "maxItems": 20,
+            "sortOrder": 2,
+            "viewMode": "list",
+            "stateFilter": {
+              "firing": true,
+              "pending": false,
+              "noData": false,
+              "normal": false,
+              "error": true
+            }
+          }
+        },
+        {
+          "id": 3,
+          "type": "alertlist",
+          "title": "All Firing Alerts",
+          "gridPos": { "h": 10, "w": 24, "x": 0, "y": 6 },
+          "options": {
+            "alertInstanceLabelFilter": "",
+            "alertName": "",
+            "dashboardAlerts": false,
+            "groupBy": ["namespace"],
+            "groupMode": "custom",
+            "maxItems": 100,
+            "sortOrder": 2,
+            "viewMode": "list",
+            "stateFilter": {
+              "firing": true,
+              "pending": false,
+              "noData": false,
+              "normal": false,
+              "error": true
+            }
+          }
+        },
+        {
+          "id": 4,
+          "type": "alertlist",
+          "title": "Pending Alerts",
+          "gridPos": { "h": 6, "w": 24, "x": 0, "y": 16 },
+          "options": {
+            "alertInstanceLabelFilter": "",
+            "alertName": "",
+            "dashboardAlerts": false,
+            "groupBy": [],
+            "groupMode": "default",
+            "maxItems": 50,
+            "sortOrder": 2,
+            "viewMode": "list",
+            "stateFilter": {
+              "firing": false,
+              "pending": true,
+              "noData": false,
+              "normal": false,
+              "error": false
+            }
+          }
+        }
+      ]
+    }
