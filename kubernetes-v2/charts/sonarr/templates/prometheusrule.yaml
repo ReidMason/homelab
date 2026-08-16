@@ -19,4 +19,13 @@ spec:
           annotations:
             summary: "Sonarr reports its download client is unavailable"
             description: '{{ "{{" }} $labels.message {{ "}}" }}'
+        - alert: SonarrAllIndexersDown
+          expr: sum(sonarr_indexer_status) == count(sonarr_indexer_status)
+          for: 15m
+          labels:
+            severity: critical
+            app: sonarr
+          annotations:
+            summary: "All Sonarr indexers are unavailable"
+            description: "Every configured Sonarr indexer is currently failing/backed off."
 {{- end }}
