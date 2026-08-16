@@ -31,6 +31,6 @@ metadata:
 spec:
   cron: {{ .Values.homelab.trim.cron | quote }}
   task: "filesystem-trim"
-  retain: 1
+  retain: 0
   concurrency: 2
 {{- end }}
