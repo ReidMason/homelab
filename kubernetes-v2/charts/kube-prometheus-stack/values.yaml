@@ -21,16 +21,8 @@ kube-prometheus-stack:
 
   alertmanager:
     alertmanagerSpec:
-      secrets:
-        - alertmanager-discord-webhook
-    config:
-      route:
-        receiver: discord
-      receivers:
-        - name: "null"
-        - name: discord
-          discord_configs:
-            - webhook_url_file: /etc/alertmanager/secrets/alertmanager-discord-webhook/webhook_url
+      alertmanagerConfiguration:
+        name: alertmanager-global-config
 
 homelab:
   ingressRoute:

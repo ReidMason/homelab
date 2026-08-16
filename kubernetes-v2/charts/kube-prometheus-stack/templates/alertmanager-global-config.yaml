@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alertmanager-global-config
+spec:
+  route:
+    receiver: "null"
+    routes:
+      - receiver: "null"
+        matchers:
+          - name: alertname
+            value: Watchdog
+      - receiver: discord
+        continue: false
+  receivers:
+    - name: "null"
+    - name: discord
+      discordConfigs:
+        - apiURL:
+            name: alertmanager-discord-webhook
+            key: webhook_url
