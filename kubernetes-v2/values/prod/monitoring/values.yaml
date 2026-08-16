@@ -28,3 +28,7 @@ homelab:
   externalSecret:
     enabled: true
     remoteKey: secret/prod/grafana
+  alertmanager:
+    externalSecret:
+      enabled: true
+      remoteKey: secret/prod/relay-notifier

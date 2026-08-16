@@ -19,6 +19,18 @@ kube-prometheus-stack:
   kubeScheduler:
     enabled: false
 
+  alertmanager:
+    alertmanagerSpec:
+      secrets:
+        - alertmanager-discord-webhook
+    config:
+      route:
+        receiver: discord
+      receivers:
+        - name: discord
+          discord_configs:
+            - webhook_url_file: /etc/alertmanager/secrets/alertmanager-discord-webhook/webhook_url
+
 homelab:
   ingressRoute:
     enabled: false
@@ -34,3 +46,12 @@ homelab:
     remoteKey: ""
     userProperty: admin-user
     passwordProperty: admin-password
+  alertmanager:
+    externalSecret:
+      enabled: false
+      name: alertmanager-discord-webhook
+      refreshInterval: 15s
+      clusterSecretStoreName: vault-homelab
+      remoteKey: ""
+      property: discord_webhook_url
+      secretKey: webhook_url
