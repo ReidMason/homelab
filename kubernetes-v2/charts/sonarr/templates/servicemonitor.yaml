@@ -5,6 +5,7 @@ metadata:
   name: sonarr-prometheus-servicemonitor
   labels:
     name: sonarr-prometheus-servicemonitor
+    release: monitoring
 spec:
   selector:
     matchLabels:
