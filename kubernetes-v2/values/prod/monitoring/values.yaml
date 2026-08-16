@@ -1,0 +1,30 @@
+kube-prometheus-stack:
+  grafana:
+    persistence:
+      enabled: true
+      storageClassName: longhorn
+      size: 5Gi
+    admin:
+      existingSecret: grafana-admin-credentials
+      userKey: admin-user
+      passwordKey: admin-password
+
+  prometheus:
+    prometheusSpec:
+      retention: 15d
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: longhorn
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 20Gi
+
+homelab:
+  ingressRoute:
+    enabled: true
+    host: grafana.skippythesnake.com
+  externalSecret:
+    enabled: true
+    remoteKey: secret/prod/grafana

@@ -1,0 +1,36 @@
+kube-prometheus-stack:
+  grafana:
+    persistence:
+      enabled: false
+    admin:
+      existingSecret: ""
+
+  prometheus:
+    prometheusSpec:
+      retention: 15d
+      storageSpec: {}
+
+  # Talos control-plane components aren't exposed the way kubeadm clusters expose
+  # them, so these built-in ServiceMonitors just fail to scrape anything.
+  kubeEtcd:
+    enabled: false
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+
+homelab:
+  ingressRoute:
+    enabled: false
+    host: ""
+    entryPoints:
+      - websecure
+    servicePort: 80
+  externalSecret:
+    enabled: false
+    name: grafana-admin-credentials
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    userProperty: admin-user
+    passwordProperty: admin-password

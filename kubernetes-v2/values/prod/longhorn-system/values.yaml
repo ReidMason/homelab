@@ -21,3 +21,5 @@ homelab:
     enabled: true
   trim:
     enabled: true
+  metrics:
+    enabled: true

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: kube-prometheus-stack
+description: kube-prometheus-stack (Prometheus Operator, Grafana, Alertmanager) with Traefik IngressRoute and Vault-backed Grafana credentials
+type: application
+version: 0.1.0
+dependencies:
+  - name: kube-prometheus-stack
+    version: 88.3.0
+    repository: https://prometheus-community.github.io/helm-charts
