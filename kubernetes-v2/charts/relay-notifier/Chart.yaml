@@ -1,0 +1,5 @@
+apiVersion: v2
+name: relay-notifier
+description: Relay notifier - consumes Events from NATS and delivers them to Channels
+type: application
+version: 0.1.0

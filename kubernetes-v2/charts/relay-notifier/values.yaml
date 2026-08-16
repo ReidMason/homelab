@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/reidmason/relay-notifier
+  tag: "edge"
+
+env:
+  natsUrl: nats://nats.nats.svc.cluster.local:4222
+  port: "8081"
+
+homelab:
+  externalSecret:
+    enabled: true
+    name: relay-notifier-secret
+    refreshInterval: 15s
+    clusterSecretStoreName: vault-homelab
+    remoteKey: ""
+    property: discord_webhook_url
+    secretKey: discord_webhook_url

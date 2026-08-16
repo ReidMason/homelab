@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-ingest
+  labels:
+    app: relay-ingest
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: relay-ingest
+  template:
+    metadata:
+      labels:
+        app: relay-ingest
+    spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          effect: NoExecute
+          tolerationSeconds: 10
+      containers:
+        - name: relay-ingest
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: NATS_URL
+              value: {{ .Values.env.natsUrl | quote }}
+            - name: PORT
+              value: {{ .Values.env.port | quote }}
+          ports:
+            - containerPort: {{ .Values.env.port }}
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: {{ .Values.env.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: {{ .Values.env.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 15
