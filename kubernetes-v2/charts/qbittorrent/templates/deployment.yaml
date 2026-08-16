@@ -75,6 +75,8 @@ spec:
               value: {{ .Values.ports.qbittorrent | quote }}
           ports:
             - containerPort: {{ .Values.ports.qbittorrent }}
+          resources:
+            {{- toYaml .Values.resources.qbittorrent | nindent 12 }}
           volumeMounts:
             - name: qbittorrent-config
               mountPath: /config

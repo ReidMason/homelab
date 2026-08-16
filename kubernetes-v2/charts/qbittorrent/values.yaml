@@ -35,6 +35,13 @@ ports:
   prowlarr: 9696
   flaresolverr: 8191
 
+resources:
+  qbittorrent:
+    requests:
+      memory: 512Mi
+    limits:
+      memory: 2Gi
+
 persistence:
   enabled: true
   size: 5Gi
