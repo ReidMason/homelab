@@ -1,4 +1,5 @@
 ingest:
+  replicaCount: 0
   homelab:
     ingressRoute:
       enabled: true
