@@ -71,6 +71,23 @@ spec:
               {{- if .Values.persistence.tv.readOnly }}
               readOnly: true
               {{- end }}
+        {{- if .Values.homelab.metrics.enabled }}
+        - name: exportarr
+          image: {{ .Values.homelab.metrics.image.repository }}:{{ .Values.homelab.metrics.image.tag }}
+          args: ["sonarr"]
+          env:
+            - name: PORT
+              value: {{ .Values.homelab.metrics.port | quote }}
+            - name: URL
+              value: "http://localhost:8989"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.homelab.metrics.externalSecret.name | quote }}
+                  key: {{ .Values.homelab.metrics.externalSecret.secretKey | quote }}
+          ports:
+            - containerPort: {{ .Values.homelab.metrics.port }}
+        {{- end }}
       volumes:
         - name: config
           {{- if .Values.persistence.enabled }}

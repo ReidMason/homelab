@@ -10,6 +10,12 @@ spec:
       protocol: TCP
       port: 8989
       targetPort: 8989
+    {{- if .Values.homelab.metrics.enabled }}
+    - name: metrics
+      protocol: TCP
+      port: {{ .Values.homelab.metrics.port }}
+      targetPort: {{ .Values.homelab.metrics.port }}
+    {{- end }}
 {{- if .Values.homelab.lanService.enabled }}
 ---
 apiVersion: v1

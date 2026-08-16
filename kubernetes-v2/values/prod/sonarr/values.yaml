@@ -21,3 +21,8 @@ homelab:
   lanService:
     enabled: true
     loadBalancerIP: 10.128.20.63
+  metrics:
+    enabled: true
+    externalSecret:
+      enabled: true
+      remoteKey: secret/prod/sonarr
