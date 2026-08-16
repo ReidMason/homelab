@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-ingest
+spec:
+  selector:
+    app: relay-ingest
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.ingest.service.port }}
+      targetPort: {{ .Values.ingest.port }}
+{{- if .Values.ingest.homelab.lanService.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-ingest-lan
+  {{- if .Values.ingest.homelab.lanService.metallbAddressPool }}
+  annotations:
+    metallb.io/address-pool: {{ .Values.ingest.homelab.lanService.metallbAddressPool | quote }}
+  {{- end }}
+spec:
+  type: {{ .Values.ingest.homelab.lanService.type }}
+  {{- if .Values.ingest.homelab.lanService.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.ingest.homelab.lanService.loadBalancerIP | quote }}
+  {{- end }}
+  selector:
+    app: relay-ingest
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.ingest.service.port }}
+      targetPort: {{ .Values.ingest.port }}
+{{- end }}

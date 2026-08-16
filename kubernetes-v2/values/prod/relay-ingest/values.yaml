@@ -1,4 +1,0 @@
-homelab:
-  ingressRoute:
-    enabled: true
-    host: relay.skippythesnake.com

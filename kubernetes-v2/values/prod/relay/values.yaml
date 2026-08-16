@@ -1,0 +1,10 @@
+ingest:
+  homelab:
+    ingressRoute:
+      enabled: true
+      host: relay.skippythesnake.com
+
+notifier:
+  homelab:
+    externalSecret:
+      remoteKey: secret/prod/relay-notifier

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: relay-notifier
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.notifier.replicaCount }}
   selector:
     matchLabels:
       app: relay-notifier
@@ -20,30 +20,30 @@ spec:
           tolerationSeconds: 10
       containers:
         - name: relay-notifier
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.notifier.image.repository }}:{{ .Values.notifier.image.tag }}
           imagePullPolicy: Always
           env:
             - name: NATS_URL
-              value: {{ .Values.env.natsUrl | quote }}
+              value: {{ .Values.natsUrl | quote }}
             - name: PORT
-              value: {{ .Values.env.port | quote }}
+              value: {{ .Values.notifier.port | quote }}
             - name: DISCORD_WEBHOOK_URL
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.homelab.externalSecret.name }}
-                  key: {{ .Values.homelab.externalSecret.secretKey }}
+                  name: {{ .Values.notifier.homelab.externalSecret.name }}
+                  key: {{ .Values.notifier.homelab.externalSecret.secretKey }}
           ports:
-            - containerPort: {{ .Values.env.port }}
+            - containerPort: {{ .Values.notifier.port }}
               name: http
           readinessProbe:
             httpGet:
               path: /readyz
-              port: {{ .Values.env.port }}
+              port: {{ .Values.notifier.port }}
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /livez
-              port: {{ .Values.env.port }}
+              port: {{ .Values.notifier.port }}
             initialDelaySeconds: 5
             periodSeconds: 15

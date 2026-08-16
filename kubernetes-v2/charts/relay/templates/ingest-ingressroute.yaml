@@ -1,0 +1,17 @@
+{{- if and .Values.ingest.homelab.ingressRoute.enabled .Values.ingest.homelab.ingressRoute.host }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: relay-ingest
+spec:
+  entryPoints:
+{{- range .Values.ingest.homelab.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    - match: Host(`{{ .Values.ingest.homelab.ingressRoute.host }}`)
+      kind: Rule
+      services:
+        - name: relay-ingest
+          port: {{ .Values.ingest.homelab.ingressRoute.servicePort }}
+{{- end }}

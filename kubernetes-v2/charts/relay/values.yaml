@@ -1,0 +1,45 @@
+natsUrl: nats://nats.nats.svc.cluster.local:4222
+
+ingest:
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/reidmason/relay-ingest
+    tag: "edge"
+
+  port: "8080"
+
+  service:
+    port: 8080
+
+  homelab:
+    ingressRoute:
+      enabled: false
+      host: ""
+      entryPoints:
+        - websecure
+      servicePort: 8080
+    lanService:
+      enabled: false
+      type: LoadBalancer
+      loadBalancerIP: ""
+      metallbAddressPool: default-pool
+
+notifier:
+  replicaCount: 1
+
+  image:
+    repository: ghcr.io/reidmason/relay-notifier
+    tag: "edge"
+
+  port: "8081"
+
+  homelab:
+    externalSecret:
+      enabled: true
+      name: relay-notifier-secret
+      refreshInterval: 15s
+      clusterSecretStoreName: vault-homelab
+      remoteKey: ""
+      property: discord_webhook_url
+      secretKey: discord_webhook_url

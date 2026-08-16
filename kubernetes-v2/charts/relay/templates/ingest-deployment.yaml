@@ -5,7 +5,7 @@ metadata:
   labels:
     app: relay-ingest
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.ingest.replicaCount }}
   selector:
     matchLabels:
       app: relay-ingest
@@ -20,25 +20,25 @@ spec:
           tolerationSeconds: 10
       containers:
         - name: relay-ingest
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.ingest.image.repository }}:{{ .Values.ingest.image.tag }}
           imagePullPolicy: Always
           env:
             - name: NATS_URL
-              value: {{ .Values.env.natsUrl | quote }}
+              value: {{ .Values.natsUrl | quote }}
             - name: PORT
-              value: {{ .Values.env.port | quote }}
+              value: {{ .Values.ingest.port | quote }}
           ports:
-            - containerPort: {{ .Values.env.port }}
+            - containerPort: {{ .Values.ingest.port }}
               name: http
           readinessProbe:
             httpGet:
               path: /readyz
-              port: {{ .Values.env.port }}
+              port: {{ .Values.ingest.port }}
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /livez
-              port: {{ .Values.env.port }}
+              port: {{ .Values.ingest.port }}
             initialDelaySeconds: 5
             periodSeconds: 15
