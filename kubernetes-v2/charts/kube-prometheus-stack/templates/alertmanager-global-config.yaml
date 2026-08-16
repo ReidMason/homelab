@@ -5,6 +5,9 @@ metadata:
 spec:
   route:
     receiver: "null"
+    groupBy:
+      - alertname
+      - namespace
     routes:
       - receiver: "null"
         matchers:
