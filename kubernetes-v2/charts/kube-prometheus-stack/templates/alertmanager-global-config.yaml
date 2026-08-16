@@ -19,3 +19,13 @@ spec:
         - apiURL:
             name: alertmanager-discord-webhook
             key: webhook_url
+          sendResolved: true
+          title: '{{ "{{ .Status | toUpper }}" }}: {{ "{{ .CommonLabels.alertname }}" }}'
+          message: |-
+            {{ "{{ range .Alerts }}" }}
+            **{{ "{{ .Labels.severity | toUpper }}" }}** in `{{ "{{ .Labels.namespace }}" }}`
+            {{ "{{ .Annotations.summary }}" }}
+            {{ "{{ if .Annotations.description }}" }}{{ "{{ .Annotations.description }}" }}{{ "{{ end }}" }}
+            [View in Prometheus]({{ "{{ .GeneratorURL }}" }})
+
+            {{ "{{ end }}" }}
