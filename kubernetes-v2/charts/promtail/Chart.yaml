@@ -1,0 +1,9 @@
+apiVersion: v2
+name: promtail
+description: Promtail log shipper, syslog receiver for fern.internal (Unraid)
+type: application
+version: 0.1.0
+dependencies:
+  - name: promtail
+    version: 6.17.1
+    repository: https://grafana.github.io/helm-charts

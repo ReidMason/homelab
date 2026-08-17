@@ -1,0 +1,9 @@
+apiVersion: v2
+name: loki
+description: Loki log store, monolithic mode with filesystem storage
+type: application
+version: 0.1.0
+dependencies:
+  - name: loki
+    version: 7.3.0
+    repository: https://grafana.github.io/helm-charts

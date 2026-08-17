@@ -1,0 +1,83 @@
+loki:
+  loki:
+    auth_enabled: false
+
+    storage:
+      type: filesystem
+
+    limits_config:
+      retention_period: 336h # 14d
+
+    compactor:
+      retention_enabled: true
+      delete_request_store: filesystem
+
+    schemaConfig:
+      configs:
+        - from: "2026-01-01"
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: loki_index_
+            period: 24h
+
+  deploymentMode: SingleBinary
+
+  singleBinary:
+    replicas: 1
+    persistence:
+      enabled: true
+      storageClass: longhorn
+      size: 10Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  gateway:
+    enabled: false
+
+  # Zero out replica counts of deployment modes other than SingleBinary
+  backend:
+    replicas: 0
+  read:
+    replicas: 0
+  write:
+    replicas: 0
+  ingester:
+    replicas: 0
+  querier:
+    replicas: 0
+  queryFrontend:
+    replicas: 0
+  queryScheduler:
+    replicas: 0
+  distributor:
+    replicas: 0
+  compactor:
+    replicas: 0
+  indexGateway:
+    replicas: 0
+  bloomCompactor:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+  test:
+    enabled: false
+
+  monitoring:
+    serviceMonitor:
+      enabled: false
+    selfMonitoring:
+      enabled: false
+
+  lokiCanary:
+    enabled: false
+
+  minio:
+    enabled: false

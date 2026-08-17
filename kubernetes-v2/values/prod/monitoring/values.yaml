@@ -26,6 +26,12 @@ kube-prometheus-stack:
           gnetId: 1860
           revision: 39
           datasource: Prometheus
+    additionalDataSources:
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki.loki.svc.cluster.local:3100
+        editable: false
 
   prometheus:
     prometheusSpec:
@@ -47,6 +53,14 @@ kube-prometheus-stack:
           static_configs:
             - targets:
                 - fern.internal:9633
+        - job_name: loki
+          static_configs:
+            - targets:
+                - loki.loki.svc.cluster.local:3100
+        - job_name: promtail
+          static_configs:
+            - targets:
+                - promtail-metrics.promtail.svc.cluster.local:3101
 
   alertmanager:
     alertmanagerSpec:
@@ -74,3 +88,7 @@ homelab:
     enabled: true
     job: unraid
     smartJob: unraid-smart
+  logging:
+    enabled: true
+    lokiJob: loki
+    promtailJob: promtail
