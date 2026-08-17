@@ -47,7 +47,7 @@ spec:
             summary: "Unraid CPU load is high"
             description: "5m load average is more than 1.5x the number of CPU cores."
         - alert: UnraidNvmeTempHigh
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device=~"nvme.*"} > 70
+          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device=~".*nvme.*"} > 70
           for: 10m
           labels:
             severity: warning
@@ -56,7 +56,7 @@ spec:
             summary: "Unraid NVMe temperature is high"
             description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
         - alert: UnraidNvmeTempCritical
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device=~"nvme.*"} > 80
+          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device=~".*nvme.*"} > 80
           for: 5m
           labels:
             severity: critical
@@ -65,7 +65,7 @@ spec:
             summary: "Unraid NVMe temperature is critically high"
             description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
         - alert: UnraidArrayDriveTempHigh
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~"nvme.*"} > 45
+          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~".*nvme.*"} > 45
           for: 10m
           labels:
             severity: warning
@@ -74,7 +74,7 @@ spec:
             summary: "Unraid array drive temperature is high"
             description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
         - alert: UnraidArrayDriveTempCritical
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~"nvme.*"} > 50
+          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~".*nvme.*"} > 50
           for: 5m
           labels:
             severity: critical
