@@ -42,7 +42,7 @@ spec:
           title: '{{ "{{ .Status | toUpper }}" }}: {{ "{{ .CommonLabels.alertname }}" }}'
           message: |-
             {{ "{{ range .Alerts }}" }}
-            **{{ "{{ .Labels.severity | toUpper }}" }}** in `{{ "{{ .Labels.namespace }}" }}`
+            **{{ "{{ .Labels.severity | toUpper }}" }}**{{ "{{ if .Labels.namespace }}" }} in `{{ "{{ .Labels.namespace }}" }}`{{ "{{ end }}" }}
             {{ "{{ .Annotations.summary }}" }}
             {{ "{{ if .Annotations.description }}" }}{{ "{{ .Annotations.description }}" }}{{ "{{ end }}" }}
             [View in Prometheus]({{ "{{ .GeneratorURL }}" }})
@@ -57,7 +57,7 @@ spec:
           title: '{{ "{{ .Status | toUpper }}" }}: {{ "{{ .CommonLabels.alertname }}" }}'
           message: |-
             {{ "{{ range .Alerts }}" }}
-            **{{ "{{ .Labels.severity | toUpper }}" }}** in `{{ "{{ .Labels.namespace }}" }}`
+            **{{ "{{ .Labels.severity | toUpper }}" }}**{{ "{{ if .Labels.namespace }}" }} in `{{ "{{ .Labels.namespace }}" }}`{{ "{{ end }}" }}
             {{ "{{ .Annotations.summary }}" }}
             {{ "{{ if .Annotations.description }}" }}{{ "{{ .Annotations.description }}" }}{{ "{{ end }}" }}
             [View in Prometheus]({{ "{{ .GeneratorURL }}" }})
