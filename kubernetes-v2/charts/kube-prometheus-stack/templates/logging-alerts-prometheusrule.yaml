@@ -19,13 +19,13 @@ spec:
           annotations:
             summary: "Loki is unreachable"
             description: "Prometheus has not been able to scrape Loki for 5 minutes. Logs, including fern's remote syslog, are not being durably stored."
-        - alert: PromtailDown
-          expr: up{job="{{ .Values.homelab.logging.promtailJob }}"} == 0
+        - alert: AlloyDown
+          expr: up{job="{{ .Values.homelab.logging.alloyJob }}"} == 0
           for: 5m
           labels:
             severity: critical
-            app: promtail
+            app: alloy
           annotations:
-            summary: "Promtail is unreachable"
-            description: "Prometheus has not been able to scrape Promtail for 5 minutes. fern's remote syslog has nowhere to land."
+            summary: "Alloy is unreachable"
+            description: "Prometheus has not been able to scrape Alloy for 5 minutes. fern's remote syslog has nowhere to land."
 {{- end }}

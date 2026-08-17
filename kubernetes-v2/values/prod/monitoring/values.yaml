@@ -57,10 +57,10 @@ kube-prometheus-stack:
           static_configs:
             - targets:
                 - loki.loki.svc.cluster.local:3100
-        - job_name: promtail
+        - job_name: alloy
           static_configs:
             - targets:
-                - promtail-metrics.promtail.svc.cluster.local:3101
+                - alloy.alloy.svc.cluster.local:12345
 
   alertmanager:
     alertmanagerSpec:
@@ -91,4 +91,4 @@ homelab:
   logging:
     enabled: true
     lokiJob: loki
-    promtailJob: promtail
+    alloyJob: alloy

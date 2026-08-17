@@ -1,0 +1,90 @@
+alloy:
+  alloy:
+    configMap:
+      create: true
+      content: |
+        loki.write "default" {
+          endpoint {
+            url = "http://loki.loki.svc.cluster.local:3100/loki/api/v1/push"
+          }
+        }
+
+        // Unraid remote syslog. Unraid's syslogd sends RFC3164 (classic BSD
+        // syslog), not RFC5424 - this is exactly what Promtail could not
+        // parse and Alloy was brought in to replace.
+        loki.relabel "syslog" {
+          forward_to = []
+
+          rule {
+            action = "labelmap"
+            regex  = "__syslog_(.+)"
+          }
+        }
+
+        loki.source.syslog "unraid" {
+          listener {
+            address       = "0.0.0.0:1514"
+            protocol      = "tcp"
+            syslog_format = "rfc3164"
+            labels = {
+              job = "syslog",
+            }
+          }
+
+          relabel_rules = loki.relabel.syslog.rules
+          forward_to    = [loki.write.default.receiver]
+        }
+
+        // Cluster pod logs, via the Kubernetes API (no hostPath, no
+        // privileged container needed) - groundwork for future log sources.
+        discovery.kubernetes "pods" {
+          role = "pod"
+        }
+
+        loki.source.kubernetes "pods" {
+          targets    = discovery.kubernetes.pods.targets
+          forward_to = [loki.write.default.receiver]
+        }
+
+    extraPorts:
+      - name: tcp-syslog
+        port: 1514
+        targetPort: 1514
+        protocol: TCP
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 300m
+        memory: 256Mi
+
+  controller:
+    type: deployment
+    replicas: 1
+
+  service:
+    enabled: true
+    type: ClusterIP
+
+  # extraPorts only adds the container port + main Service port; the syslog
+  # port needs its own LoadBalancer Service so the metrics/UI port on the
+  # main Service stays internal-only.
+  extraObjects:
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: alloy-syslog
+        namespace: alloy
+      spec:
+        type: LoadBalancer
+        loadBalancerIP: 10.128.20.66
+        selector:
+          app.kubernetes.io/name: alloy
+          app.kubernetes.io/instance: alloy
+        ports:
+          - name: tcp-syslog
+            port: 1514
+            targetPort: 1514
+            protocol: TCP
