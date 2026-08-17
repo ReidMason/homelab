@@ -13,10 +13,41 @@ spec:
         matchers:
           - name: alertname
             value: Watchdog
+      - receiver: discord-critical
+        matchers:
+          - name: severity
+            value: critical
+        continue: false
       - receiver: discord
         continue: false
+  inhibitRules:
+    - sourceMatch:
+        - name: alertname
+          value: UnraidHostDown
+      targetMatch:
+        - name: app
+          value: unraid
+        - name: severity
+          value: warning
+      equal:
+        - app
   receivers:
     - name: "null"
+    - name: discord-critical
+      discordConfigs:
+        - apiURL:
+            name: alertmanager-discord-webhook
+            key: webhook_url
+          sendResolved: true
+          title: '{{ "{{ .Status | toUpper }}" }}: {{ "{{ .CommonLabels.alertname }}" }}'
+          message: |-
+            {{ "{{ range .Alerts }}" }}
+            **{{ "{{ .Labels.severity | toUpper }}" }}** in `{{ "{{ .Labels.namespace }}" }}`
+            {{ "{{ .Annotations.summary }}" }}
+            {{ "{{ if .Annotations.description }}" }}{{ "{{ .Annotations.description }}" }}{{ "{{ end }}" }}
+            [View in Prometheus]({{ "{{ .GeneratorURL }}" }})
+
+            {{ "{{ end }}" }}
     - name: discord
       discordConfigs:
         - apiURL:
