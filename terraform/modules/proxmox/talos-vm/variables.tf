@@ -52,6 +52,16 @@ variable "memory_mb" {
   }
 }
 
+variable "balloon_mb" {
+  type        = number
+  default     = 0
+  description = "Minimum memory (MB) the balloon driver will reclaim down to; 0 disables ballooning"
+  validation {
+    condition     = var.balloon_mb >= 0 && var.balloon_mb <= var.memory_mb
+    error_message = "balloon_mb must be >= 0 and <= memory_mb."
+  }
+}
+
 variable "disk_size_gb" {
   type        = number
   description = "The size of the disk to allocate to the VM"

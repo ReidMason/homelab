@@ -44,6 +44,7 @@ variable "kubernetes_cluster" {
       enabled     = optional(bool, true)
       cores       = optional(number, null)
       memory_mb   = optional(number, null)
+      balloon_mb  = optional(number, null)
       disk_gb     = optional(number, null)
     }))
   })
@@ -83,16 +84,18 @@ variable "kubernetes_cluster" {
 
 variable "control_plane_defaults" {
   type = object({
-    cores     = optional(number, 2)
-    memory_mb = optional(number, 4096)
-    disk_gb   = optional(number, 50)
+    cores      = optional(number, 2)
+    memory_mb  = optional(number, 4096)
+    balloon_mb = optional(number, 0)
+    disk_gb    = optional(number, 50)
   })
 }
 
 variable "worker_defaults" {
   type = object({
-    cores     = optional(number, 2)
-    memory_mb = optional(number, 4096)
-    disk_gb   = optional(number, 50)
+    cores      = optional(number, 2)
+    memory_mb  = optional(number, 4096)
+    balloon_mb = optional(number, 0)
+    disk_gb    = optional(number, 50)
   })
 }

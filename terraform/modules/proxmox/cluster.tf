@@ -24,6 +24,10 @@ module "kubernetes_nodes" {
     try(each.value.memory_mb, null),
     each.value.type == "control-plane" ? var.control_plane_defaults.memory_mb : var.worker_defaults.memory_mb
   )
+  balloon_mb = coalesce(
+    try(each.value.balloon_mb, null),
+    each.value.type == "control-plane" ? var.control_plane_defaults.balloon_mb : var.worker_defaults.balloon_mb
+  )
   disk_size_gb = coalesce(
     try(each.value.disk_gb, null),
     each.value.type == "control-plane" ? var.control_plane_defaults.disk_gb : var.worker_defaults.disk_gb
