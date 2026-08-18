@@ -65,21 +65,21 @@ spec:
             summary: "Unraid NVMe temperature is critically high"
             description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
         - alert: UnraidArrayDriveTempHigh
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~".*nvme.*"} > 45
+          expr: max by (disk) (smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", disk!="", disk!="cache"}) > 45
           for: 10m
           labels:
             severity: warning
             app: unraid
           annotations:
             summary: "Unraid array drive temperature is high"
-            description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
+            description: '{{ "{{" }} $labels.disk {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
         - alert: UnraidArrayDriveTempCritical
-          expr: smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", device!~".*nvme.*"} > 50
+          expr: max by (disk) (smartctl_device_temperature{job="{{ .Values.homelab.unraid.smartJob }}", temperature_type="current", disk!="", disk!="cache"}) > 50
           for: 5m
           labels:
             severity: critical
             app: unraid
           annotations:
             summary: "Unraid array drive temperature is critically high"
-            description: '{{ "{{" }} $labels.device {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
+            description: '{{ "{{" }} $labels.disk {{ "}}" }} is at {{ "{{" }} $value {{ "}}" }}°C.'
 {{- end }}
