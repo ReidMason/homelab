@@ -11,7 +11,7 @@ spec:
       labels:
         app: portainer-agent
     spec:
-      serviceAccountName: portainer-sa-clusteradmin
+      serviceAccountName: portainer-sa-view
       containers:
         - name: portainer-agent
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
