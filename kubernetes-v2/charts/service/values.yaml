@@ -11,10 +11,23 @@ probes:
   enabled: false
   path: ""
 
+env: []
+# - name: DOMAINS
+#   value: example.com
+
 secretEnv: []
 # - envName: TOKEN
 #   secretKey: token
 #   property: token
+
+securityContext: {}
+# readOnlyRootFilesystem: true
+# allowPrivilegeEscalation: false
+# runAsUser: 1000
+# runAsGroup: 1000
+# capabilities:
+#   drop:
+#     - ALL
 
 externalSecret:
   name: ""

@@ -35,8 +35,10 @@ Considered alternatives:
 - Readiness/liveness probes, with a configurable path
 - Secret-sourced env vars, as a values-driven list of `{envName, secretKey, property}` against one `ExternalSecret` per app, which `service` renders itself (`externalSecret.{enabled, name, remoteKey, refreshInterval, clusterSecretStoreName}`) — the chart references but does not provision the underlying Vault/`ClusterSecretStore` infrastructure, only the per-app `ExternalSecret` custom resource
 - An optional `metricsSidecar` block (`{image, port, apiKeySecret}`) — a single dedicated second-container slot matching the existing `sonarr` `exportarr` pattern exactly, not a generic multi-container mechanism
+- Plain literal-value env vars, as a values-driven list of `{name, value}` (`env[]`), rendered alongside `secretEnv` in the same container `env:` block
+- An opt-in container-level `securityContext` passthrough (`securityContext: {}`, rendered verbatim via `toYaml`) for apps needing hardening (read-only root filesystem, dropped capabilities, non-root UID/GID, etc.) — a raw passthrough rather than named fields, so it isn't limited to whichever fields the first consumer happened to need
 
-Anything beyond this shape (multi-container beyond the one metrics sidecar, bespoke env wiring, sidecars other than metrics) is explicitly out of scope. Such apps keep or get their own standalone chart, same as `authentik`, `postgres`, and `qbittorrent` today.
+Anything beyond this shape (multi-container beyond the one metrics sidecar, bespoke env wiring beyond a flat literal/secret list, sidecars other than metrics) is explicitly out of scope. Such apps keep or get their own standalone chart, same as `authentik`, `postgres`, and `qbittorrent` today.
 
 Rollout is incremental: apps are converted to `service` opportunistically as they're touched, not as a forced migration of all 32 charts.
 

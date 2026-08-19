@@ -1,4 +1,28 @@
-homelab:
-  externalSecret:
-    remoteKey: secret/prod/cloudflare
+image:
+  repository: favonia/cloudflare-ddns
+  tag: "1.15.1"
+
+env:
+  - name: DOMAINS
+    value: skippythesnake.com
+  - name: PROXIED
+    value: "true"
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1000
+  runAsGroup: 1000
+  capabilities:
+    drop:
+      - ALL
+
+externalSecret:
+  enabled: true
+  name: cloudflare-ddns-secret
+  remoteKey: secret/prod/cloudflare
+
+secretEnv:
+  - envName: CLOUDFLARE_API_TOKEN
+    secretKey: api-token
     property: cloudflare-ddns

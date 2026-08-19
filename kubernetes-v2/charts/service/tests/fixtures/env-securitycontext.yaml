@@ -1,0 +1,17 @@
+image:
+  repository: example/app
+  tag: "1.0.0"
+containerPort: 8080
+env:
+  - name: DOMAINS
+    value: example.com
+  - name: PROXIED
+    value: "true"
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsUser: 1000
+  runAsGroup: 1000
+  capabilities:
+    drop:
+      - ALL
