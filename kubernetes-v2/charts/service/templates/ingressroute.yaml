@@ -1,0 +1,37 @@
+{{- if and .Values.ingressRoute.enabled .Values.ingressRoute.host }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  entryPoints:
+{{- range .Values.ingressRoute.entryPoints }}
+    - {{ . }}
+{{- end }}
+  routes:
+    {{- if .Values.ingressRoute.forwardAuth.enabled }}
+    - match: Host(`{{ .Values.ingressRoute.host }}`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: {{ .Values.ingressRoute.forwardAuth.outpostServiceName }}
+          namespace: {{ .Values.ingressRoute.forwardAuth.outpostServiceNamespace }}
+          port: {{ .Values.ingressRoute.forwardAuth.outpostServicePort }}
+    {{- end }}
+    - match: Host(`{{ .Values.ingressRoute.host }}`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}
+          port: {{ .Values.service.port }}
+      {{- if or .Values.ingressRoute.middleware.enabled .Values.ingressRoute.forwardAuth.enabled }}
+      middlewares:
+        {{- if .Values.ingressRoute.middleware.enabled }}
+        - name: {{ .Values.ingressRoute.middleware.name }}
+          namespace: {{ .Values.ingressRoute.middleware.namespace }}
+        {{- end }}
+        {{- if .Values.ingressRoute.forwardAuth.enabled }}
+        - name: {{ .Values.ingressRoute.forwardAuth.middlewareName }}
+          namespace: {{ .Values.ingressRoute.forwardAuth.middlewareNamespace }}
+        {{- end }}
+      {{- end }}
+{{- end }}

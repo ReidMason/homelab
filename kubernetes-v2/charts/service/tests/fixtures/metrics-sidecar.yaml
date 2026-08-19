@@ -1,0 +1,15 @@
+image:
+  repository: example/app
+  tag: "1.0.0"
+containerPort: 8080
+metricsSidecar:
+  enabled: true
+  image:
+    repository: ghcr.io/onedr0p/exportarr
+    tag: "v2.0.0"
+  port: 9707
+  args:
+    - sonarr
+  apiKeySecret:
+    name: app-secret
+    key: api-key

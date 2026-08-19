@@ -1,0 +1,75 @@
+---
+# Source: service/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+spec:
+  selector:
+    app: radarr
+  ports:
+    - name: http
+      protocol: TCP
+      port: 7878
+      targetPort: 7878
+
+---
+# Source: service/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      tolerations:
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          tolerationSeconds: 10
+      containers:
+        - name: radarr
+          image: example/radarr:1.0.0
+          ports:
+            - containerPort: 7878
+
+---
+# Source: service/templates/ingressroute.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: radarr
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`radarr.skippythesnake.com`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      priority: 15
+      services:
+        - name: authentik
+          namespace: authentik
+          port: 80
+    - match: Host(`radarr.skippythesnake.com`)
+      kind: Rule
+      services:
+        - name: radarr
+          port: 7878
+      middlewares:
+        - name: radarr-theme
+          namespace: traefik
+        - name: authentik-forward-auth
+          namespace: authentik

@@ -1,0 +1,13 @@
+image:
+  repository: example/app
+  tag: "1.0.0"
+containerPort: 8080
+storage:
+  mountPath: /app/config
+  fsGroup: 1000
+  nfs:
+    enabled: true
+    server: 10.0.0.5
+    path: /mnt/data/app
+    size: 5Gi
+    claimName: app-config

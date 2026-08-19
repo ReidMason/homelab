@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      {{- if .Values.storage.fsGroup }}
+      securityContext:
+        fsGroup: {{ .Values.storage.fsGroup }}
+        fsGroupChangePolicy: OnRootMismatch
+      {{- end }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          {{- if .Values.probes.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.path }}
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            timeoutSeconds: 3
+          {{- end }}
+          {{- if .Values.secretEnv }}
+          env:
+            {{- range .Values.secretEnv }}
+            - name: {{ .envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.externalSecret.name }}
+                  key: {{ .secretKey }}
+            {{- end }}
+          {{- end }}
+          {{- if or .Values.storage.nfs.enabled .Values.storage.pvc.enabled }}
+          volumeMounts:
+            - name: storage
+              mountPath: {{ .Values.storage.mountPath }}
+          {{- end }}
+        {{- if .Values.metricsSidecar.enabled }}
+        - name: metrics
+          image: {{ .Values.metricsSidecar.image.repository }}:{{ .Values.metricsSidecar.image.tag }}
+          {{- if .Values.metricsSidecar.args }}
+          args:
+            {{- toYaml .Values.metricsSidecar.args | nindent 12 }}
+          {{- end }}
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.metricsSidecar.apiKeySecret.name }}
+                  key: {{ .Values.metricsSidecar.apiKeySecret.key }}
+          ports:
+            - containerPort: {{ .Values.metricsSidecar.port }}
+        {{- end }}
+      {{- if or .Values.storage.nfs.enabled .Values.storage.pvc.enabled }}
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ if .Values.storage.nfs.enabled }}{{ .Values.storage.nfs.claimName }}{{ else }}{{ .Values.storage.pvc.claimName }}{{ end }}
+      {{- end }}

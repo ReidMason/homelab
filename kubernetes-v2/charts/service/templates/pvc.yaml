@@ -1,0 +1,43 @@
+{{- if .Values.storage.nfs.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Namespace }}-{{ .Values.storage.nfs.claimName }}
+  labels:
+    app.kubernetes.io/instance: {{ .Values.storage.nfs.claimName }}
+spec:
+  capacity:
+    storage: {{ .Values.storage.nfs.size }}
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: {{ .Values.storage.nfs.server | quote }}
+    path: {{ .Values.storage.nfs.path | quote }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.storage.nfs.claimName }}
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.storage.nfs.size }}
+  volumeName: {{ .Release.Namespace }}-{{ .Values.storage.nfs.claimName }}
+{{- else if .Values.storage.pvc.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.storage.pvc.claimName }}
+spec:
+  storageClassName: {{ .Values.storage.pvc.storageClassName | quote }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.pvc.size }}
+{{- end }}

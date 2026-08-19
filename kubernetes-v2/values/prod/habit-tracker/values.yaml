@@ -1,9 +1,18 @@
-persistence:
+image:
+  repository: ghcr.io/reidmason/habit-tracker
+  tag: "0.3.4"
+
+containerPort: 8000
+
+storage:
+  mountPath: /app/data
   nfs:
+    enabled: true
     server: fern.internal
     path: /mnt/user/kubernetes/habit-tracker
+    size: 1Gi
+    claimName: habit-tracker-data
 
-homelab:
-  ingressRoute:
-    enabled: true
-    host: habit.skippythesnake.com
+ingressRoute:
+  enabled: true
+  host: habit.skippythesnake.com

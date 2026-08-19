@@ -1,0 +1,65 @@
+image:
+  repository: ""
+  tag: ""
+
+containerPort: 8080
+
+service:
+  port: 80
+
+probes:
+  enabled: false
+  path: ""
+
+secretEnv: []
+
+externalSecret:
+  name: ""
+
+metricsSidecar:
+  enabled: false
+  image:
+    repository: ""
+    tag: ""
+  port: 0
+  args: []
+  apiKeySecret:
+    name: ""
+    key: ""
+
+storage:
+  mountPath: ""
+  fsGroup: ""
+  nfs:
+    enabled: false
+    server: ""
+    path: ""
+    size: ""
+    claimName: ""
+  pvc:
+    enabled: false
+    storageClassName: ""
+    size: ""
+    claimName: ""
+
+ingressRoute:
+  enabled: false
+  host: ""
+  entryPoints:
+    - websecure
+  middleware:
+    enabled: false
+    name: ""
+    namespace: ""
+  forwardAuth:
+    enabled: false
+    outpostServiceName: ""
+    outpostServiceNamespace: ""
+    outpostServicePort: ""
+    middlewareName: ""
+    middlewareNamespace: ""
+
+tolerations:
+  - key: node.kubernetes.io/unreachable
+    effect: NoExecute
+    tolerationSeconds: 10

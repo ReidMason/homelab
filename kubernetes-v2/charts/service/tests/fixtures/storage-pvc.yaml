@@ -1,0 +1,11 @@
+image:
+  repository: example/app
+  tag: "1.0.0"
+containerPort: 8080
+storage:
+  mountPath: /app/data
+  pvc:
+    enabled: true
+    storageClassName: local-path
+    size: 5Gi
+    claimName: app-data

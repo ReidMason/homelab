@@ -1,0 +1,7 @@
+image:
+  repository: example/app
+  tag: "1.0.0"
+containerPort: 8080
+probes:
+  enabled: true
+  path: /api/v1/settings/public

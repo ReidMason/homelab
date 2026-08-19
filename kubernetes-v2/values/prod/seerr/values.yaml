@@ -1,9 +1,23 @@
-persistence:
+image:
+  repository: ghcr.io/seerr-team/seerr
+  tag: "v3.3.0"
+
+containerPort: 5055
+
+probes:
+  enabled: true
+  path: /api/v1/settings/public
+
+storage:
+  mountPath: /app/config
+  fsGroup: 1000
   nfs:
+    enabled: true
     server: fern.internal
     path: /mnt/user/kubernetes/seerr
+    size: 5Gi
+    claimName: seerr-config
 
-homelab:
-  ingressRoute:
-    enabled: true
-    host: seerr.skippythesnake.com
+ingressRoute:
+  enabled: true
+  host: seerr.skippythesnake.com

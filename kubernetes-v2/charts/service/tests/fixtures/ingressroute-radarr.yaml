@@ -1,0 +1,22 @@
+image:
+  repository: example/radarr
+  tag: "1.0.0"
+containerPort: 7878
+service:
+  port: 7878
+ingressRoute:
+  enabled: true
+  host: radarr.skippythesnake.com
+  entryPoints:
+    - websecure
+  middleware:
+    enabled: true
+    name: radarr-theme
+    namespace: traefik
+  forwardAuth:
+    enabled: true
+    outpostServiceName: authentik
+    outpostServiceNamespace: authentik
+    outpostServicePort: 80
+    middlewareName: authentik-forward-auth
+    middlewareNamespace: authentik
