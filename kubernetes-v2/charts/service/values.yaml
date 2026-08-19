@@ -12,9 +12,16 @@ probes:
   path: ""
 
 secretEnv: []
+# - envName: TOKEN
+#   secretKey: token
+#   property: token
 
 externalSecret:
   name: ""
+  enabled: false
+  refreshInterval: 15s
+  clusterSecretStoreName: vault-homelab
+  remoteKey: ""
 
 metricsSidecar:
   enabled: false

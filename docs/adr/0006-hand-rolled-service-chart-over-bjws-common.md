@@ -33,7 +33,7 @@ Considered alternatives:
 - Storage: either NFS-backed PV+PVC or plain `storageClassName`-backed PVC, as alternate opt-in blocks
 - IngressRoute (Traefik), reusing the existing `homelab.ingressRoute.*` shape (host, entryPoints, middleware, forwardAuth)
 - Readiness/liveness probes, with a configurable path
-- Secret-sourced env vars, as a values-driven list of `{envName, secretKey}` against one `ExternalSecret` per app
+- Secret-sourced env vars, as a values-driven list of `{envName, secretKey, property}` against one `ExternalSecret` per app, which `service` renders itself (`externalSecret.{enabled, name, remoteKey, refreshInterval, clusterSecretStoreName}`) — the chart references but does not provision the underlying Vault/`ClusterSecretStore` infrastructure, only the per-app `ExternalSecret` custom resource
 - An optional `metricsSidecar` block (`{image, port, apiKeySecret}`) — a single dedicated second-container slot matching the existing `sonarr` `exportarr` pattern exactly, not a generic multi-container mechanism
 
 Anything beyond this shape (multi-container beyond the one metrics sidecar, bespoke env wiring, sidecars other than metrics) is explicitly out of scope. Such apps keep or get their own standalone chart, same as `authentik`, `postgres`, and `qbittorrent` today.
