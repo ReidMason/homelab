@@ -15,9 +15,7 @@ spec:
         app: relay-notifier
     spec:
       tolerations:
-        - key: node.kubernetes.io/unreachable
-          effect: NoExecute
-          tolerationSeconds: 10
+        {{- include "common.toleration" dict | nindent 8 }}
       containers:
         - name: relay-notifier
           image: {{ .Values.notifier.image.repository }}:{{ .Values.notifier.image.tag }}

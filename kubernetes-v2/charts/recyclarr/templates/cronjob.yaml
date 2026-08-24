@@ -15,9 +15,7 @@ spec:
         spec:
           restartPolicy: Never
           tolerations:
-            - key: node.kubernetes.io/unreachable
-              effect: NoExecute
-              tolerationSeconds: 10
+            {{- include "common.toleration" dict | nindent 12 }}
           containers:
             - name: recyclarr
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

@@ -15,9 +15,7 @@ spec:
         app: relay-ingest
     spec:
       tolerations:
-        - key: node.kubernetes.io/unreachable
-          effect: NoExecute
-          tolerationSeconds: 10
+        {{- include "common.toleration" dict | nindent 8 }}
       containers:
         - name: relay-ingest
           image: {{ .Values.ingest.image.repository }}:{{ .Values.ingest.image.tag }}

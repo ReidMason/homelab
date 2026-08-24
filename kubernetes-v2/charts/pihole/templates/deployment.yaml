@@ -21,9 +21,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       {{- end }}
       tolerations:
-        - key: node.kubernetes.io/unreachable
-          effect: NoExecute
-          tolerationSeconds: 0
+        {{- include "common.toleration" (dict "tolerationSeconds" 0) | nindent 8 }}
       containers:
         - name: pihole
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

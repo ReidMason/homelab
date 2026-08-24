@@ -3,3 +3,7 @@ name: relay
 description: Relay - homelab event bus (ingest + notifier)
 type: application
 version: 0.1.0
+dependencies:
+  - name: common
+    version: 0.3.0
+    repository: "file://../common"

@@ -24,9 +24,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
       tolerations:
-        - key: node.kubernetes.io/unreachable
-          effect: NoExecute
-          tolerationSeconds: 10
+        {{- include "common.toleration" dict | nindent 8 }}
       containers:
         - name: homeassistant
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

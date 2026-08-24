@@ -3,3 +3,7 @@ name: qbittorrent
 description: qBittorrent behind gluetun VPN, with Prowlarr + FlareSolverr sharing its network namespace
 type: application
 version: 0.1.0
+dependencies:
+  - name: common
+    version: 0.3.0
+    repository: "file://../common"
