@@ -7,3 +7,6 @@ dependencies:
   - name: kube-prometheus-stack
     version: 88.3.0
     repository: https://prometheus-community.github.io/helm-charts
+  - name: common
+    version: 0.3.0
+    repository: "file://../common"
