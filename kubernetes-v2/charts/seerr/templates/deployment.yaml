@@ -18,9 +18,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
       tolerations:
-        - key: node.kubernetes.io/unreachable
-          effect: NoExecute
-          tolerationSeconds: 10
+        {{- include "common.toleration" dict | nindent 8 }}
       containers:
         - name: seerr
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

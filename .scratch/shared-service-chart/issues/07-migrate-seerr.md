@@ -6,7 +6,11 @@ This ticket also resolves the open question from the spec: `seerr`'s old chart s
 
 **Blocked by:** 2 (storage support), 3 (ingressRoute support), 4 (probes support)
 
-**Status:** ready-for-agent
+**Status:** superseded
+
+## Comments
+
+Superseded 2026-08-24: a later session (`.scratch/service-chart-scope/spec.md`, ADR-0007) decided `service` is frozen at its current adopters and reverted `seerr` back to a standalone chart consuming the new `common` library chart's `ingressRoute` fragment instead of migrating onto `service`. This ticket will not be implemented as written.
 
 - [ ] `bjw-s/common` is fully removed from `seerr` — no `Chart.lock`, `charts/`, `common.yaml`, or `dependencies:` remain
 - [ ] `deploy.yaml` for `seerr` sets `chart: service`

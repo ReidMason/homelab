@@ -2,4 +2,4 @@ apiVersion: v2
 name: common
 description: Shared named templates for fragments duplicated across many charts (IngressRoute, ExternalSecret, ...)
 type: library
-version: 0.1.0
+version: 0.3.0

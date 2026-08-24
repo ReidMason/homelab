@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted. Option (b) (local Helm library chart) revisited and adopted for shared *fragments* (not full-resource ownership) in `docs/adr/0007-common-library-chart-for-shared-fragments.md` — see that ADR for why the vendoring-overhead premise no longer held.
 
 ## Context
 
