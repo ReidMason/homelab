@@ -1,13 +1,3 @@
 {{- if .Values.persistence.enabled }}
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-data
-spec:
-  storageClassName: {{ .Values.persistence.storageClassName }}
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ .Values.persistence.size }}
+{{- include "common.persistentStorage" (dict "pvcName" "postgres-data" "size" .Values.persistence.size "storageClass" .Values.persistence.storageClassName) }}
 {{- end }}
