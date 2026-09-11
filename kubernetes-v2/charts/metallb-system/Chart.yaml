@@ -7,3 +7,6 @@ dependencies:
   - name: metallb
     version: 0.15.3
     repository: https://metallb.github.io/metallb
+  - name: common
+    version: 0.6.0
+    repository: "file://../common"

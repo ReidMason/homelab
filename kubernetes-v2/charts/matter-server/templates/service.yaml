@@ -12,24 +12,12 @@ spec:
       targetPort: 5580
 {{- if .Values.homelab.lanService.enabled }}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: matter-server-lan
-  {{- if .Values.homelab.lanService.metallbAddressPool }}
-  annotations:
-    metallb.io/address-pool: {{ .Values.homelab.lanService.metallbAddressPool | quote }}
-  {{- end }}
-spec:
-  type: {{ .Values.homelab.lanService.type }}
-  {{- if .Values.homelab.lanService.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.homelab.lanService.loadBalancerIP | quote }}
-  {{- end }}
-  selector:
-    app: matter-server
-  ports:
-    - name: ws
-      protocol: TCP
-      port: 5580
-      targetPort: 5580
+{{/* no `-` trim here: it would eat the newline after `---`, merging it into the next line */}}
+{{ include "common.lanService" (dict
+  "name" "matter-server"
+  "metallbAddressPool" .Values.homelab.lanService.metallbAddressPool
+  "type" .Values.homelab.lanService.type
+  "loadBalancerIP" .Values.homelab.lanService.loadBalancerIP
+  "ports" (list (dict "name" "ws" "port" 5580 "targetPort" 5580))
+) }}
 {{- end }}

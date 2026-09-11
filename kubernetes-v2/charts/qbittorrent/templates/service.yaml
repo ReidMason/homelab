@@ -20,28 +20,15 @@ spec:
       targetPort: {{ .Values.ports.flaresolverr }}
 {{- if .Values.homelab.lanService.enabled }}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: qbittorrent-lan
-  {{- if .Values.homelab.lanService.metallbAddressPool }}
-  annotations:
-    metallb.io/address-pool: {{ .Values.homelab.lanService.metallbAddressPool | quote }}
-  {{- end }}
-spec:
-  type: {{ .Values.homelab.lanService.type }}
-  {{- if .Values.homelab.lanService.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.homelab.lanService.loadBalancerIP | quote }}
-  {{- end }}
-  selector:
-    app: qbittorrent
-  ports:
-    - name: qbittorrent
-      protocol: TCP
-      port: {{ .Values.ports.qbittorrent }}
-      targetPort: {{ .Values.ports.qbittorrent }}
-    - name: prowlarr
-      protocol: TCP
-      port: {{ .Values.ports.prowlarr }}
-      targetPort: {{ .Values.ports.prowlarr }}
+{{/* no `-` trim here: it would eat the newline after `---`, merging it into the next line */}}
+{{ include "common.lanService" (dict
+  "name" "qbittorrent"
+  "metallbAddressPool" .Values.homelab.lanService.metallbAddressPool
+  "type" .Values.homelab.lanService.type
+  "loadBalancerIP" .Values.homelab.lanService.loadBalancerIP
+  "ports" (list
+    (dict "name" "qbittorrent" "port" .Values.ports.qbittorrent "targetPort" .Values.ports.qbittorrent)
+    (dict "name" "prowlarr" "port" .Values.ports.prowlarr "targetPort" .Values.ports.prowlarr)
+  )
+) }}
 {{- end }}
