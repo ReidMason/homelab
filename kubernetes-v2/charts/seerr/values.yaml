@@ -32,4 +32,4 @@ homelab:
       middlewareNamespace: authentik
       outpostServiceName: authentik
       outpostServiceNamespace: authentik
-      outpostServicePort: 9000
+      outpostServicePort: 80

@@ -11,7 +11,7 @@ Authentik forwardAuth). Call with a dict:
     servicePort: int
     scheme: string (optional, emitted on the primary route's service only when set)
     middleware: {enabled, name, namespace} (optional, omit entirely if unused)
-    forwardAuth: {enabled, middlewareName, middlewareNamespace, outpostServiceName, outpostServiceNamespace, outpostServicePort} (optional, omit entirely if unused)
+    forwardAuth: {enabled} (optional, omit entirely if unused; middlewareName/middlewareNamespace/outpostServiceName/outpostServiceNamespace/outpostServicePort default to the cluster's single Authentik install and rarely need overriding)
 */}}
 {{- define "common.ingressRoute" -}}
 {{- if and .ingressRoute.enabled .ingressRoute.host }}
@@ -32,9 +32,9 @@ spec:
       kind: Rule
       priority: 15
       services:
-        - name: {{ $forwardAuth.outpostServiceName }}
-          namespace: {{ $forwardAuth.outpostServiceNamespace }}
-          port: {{ $forwardAuth.outpostServicePort }}
+        - name: {{ $forwardAuth.outpostServiceName | default "authentik" }}
+          namespace: {{ $forwardAuth.outpostServiceNamespace | default "authentik" }}
+          port: {{ $forwardAuth.outpostServicePort | default 80 }}
     {{- end }}
     - match: Host(`{{ .ingressRoute.host }}`)
       kind: Rule
@@ -51,8 +51,8 @@ spec:
           namespace: {{ $middleware.namespace }}
         {{- end }}
         {{- if $forwardAuth.enabled }}
-        - name: {{ $forwardAuth.middlewareName }}
-          namespace: {{ $forwardAuth.middlewareNamespace }}
+        - name: {{ $forwardAuth.middlewareName | default "authentik-forward-auth" }}
+          namespace: {{ $forwardAuth.middlewareNamespace | default "authentik" }}
         {{- end }}
       {{- end }}
 {{- end }}

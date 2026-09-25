@@ -41,11 +41,6 @@ homelab:
       namespace: traefik
     forwardAuth:
       enabled: false
-      middlewareName: authentik-forward-auth
-      middlewareNamespace: authentik
-      outpostServiceName: authentik
-      outpostServiceNamespace: authentik
-      outpostServicePort: 80
   lanService:
     enabled: false
     type: LoadBalancer
