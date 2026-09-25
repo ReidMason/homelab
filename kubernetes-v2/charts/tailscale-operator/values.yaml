@@ -16,7 +16,6 @@ homelab:
     enabled: true
     name: operator-oauth
     refreshInterval: 1h
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     clientIdProperty: client_id
     clientSecretProperty: client_secret

@@ -34,8 +34,6 @@ homelab:
   externalSecret:
     enabled: false
     name: grafana-admin-credentials
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     userProperty: admin-user
     passwordProperty: admin-password
@@ -43,8 +41,6 @@ homelab:
     externalSecret:
       enabled: false
       name: alertmanager-discord-webhook
-      refreshInterval: 15s
-      clusterSecretStoreName: vault-homelab
       remoteKey: ""
       property: discord_webhook_url
       secretKey: webhook_url

@@ -3,7 +3,6 @@ homelab:
     enabled: false
     name: cloudflare-dns-api-token
     refreshInterval: 1h
-    clusterSecretStoreName: vault-homelab
     remoteKey: secret/data/homelab/traefik/cloudflare
     property: token
 

@@ -24,15 +24,12 @@ homelab:
   externalSecret:
     enabled: true
     name: pihole-secret
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     property: webui-password
     secretKey: webui-password
   dnsService:
     type: LoadBalancer
     externalTrafficPolicy: Local
-    metallbAddressPool: default-pool
   ingressRoute:
     enabled: false
     host: ""

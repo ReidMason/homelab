@@ -12,8 +12,6 @@ homelab:
   externalSecret:
     enabled: false
     name: ""
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
   remoteKey: ""
   property: api_key
   secretKey: api-key

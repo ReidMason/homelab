@@ -20,4 +20,3 @@ homelab:
     enabled: false
     type: LoadBalancer
     loadBalancerIP: ""
-    metallbAddressPool: default-pool

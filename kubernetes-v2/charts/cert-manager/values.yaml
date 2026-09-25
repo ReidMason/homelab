@@ -17,7 +17,6 @@ homelab:
       enabled: true
       name: cloudflare-token-secret
       refreshInterval: 1h
-      clusterSecretStoreName: vault-homelab
       remoteKey: ""
       property: letsencrypt-token
       secretKey: cloudflare-token

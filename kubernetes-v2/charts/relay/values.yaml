@@ -23,7 +23,6 @@ ingest:
       enabled: false
       type: LoadBalancer
       loadBalancerIP: ""
-      metallbAddressPool: default-pool
 
 notifier:
   replicaCount: 1
@@ -38,8 +37,6 @@ notifier:
     externalSecret:
       enabled: true
       name: relay-notifier-secret
-      refreshInterval: 15s
-      clusterSecretStoreName: vault-homelab
       remoteKey: ""
       property: discord_webhook_url
       secretKey: discord_webhook_url

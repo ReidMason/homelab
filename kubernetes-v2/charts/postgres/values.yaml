@@ -15,8 +15,6 @@ homelab:
   externalSecret:
     enabled: true
     name: postgres-secret
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     usernameProperty: admin-username
     passwordProperty: admin-password

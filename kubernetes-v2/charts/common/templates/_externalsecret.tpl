@@ -3,8 +3,9 @@ common.externalSecret renders an ExternalSecret matching the shape duplicated
 across ~15 charts in this repo. Call with a dict:
   name: metadata name / target Secret name
   remoteKey: remote key in the secret store
-  refreshInterval: string
-  clusterSecretStoreName: string
+  refreshInterval: string (optional, defaults to "15s")
+  clusterSecretStoreName: string (optional, defaults to "vault-homelab", the cluster's
+    single ClusterSecretStore)
   secretEnv: list of {secretKey, property}
   enabled: bool
 */}}
@@ -15,9 +16,9 @@ kind: ExternalSecret
 metadata:
   name: {{ .name | quote }}
 spec:
-  refreshInterval: {{ .refreshInterval | quote }}
+  refreshInterval: {{ .refreshInterval | default "15s" | quote }}
   secretStoreRef:
-    name: {{ .clusterSecretStoreName | quote }}
+    name: {{ .clusterSecretStoreName | default "vault-homelab" | quote }}
     kind: ClusterSecretStore
   target:
     name: {{ .name | quote }}

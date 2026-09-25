@@ -45,7 +45,6 @@ homelab:
     enabled: false
     type: LoadBalancer
     loadBalancerIP: ""
-    metallbAddressPool: default-pool
   metrics:
     enabled: false
     port: 9707
@@ -55,8 +54,6 @@ homelab:
     externalSecret:
       enabled: false
       name: sonarr-api-key
-      refreshInterval: 15s
-      clusterSecretStoreName: vault-homelab
       remoteKey: ""
       property: api_key
       secretKey: api-key

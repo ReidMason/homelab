@@ -32,8 +32,6 @@ securityContext: {}
 externalSecret:
   name: ""
   enabled: false
-  refreshInterval: 15s
-  clusterSecretStoreName: vault-homelab
   remoteKey: ""
 
 metricsSidecar:

@@ -59,8 +59,6 @@ homelab:
   externalSecret:
     enabled: true
     name: qbittorrent-vpn-secret
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     userProperty: vpn-user
     passwordProperty: vpn-password
@@ -85,4 +83,3 @@ homelab:
     enabled: false
     type: LoadBalancer
     loadBalancerIP: ""
-    metallbAddressPool: default-pool

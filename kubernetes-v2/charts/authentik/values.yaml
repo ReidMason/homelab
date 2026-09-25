@@ -29,8 +29,6 @@ homelab:
   externalSecret:
     enabled: true
     name: authentik-secret
-    refreshInterval: 15s
-    clusterSecretStoreName: vault-homelab
     remoteKey: ""
     secretKeyProperty: secret-key
     dbPasswordProperty: db-password
