@@ -8,5 +8,5 @@ dependencies:
     version: 40.1.0
     repository: https://traefik.github.io/charts
   - name: common
-    version: 0.3.0
+    version: 0.6.0
     repository: "file://../common"

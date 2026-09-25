@@ -28,8 +28,3 @@ homelab:
       namespace: ""
     forwardAuth:
       enabled: false
-      middlewareName: authentik-forward-auth
-      middlewareNamespace: authentik
-      outpostServiceName: authentik
-      outpostServiceNamespace: authentik
-      outpostServicePort: 80
