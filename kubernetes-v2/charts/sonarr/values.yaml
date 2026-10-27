@@ -57,3 +57,28 @@ homelab:
       remoteKey: ""
       property: api_key
       secretKey: api-key
+
+# :root {
+#   --ak-global--Color--100: #cdd6f4;
+#   --ak-global--BackgroundColor--100: #1e1e2e;
+#   --lavender: rgba(54, 58, 79, 0.4);
+#   --bg: rgba(36, 39, 58, 1);
+# }
+#
+# form.pf-c-form p,
+# .pf-c-login__main-header.pf-c-brand {
+#   display: none;
+# }
+#
+# main.pf-c-login__main {
+#   border-radius: 0.5rem;
+#   background-color: var(--bg);
+# }
+#
+# input.pf-c-form-control,
+# input.pf-c-form-control:focus {
+#   border-radius: 0.5rem;
+#   background-color: var(--lavender);
+#   border: none;
+#   padding: 1.25rem 1rem;
+# }
