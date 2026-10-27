@@ -1,7 +1,0 @@
-namespace: plant-tracker
-
-resources:
-  - namespace.yaml
-  - secret-plant-tracker.yaml
-  - plant-tracker.yaml
-  - ingress.yaml

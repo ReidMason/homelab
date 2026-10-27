@@ -1,5 +1,0 @@
-resources:
-  - namespace.yaml
-  - seerr-pv-pvc.yaml
-  - seerr-helm-app.yaml
-  - ingress.yaml

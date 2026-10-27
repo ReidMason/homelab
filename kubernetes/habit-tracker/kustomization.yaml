@@ -1,4 +1,0 @@
-resources:
-  - namespace.yaml
-  - habit-tracker.yaml
-  - ingress.yaml
