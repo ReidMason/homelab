@@ -23,6 +23,7 @@ vpn:
   enabled: true
   serviceProvider: private internet access
   type: openvpn
+  extraFlags: "--mssfix 1400"
   serverRegions: ""
   # LAN + cluster pod subnets allowed to bypass the VPN tunnel
   outboundSubnets: "10.128.20.0/24"
