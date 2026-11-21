@@ -1,6 +1,6 @@
 image:
   repository: favonia/cloudflare-ddns
-  tag: "1.15.1"
+  tag: "1.18.0"
 
 env:
   - name: DOMAINS
