@@ -2,6 +2,7 @@ kube-prometheus-stack:
   grafana:
     deploymentStrategy:
       type: Recreate
+      rollingUpdate: null
     persistence:
       enabled: true
       storageClassName: longhorn
