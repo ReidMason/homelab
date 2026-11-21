@@ -28,7 +28,7 @@ Gateways: **`10.128.20.1`** (prod), **`10.128.30.1`** (dev). Each lab host’s s
 | Talos control plane (vm 120)   | `10.128.20.20`          | `10.128.30.20`                 |
 | Talos worker (vm 121)          | `10.128.20.21`          | `10.128.30.21`                 |
 | Talos worker (vm 122)          | `10.128.20.22`          | `10.128.30.22`                 |
-| MetalLB Traefik / nginx        | `10.128.20.60`, `.61`   | `10.128.30.60`, `.61`          |
+| MetalLB Traefik                | `10.128.20.60`          | `10.128.30.60`                 |
 | MetalLB pool                   | `10.128.20.60–69`       | `10.128.30.60–69`              |
 
 ### Trusted LAN hosts (`.internal` DNS)
