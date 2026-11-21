@@ -4,11 +4,17 @@
     "config:recommended"
   ],
   "timezone": "Europe/London",
-  "schedule": ["every weekend"],
+  "schedule": ["before 6am"],
+  "minimumReleaseAge": "3 days",
   "argocd": {
     "managerFilePatterns": ["/^kubernetes-v2/argocd/.+\\.ya?ml$/"]
   },
   "packageRules": [
+    {
+      "groupName": "non-major updates",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchPackageNames": ["*"]
+    },
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
