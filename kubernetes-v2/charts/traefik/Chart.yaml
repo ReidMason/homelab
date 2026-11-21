@@ -5,7 +5,7 @@ type: application
 version: 0.1.0
 dependencies:
   - name: traefik
-    version: 40.1.0
+    version: 40.3.0
     repository: https://traefik.github.io/charts
   - name: common
     version: 0.6.0

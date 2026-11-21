@@ -5,7 +5,7 @@ type: application
 version: 0.1.0
 dependencies:
   - name: metallb
-    version: 0.15.3
+    version: 0.16.2
     repository: https://metallb.github.io/metallb
   - name: common
     version: 0.6.0
