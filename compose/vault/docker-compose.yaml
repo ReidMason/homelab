@@ -1,7 +1,7 @@
 services:
   hashicorp-vault:
     container_name: hashicorp-vault
-    image: hashicorp/vault:2.0
+    image: hashicorp/vault:2.2
     command: ["vault", "server", "-config=/vault/config/vault.hcl"]
     entrypoint: []
     ports:
