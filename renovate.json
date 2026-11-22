@@ -34,6 +34,7 @@
       "minimumReleaseAge": null,
       "schedule": ["at any time"],
       "automerge": true,
+      "ignoreTests": true,
       "labels": []
     }
   ]
