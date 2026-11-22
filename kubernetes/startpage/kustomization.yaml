@@ -1,4 +1,0 @@
-resources:
-  - namespace.yaml
-  - startpage.yaml
-  - ingress.yaml

@@ -1,0 +1,29 @@
+image:
+  repository: ghcr.io/reidmason/startpage
+  tag: "4.0.0"
+
+env:
+  - name: PUBLIC_BASE_URL
+    value: https://start.skippythesnake.com
+  - name: OIDC_ISSUER_URL
+    value: https://auth.skippythesnake.com/application/o/startpage/
+
+externalSecret:
+  enabled: true
+  name: startpage-secret
+  remoteKey: secret/prod/startpage
+
+secretEnv:
+  - envName: DATABASE_URL
+    secretKey: database-url
+    property: database-url
+  - envName: OIDC_CLIENT_ID
+    secretKey: oidc-client-id
+    property: oidc-client-id
+  - envName: OIDC_CLIENT_SECRET
+    secretKey: oidc-client-secret
+    property: oidc-client-secret
+
+ingressRoute:
+  enabled: true
+  host: start.skippythesnake.com
