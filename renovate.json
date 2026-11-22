@@ -9,6 +9,12 @@
   "argocd": {
     "managerFilePatterns": ["/^kubernetes-v2/argocd/.+\\.ya?ml$/"]
   },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/(^|/)values\\.ya?ml$/",
+      "/^kubernetes-v2/values/.+\\.ya?ml$/"
+    ]
+  },
   "packageRules": [
     {
       "groupName": "non-major updates",
@@ -19,6 +25,16 @@
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
       "labels": ["major-update"]
+    },
+    {
+      "description": "Own images: deploy every release immediately",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/reidmason/**"],
+      "groupName": null,
+      "minimumReleaseAge": null,
+      "schedule": ["at any time"],
+      "automerge": true,
+      "labels": []
     }
   ]
 }
