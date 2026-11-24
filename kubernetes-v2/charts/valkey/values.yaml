@@ -1,6 +1,6 @@
 image:
   repository: valkey/valkey
-  tag: "9.1.4"
+  tag: "9.2.0"
 
 service:
   port: 80
