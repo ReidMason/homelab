@@ -15,6 +15,17 @@
       "/^kubernetes-v2/values/.+\\.ya?ml$/"
     ]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Nested image.<name> blocks that helm-values doesn't detect",
+      "managerFilePatterns": ["/^kubernetes-v2/charts/qbittorrent/values\\.ya?ml$/"],
+      "matchStrings": [
+        "repository:\\s*(?<depName>\\S+)\\s+tag:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
   "packageRules": [
     {
       "groupName": "non-major updates",
