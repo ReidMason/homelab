@@ -4,10 +4,14 @@
     "config:recommended"
   ],
   "timezone": "Europe/London",
-  "schedule": ["before 6am"],
+  "schedule": [
+    "before 6am"
+  ],
   "minimumReleaseAge": "3 days",
   "argocd": {
-    "managerFilePatterns": ["/^kubernetes-v2/argocd/.+\\.ya?ml$/"]
+    "managerFilePatterns": [
+      "/^kubernetes-v2/argocd/.+\\.ya?ml$/"
+    ]
   },
   "helm-values": {
     "managerFilePatterns": [
@@ -19,7 +23,9 @@
     {
       "customType": "regex",
       "description": "Nested image.<name> blocks that helm-values doesn't detect",
-      "managerFilePatterns": ["/^kubernetes-v2/charts/qbittorrent/values\\.ya?ml$/"],
+      "managerFilePatterns": [
+        "/^kubernetes-v2/charts/qbittorrent/values\\.ya?ml$/"
+      ],
       "matchStrings": [
         "repository:\\s*(?<depName>\\S+)\\s+tag:\\s*\"?(?<currentValue>[^\"\\s]+)\"?"
       ],
@@ -28,22 +34,47 @@
   ],
   "packageRules": [
     {
-      "groupName": "non-major updates",
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "matchPackageNames": ["*"]
+      "description": "linuxserver -lsN suffix is treated as a compatibility tag by docker versioning, blocking updates",
+      "matchPackageNames": [
+        "linuxserver/prowlarr"
+      ],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)-ls(?<revision>\\d+)$"
     },
     {
-      "matchDatasources": ["docker"],
-      "matchUpdateTypes": ["major"],
-      "labels": ["major-update"]
+      "groupName": "non-major updates",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "matchPackageNames": [
+        "*"
+      ]
+    },
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "labels": [
+        "major-update"
+      ]
     },
     {
       "description": "Own images: deploy every release immediately",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/reidmason/**"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/reidmason/**"
+      ],
       "groupName": null,
       "minimumReleaseAge": null,
-      "schedule": ["at any time"],
+      "schedule": [
+        "at any time"
+      ],
       "automerge": true,
       "ignoreTests": true,
       "labels": []
