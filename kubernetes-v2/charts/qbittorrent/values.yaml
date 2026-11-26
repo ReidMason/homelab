@@ -24,8 +24,6 @@ vpn:
   serviceProvider: private internet access
   type: openvpn
   serverRegions: ""
-  # Refresh gluetun's baked-in server list; stale IPs cause EHOSTUNREACH
-  updaterPeriod: 24h
   # LAN + cluster pod subnets allowed to bypass the VPN tunnel
   outboundSubnets: "10.128.20.0/24"
   upstreamDnsAddresses: "1.1.1.1,1.0.0.1,8.8.8.8,8.8.4.4"
