@@ -1,6 +1,6 @@
 image:
   repository: portainer/agent
-  tag: "2.45.4"
+  tag: "3.1.0"
 
 homelab:
   ingressRoute:
