@@ -21,6 +21,13 @@ spec:
         fsGroup: {{ .Values.env.pgid | int }}
         fsGroupChangePolicy: OnRootMismatch
       {{- end }}
+      {{- if .Values.vpn.enabled }}
+      dnsConfig:
+        options:
+          # gluetun's DNS turns NXDOMAIN into NODATA, which makes musl stop at the first search domain
+          - name: ndots
+            value: "1"
+      {{- end }}
       tolerations:
         {{- include "common.toleration" dict | nindent 8 }}
       {{- if .Values.vpn.enabled }}
