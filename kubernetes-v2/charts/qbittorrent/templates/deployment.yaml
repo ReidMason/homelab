@@ -54,6 +54,8 @@ spec:
               value: {{ .Values.vpn.inputPorts | quote }}
             - name: DNS_UPSTREAM_PLAIN_ADDRESSES
               value: {{ .Values.vpn.upstreamDnsAddresses | quote }}
+            - name: UPDATER_PERIOD
+              value: {{ .Values.vpn.updaterPeriod | quote }}
             - name: TZ
               value: {{ .Values.env.tz | quote }}
           volumeMounts:
