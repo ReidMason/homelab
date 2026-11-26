@@ -23,6 +23,19 @@ spec:
       {{- end }}
       tolerations:
         {{- include "common.toleration" dict | nindent 8 }}
+      {{- if .Values.vpn.enabled }}
+      initContainers:
+        - name: update-vpn-servers
+          image: {{ .Values.image.gluetun.repository }}:{{ .Values.image.gluetun.tag }}
+          args:
+            - update
+            - -enduser
+            - -providers
+            - {{ .Values.vpn.serviceProvider | quote }}
+          volumeMounts:
+            - name: gluetun-data
+              mountPath: /gluetun
+      {{- end }}
       containers:
         {{- if .Values.vpn.enabled }}
         - name: gluetun
@@ -59,6 +72,8 @@ spec:
           volumeMounts:
             - name: dev-net-tun
               mountPath: /dev/net/tun
+            - name: gluetun-data
+              mountPath: /gluetun
         {{- end }}
         - name: qbittorrent
           image: {{ .Values.image.qbittorrent.repository }}:{{ .Values.image.qbittorrent.tag }}
@@ -109,6 +124,8 @@ spec:
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun
+        - name: gluetun-data
+          emptyDir: {}
         {{- end }}
         - name: qbittorrent-config
           {{- if .Values.persistence.enabled }}
