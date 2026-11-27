@@ -41,6 +41,8 @@ spec:
               value: {{ .Values.persistence.gid | quote }}
             - name: TZ
               value: {{ .Values.env.tz | quote }}
+            - name: FTLCONF_dns_domain_local
+              value: "false"
             - name: WEBPASSWORD
               valueFrom:
                 secretKeyRef:
